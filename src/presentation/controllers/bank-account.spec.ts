@@ -1,4 +1,5 @@
 import { BankAccountController } from './bank-account'
+import { MissingParamError } from '../errors/missing-param-error'
 
 describe('BankAccount Controller', () => {
 
@@ -9,7 +10,7 @@ describe('BankAccount Controller', () => {
         }
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new Error('Missing param: number'))
+        expect(httpResponse.body).toEqual(new MissingParamError('number'))
     })
 
     test('Should return 400 if no currency is provided', () => {
@@ -19,6 +20,6 @@ describe('BankAccount Controller', () => {
         }
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new Error('Missing param: currency'))
+        expect(httpResponse.body).toEqual(new MissingParamError('currency'))
     })
 })

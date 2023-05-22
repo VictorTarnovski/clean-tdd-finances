@@ -1,3 +1,4 @@
+import { MissingParamError } from "../errors/missing-param-error"
 import { HttpRequest, HttpResponse } from "../protocols/http"
 
 export class BankAccountController {
@@ -5,13 +6,13 @@ export class BankAccountController {
         if(!httpRequest.body.number) {
             return { 
                 statusCode: 400, 
-                body: new Error('Missing param: number') 
+                body: new MissingParamError('number') 
             }
         }
         if(!httpRequest.body.currency) {
             return { 
                 statusCode: 400, 
-                body: new Error('Missing param: currency') 
+                body: new MissingParamError('currency') 
             }
         }
         return {
