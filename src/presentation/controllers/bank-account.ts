@@ -19,7 +19,10 @@ export class BankAccountController {
             const { number, currency } = httpRequest.body
             if(typeof number !== 'number') return badRequest(new InvalidParamError('number'))
             if(typeof currency !== 'string') return badRequest(new InvalidParamError('currency'))
-            const bankAccount = await this.addBankAccount.add(httpRequest.body)
+            const bankAccount = await this.addBankAccount.add({
+                number,
+                currency
+            })
             return {
                 statusCode: 200,
                 body: { message: 'OK' }
