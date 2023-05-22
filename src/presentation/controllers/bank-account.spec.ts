@@ -1,6 +1,5 @@
 import { BankAccountController } from './bank-account'
-import { MissingParamError } from '../errors/missing-param-error'
-import { InvalidParamError } from '../errors/invalid-param-erros'
+import { MissingParamError, InvalidParamError } from '../errors'
 
 describe('BankAccount Controller', () => {
 
