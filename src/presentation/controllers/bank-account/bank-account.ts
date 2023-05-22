@@ -1,7 +1,4 @@
-import { AddBankAccount } from "../../domain/use-cases/add-bank-account"
-import { MissingParamError, InvalidParamError, ServerError } from "../errors"
-import { badRequest } from "../helpers/http-helper"
-import { HttpRequest, HttpResponse } from "../protocols/http"
+import { HttpRequest, HttpResponse, badRequest, MissingParamError, InvalidParamError, ServerError, AddBankAccount } from "./bank-account-protocols"
 
 export class BankAccountController {
     addBankAccount: AddBankAccount

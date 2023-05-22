@@ -1,7 +1,5 @@
 import { BankAccountController } from './bank-account'
-import { MissingParamError, InvalidParamError } from '../errors'
-import { AddBankAccount, AddBankAccountModel } from '../../domain/use-cases/add-bank-account'
-import { BankAccountModel } from '../../domain/models/bank-account'
+import { MissingParamError, InvalidParamError, BankAccountModel, AddBankAccount, AddBankAccountModel } from './bank-account-protocols'
 
 describe('BankAccount Controller', () => {
 
