@@ -1,7 +1,7 @@
 import { InvalidParamError } from "../errors/invalid-param-erros"
 import { MissingParamError } from "../errors/missing-param-error"
 import { ServerError } from "../errors/server-error"
-import { BadRequest } from "../helpers/http-helper"
+import { badRequest } from "../helpers/http-helper"
 import { HttpRequest, HttpResponse } from "../protocols/http"
 
 export class BankAccountController {
@@ -10,11 +10,11 @@ export class BankAccountController {
             const requiredFields: string[] = ['number', 'currency']
             for(const field of requiredFields) {   
                 if(!httpRequest.body[field]) {
-                    return BadRequest(new MissingParamError(field))
+                    return badRequest(new MissingParamError(field))
                 }
             }
-            if(typeof httpRequest.body.number !== 'number') return BadRequest(new InvalidParamError('number'))
-            if(typeof httpRequest.body.currency !== 'string') return BadRequest(new InvalidParamError('currency'))
+            if(typeof httpRequest.body.number !== 'number') return badRequest(new InvalidParamError('number'))
+            if(typeof httpRequest.body.currency !== 'string') return badRequest(new InvalidParamError('currency'))
             return {
                 statusCode: 200,
                 body: { message: 'OK' }
