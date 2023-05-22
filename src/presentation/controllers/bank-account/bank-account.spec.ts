@@ -1,5 +1,5 @@
 import { BankAccountController } from './bank-account'
-import { MissingParamError, InvalidParamError, BankAccountModel, AddBankAccount, AddBankAccountModel } from './bank-account-protocols'
+import { MissingParamError, InvalidParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel } from './bank-account-protocols'
 
 describe('BankAccount Controller', () => {
 
@@ -75,7 +75,7 @@ describe('BankAccount Controller', () => {
         expect(addSpy).toHaveBeenCalledWith({ number: 1, currency: 'USD' })
     })
 
-    test('Should return 200 if if valid data is provided', async () => {
+    test('Should return 200 if valid data is provided', async () => {
         const { sut } = makeSut()
         const httpRequest = {
             body: { number: 1, currency: 'USD' }
@@ -83,5 +83,16 @@ describe('BankAccount Controller', () => {
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
         expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD'})
+    })
+
+    test('Should return 500 if AddBankAccount throws', async () => {
+        const { sut, addBankAccountStub } = makeSut()
+        const httpRequest = {
+            body: { number: 1, currency: 'USD' }
+        }
+        jest.spyOn(addBankAccountStub, 'add').mockRejectedValueOnce(new Error())
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(500)
+        expect(httpResponse.body).toEqual(new ServerError())
     })
 })
