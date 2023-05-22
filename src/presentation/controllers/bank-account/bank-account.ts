@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, badRequest, ok, MissingParamError, InvalidParamError, ServerError, AddBankAccount } from "./bank-account-protocols"
+import { HttpRequest, HttpResponse, badRequest, ok, MissingParamError, InvalidParamError, serverError, AddBankAccount } from "./bank-account-protocols"
 
 export class BankAccountController {
     addBankAccount: AddBankAccount
@@ -22,10 +22,7 @@ export class BankAccountController {
             })
             return ok(bankAccount)  
         } catch (error) {
-            return {
-                statusCode: 500,
-                body: new ServerError()
-            }
+            return serverError()
         }
     }
 }
