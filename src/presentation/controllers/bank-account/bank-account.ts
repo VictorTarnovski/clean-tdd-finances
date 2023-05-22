@@ -22,7 +22,7 @@ export class BankAccountController {
             })
             return {
                 statusCode: 200,
-                body: { message: 'OK' }
+                body: bankAccount
             }   
         } catch (error) {
             return {
