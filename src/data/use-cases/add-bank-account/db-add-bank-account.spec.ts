@@ -9,7 +9,8 @@ const makeAddBankAccountRepository = () => {
         add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {
             const fakeBankAccount = {
                 id: 'valid_id',
-                number: 1
+                number: 1,
+                currency: 'USD'
             }
             return new Promise(resolve => resolve(fakeBankAccount))
         }
@@ -32,11 +33,13 @@ describe('DbAddBankAccount Usecase', () => {
         const { sut, addBankAccountRepository } = makeSut()
         const addSpy = jest.spyOn(addBankAccountRepository, 'add')
         const bankAccountData = {
-            number: 1
+            number: 1,
+            currency: 'USD'
         }
         await sut.add(bankAccountData)
         expect(addSpy).toBeCalledWith({
-            number: 1
+            number: 1,
+            currency: 'USD'
         })
     })
 })

@@ -27,7 +27,8 @@ describe('FirebaseAccountRepository', () => {
             return { statusCode: 200, body: '1' }
         })
         const bankAccount = await sut.add({ 
-            number: 123 
+            number: 123,
+            currency: 'USD'
         })
         expect(bankAccount).toBeTruthy()
         expect(bankAccount.number).toBe(123)
