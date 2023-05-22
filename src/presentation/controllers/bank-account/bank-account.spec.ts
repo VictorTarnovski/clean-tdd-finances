@@ -3,7 +3,12 @@ import { MissingParamError, InvalidParamError, BankAccountModel, AddBankAccount,
 
 describe('BankAccount Controller', () => {
 
-    const makeAddBankAccontStub = () => {
+    interface SutTypes {
+        sut: BankAccountController
+        addBankAccountStub: AddBankAccount
+    }
+
+    const makeAddBankAccontStub = (): AddBankAccount => {
         class addAccountStub implements AddBankAccount {
             async add(account: AddBankAccountModel): Promise<BankAccountModel> {
                 const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD'}
@@ -13,7 +18,7 @@ describe('BankAccount Controller', () => {
         return new addAccountStub()
     }
 
-    const makeSut= () => {
+    const makeSut = (): SutTypes => {
         const addBankAccountStub = makeAddBankAccontStub()
         const sut = new BankAccountController(addBankAccountStub)
         return { sut, addBankAccountStub }
