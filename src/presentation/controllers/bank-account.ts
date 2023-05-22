@@ -4,11 +4,11 @@ import { HttpRequest, HttpResponse } from "../protocols/http"
 
 export class BankAccountController {
     handle(httpRequest: HttpRequest): HttpResponse {
-        if(!httpRequest.body.number) {
-            return BadRequest(new MissingParamError('number'))
-        }
-        if(!httpRequest.body.currency) {
-            return BadRequest(new MissingParamError('currency'))
+        const requiredFields: string[] = ['number', 'currency']
+        for(const field of requiredFields) {   
+            if(!httpRequest.body[field]) {
+                return BadRequest(new MissingParamError(field))
+            }
         }
         return {
             statusCode: 200,
