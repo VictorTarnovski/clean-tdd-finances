@@ -11,9 +11,8 @@ export class BankAccountController {
                 return BadRequest(new MissingParamError(field))
             }
         }
-        if(typeof httpRequest.body.number !== 'number') {
-            return BadRequest(new InvalidParamError('number'))
-        }
+        if(typeof httpRequest.body.number !== 'number') return BadRequest(new InvalidParamError('number'))
+        if(typeof httpRequest.body.currency !== 'string') return BadRequest(new InvalidParamError('currency'))
         return {
             statusCode: 200,
             body: { message: 'OK' }
