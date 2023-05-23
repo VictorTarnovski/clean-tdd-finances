@@ -24,7 +24,7 @@ describe('FirebaseAccountRepository', () => {
     test('Should return an account on sucess', async () => {
         const { sut, httpServiceStub } = makeSut()
         jest.spyOn(httpServiceStub, 'post').mockImplementationOnce(async () => {
-            return { statusCode: 200, body: '1' }
+            return { statusCode: 200, body: { name: '1'} }
         })
         const bankAccount = await sut.add({ 
             number: 123,
