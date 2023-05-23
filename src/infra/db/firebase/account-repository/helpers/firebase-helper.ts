@@ -14,7 +14,8 @@ export class FirebaseHelper {
     }
 
     async addChild(reference: string, childData: any) {
-        const { body } = await this.httpService.post({url: reference, method: httpMethods.POST, requestBody: childData})
-        return { id: body as unknown as string }
+        const url = reference.concat('.json')
+        const { body } = await this.httpService.post({url, requestBody: childData})
+        return { id: body.name as unknown as string }
     }
 }

@@ -7,7 +7,7 @@ export enum httpMethods {
 }
 export interface RequestModel {
     url: string,
-    method: httpMethods,
+    method?: httpMethods,
     requestHeaders?: any
     requestBody?: any
     requestParams?: any,
