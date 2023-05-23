@@ -1,9 +1,9 @@
-import { HttpService, httpMethods } from "../../../../http/protocols/http-service"
+import { HttpService } from "../../../../http/protocols/http-service"
 export class FirebaseHelper {
     constructor(private httpService: HttpService) {
 
     }
-    baseUrl: string = process.env.FIREBASE_DB_URL || ''
+    baseUrl: string = process.env.NODE_ENV === 'production'? process.env.FIREBASE_DB_URL || '' : process.env.FIREBASE_TEST_DB_URL || ''
 
     setUrl(url: string) {
         this.baseUrl = url

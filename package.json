@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
-    "test": "jest --watchAll --collectCoverage",
-    "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js"
+    "start": "set NODE_ENV=production && sucrase-node src/main/server.ts",
+    "test": "set NODE_ENV=dev && jest --watchAll --collectCoverage",
+    "test:unit": "set NODE_ENV=dev && npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "set NODE_ENV=dev && npm test -- --watch -c jest-integration-config.js"
   },
   "keywords": [],
   "author": "",
