@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express'
+import { Router } from 'express'
 import { makeBankAccountController } from '../factories/bank-account'
 import { adaptRoute } from '../adapters/express-route-adapter'
 
