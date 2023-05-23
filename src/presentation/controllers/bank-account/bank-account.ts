@@ -1,6 +1,6 @@
-import { HttpRequest, HttpResponse, badRequest, ok, MissingParamError, InvalidParamError, serverError, AddBankAccount } from "./bank-account-protocols"
+import { HttpRequest, HttpResponse, badRequest, ok, MissingParamError, InvalidParamError, serverError, AddBankAccount, Controller } from "./bank-account-protocols"
 
-export class BankAccountController {
+export class BankAccountController implements Controller {
     addBankAccount: AddBankAccount
     constructor(addBankAccount: AddBankAccount) {
         this.addBankAccount = addBankAccount
