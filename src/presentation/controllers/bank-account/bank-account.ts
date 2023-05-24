@@ -21,8 +21,8 @@ export class BankAccountController implements Controller {
                 currency
             })
             return ok(bankAccount)  
-        } catch (error) {
-            return serverError()
+        } catch (error: any) {
+            return serverError(error)
         }
     }
 }
