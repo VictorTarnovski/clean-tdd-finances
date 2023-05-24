@@ -40,4 +40,16 @@ describe('LogController Decorator',  () => {
         expect(handleSpy).toBeCalledWith(httpRequest)
     })
 
+    test('Should return the same result of the controller',  async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                number: 1,
+                currency: 'USD'
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(ok('OK'))
+    })
+
 })
