@@ -1,4 +1,4 @@
-import { HttpService } from "../../../../http/protocols/http-service"
+import { HttpService } from "../../../http/protocols/http-service"
 export class FirebaseHelper {
     constructor(private httpService: HttpService) {
 

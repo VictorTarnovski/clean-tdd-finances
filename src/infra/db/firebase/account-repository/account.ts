@@ -2,7 +2,7 @@ import { AddBankAccountRepository } from "../../../../data/protocols/add-bank-ac
 import { BankAccountModel } from "../../../../domain/models/bank-account";
 import { AddBankAccountModel } from "../../../../domain/use-cases/add-bank-account";
 import { HttpService } from "../../../http/protocols/http-service";
-import { FirebaseHelper } from "./helpers/firebase-helper";
+import { FirebaseHelper } from "../helpers/firebase-helper";
 
 export class FirebaseAccountRepository implements AddBankAccountRepository {
     firebaseHelper: FirebaseHelper
