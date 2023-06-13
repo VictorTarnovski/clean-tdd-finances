@@ -10,5 +10,5 @@ export const makeBankAccountController = (): Controller => {
     const addBankAccountRepository = new FirebaseAccountRepository(httpService)
     const dbAddBankAccount = new DbAddBankAccount(addBankAccountRepository)
     const bankAccountController = new BankAccountController(dbAddBankAccount)
-    return new LogControllerDecorator(bankAccountController)
+    return bankAccountController //new LogControllerDecorator(bankAccountController)
 }
