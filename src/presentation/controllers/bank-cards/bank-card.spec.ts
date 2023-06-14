@@ -51,7 +51,15 @@ describe('BankCard Controller', () => {
             body: { number: '1', flag: 'any_flag', expiresAt: '2027-06-14' }
         }
         const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body).toEqual(new InvalidParamError('number'))
+    })
+
+    test('Should return 400 if flag is not a string', async () => {
+        const sut = new BankCardController()
+        const httpRequest = {
+            body: { number: 1, flag: { name: 'any_flag' }, expiresAt: '2027-06-14' }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.body).toEqual(new InvalidParamError('flag'))
     })
 })
