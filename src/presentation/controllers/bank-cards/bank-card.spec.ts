@@ -3,15 +3,28 @@ import { BankCardController } from "./bank-card"
 import { HttpRequest } from "../../protocols"
 import { badRequest } from '../../helpers/http-helper'
 import { MissingParamError, InvalidParamError } from '../../errors'
+import { AddBankCard, AddBankCardModel } from '../../../domain/use-cases/add-bank-card'
+import { BankCardModel } from "../../../domain/models/bank-card"
 
+const makeAddBankCardStub = () => {
+    class AddBankCardStub implements AddBankCard {
+        async add(bankCard: AddBankCardModel): Promise<BankCardModel> {
+            return { id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '2023-06-14'}
+        }
+    }
+    return new AddBankCardStub()
+}
 interface SutTypes {
-    sut: BankCardController
+    sut: BankCardController,
+    addBankCardStub: AddBankCard
 }
 
 const makeSut = (): SutTypes => {
-    const sut = new BankCardController()
+    const addBankCardStub = makeAddBankCardStub()
+    const sut = new BankCardController(addBankCardStub)
     return {
-        sut
+        sut,
+        addBankCardStub
     }
 }
 
@@ -81,5 +94,16 @@ describe('BankCard Controller', () => {
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.body).toEqual(new InvalidParamError('expiresAt'))
+    })
+
+    test('Should call AddBankCard with correct values', () => {
+        const { sut, addBankCardStub } = makeSut()
+        const addSpy = jest.spyOn(addBankCardStub, 'add')
+        const httpRequest = {
+            body: { number: 1, flag: 'any_flag', expiresAt: '2023-06-14' }
+        }
+        sut.handle(httpRequest)
+        expect(addSpy).toHaveBeenCalledTimes(1)
+        expect(addSpy).toHaveBeenCalledWith({ number: 1, flag: 'any_flag', expiresAt: '2023-06-14' })
     })
 })
