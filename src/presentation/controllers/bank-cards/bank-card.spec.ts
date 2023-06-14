@@ -29,4 +29,17 @@ describe('BankCard Controller', () => {
         expect(httpResponse).toEqual(badRequest( new MissingParamError('flag')))
                     
     })
+
+    test('Should return 400 if no expiresAt is provided', async () => {
+        const sut = new BankCardController()
+        const httpRequest: HttpRequest = {
+            body: {
+                number: 1,
+                flag: 'any'
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(badRequest( new MissingParamError('expiresAt')))
+                    
+    })
 })
