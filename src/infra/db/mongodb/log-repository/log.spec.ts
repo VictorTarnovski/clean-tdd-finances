@@ -21,8 +21,12 @@ describe('MongoLogRespository', () => {
         await errorCollection.deleteMany()
     })
 
+    const makeSut = (): MongoLogRespository => {
+        return new MongoLogRespository()
+    }
+
     test('Should create an error log on sucess', async () => {
-        const sut = new MongoLogRespository()
+        const sut = makeSut()
         await sut.logError('any_stack')
         const count = await errorCollection.countDocuments()
         expect(count).toBe(1)
