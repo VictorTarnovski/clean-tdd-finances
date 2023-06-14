@@ -106,4 +106,14 @@ describe('BankCard Controller', () => {
         expect(addSpy).toHaveBeenCalledTimes(1)
         expect(addSpy).toHaveBeenCalledWith({ number: 1, flag: 'any_flag', expiresAt: '2023-06-14' })
     })
+
+    test('Should return 200 if valid data is provided', async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: { number: 1, flag: 'valid_flag', expiresAt: '2023-06-14' }
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(200)
+        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '2023-06-14' })
+    })
 })
