@@ -13,6 +13,7 @@ export class BankCardController implements Controller {
             }
             const { number, flag, expiresAt } = httpRequest.body
             if(typeof number !== 'number') { return badRequest(new InvalidParamError('number'))}
+            if(typeof flag !== 'string') { return badRequest(new InvalidParamError('flag'))}
             return { statusCode: 200, body: { number, flag, expiresAt }}
         } catch (error: any) {
            return serverError(error) 
