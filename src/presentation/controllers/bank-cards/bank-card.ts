@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from "../../protocols"
 import { badRequest, serverError } from "../../helpers/http-helper"
-import { MissingParamError } from "../../errors"
+import { MissingParamError, InvalidParamError } from "../../errors"
 
 export class BankCardController implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -11,7 +11,9 @@ export class BankCardController implements Controller {
                     return badRequest(new MissingParamError(field))
                 }
             }
-            return { statusCode: 200, body: {}}
+            const { number, flag, expiresAt } = httpRequest.body
+            if(typeof number !== 'number') { return badRequest(new InvalidParamError('number'))}
+            return { statusCode: 200, body: { number, flag, expiresAt }}
         } catch (error: any) {
            return serverError(error) 
         }
