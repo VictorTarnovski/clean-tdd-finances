@@ -1,7 +1,9 @@
 import app from './config/app'
-import 'dotenv/config'
+import mongoHelper from '../infra/db/mongodb/mongo-helper'
+import env from './config/env'
 
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}`)
-})   
+mongoHelper.connect(env.mongo_url).then(() => {
+    app.listen(env.port, () => {
+        console.log(`Server running at http://localhost:${env.port}`)
+    })   
+})
