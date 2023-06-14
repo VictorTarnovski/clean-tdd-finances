@@ -1,0 +1,22 @@
+{
+    "transactions": [
+        {
+            "id": "dd6df011-524f-46ef-9b54-6c8d2d3b77ee",
+            "description": "Granny's present",
+            "value": 100,
+            "bankAccountId": "70c44b40-e024-49f4-9dc9-b39d47165706",
+            "cardId": null,
+            "categoryId": "280e3ec9-0293-4709-8a0b-021bc621bbbf",
+            "createdAt": "2023-06-14"
+        },
+        {
+            "id": "ee38b834-a58c-45fc-ac0e-5cc29c77ec46",
+            "description": "Switch Game",
+            "value": 25,
+            "bankAccountId": "70c44b40-e024-49f4-9dc9-b39d47165706",
+            "cardId": "fa03f24a-24db-465d-bfb9-df2e779d2c11",
+            "categoryId": "a3fd0c91-769d-4de8-912d-f96f2b7ee42d",
+            "createdAt": "2023-06-14"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "id": "a18c5a94-7443-4e95-9356-f9d1c24b1b14",
+    "username": "Victor",
+    "email": "victor@mail.com",
+    "password": "1to6",
+    "createdAt": "2023-06-14",
+    "bankAccounts": [
+        {
+            "id": "70c44b40-e024-49f4-9dc9-b39d47165706",
+            "number": 123456789,
+            "balance": 54.78,
+            "currency": "USD",
+            "cards": [
+                {
+                    "id": "fa03f24a-24db-465d-bfb9-df2e779d2c11",
+                    "number": 123456,
+                    "flag": "VISA",
+                    "expiresAt": "2027-02-01",
+                    "createdAt": "2023-02-01"
+                }
+            ],
+            "createdAt": "2021-03-27",
+            "updatedAt": "2022-08-13"
+        }
+    ]
+}
