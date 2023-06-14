@@ -22,7 +22,7 @@ export class BankCardController implements Controller {
             if(expiresAt.length !== 10) {
                 return badRequest(new InvalidParamError('expiresAt'))
             }
-            const bankCard = this.addBankCard.add({ number, flag, expiresAt })
+            const bankCard = await this.addBankCard.add({ number, flag, expiresAt })
             return ok(bankCard)
         } catch (error: any) {
            return serverError(error) 
