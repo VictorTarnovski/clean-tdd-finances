@@ -13,7 +13,12 @@ describe('MonngoBankAccountRepository', () => {
     afterAll(async () => {
         await mongoHelper.disconnect()
     })
-                    
+    
+    beforeEach(async () => {
+        const bankAccountCollection = await mongoHelper.getCollection('bank-accounts')
+        await bankAccountCollection.deleteMany()
+    })
+    
     test('Should return an account on sucess', async () => {
         const sut = new MongoBankAccountRepository()
         const bankAccount = await sut.add({ 
