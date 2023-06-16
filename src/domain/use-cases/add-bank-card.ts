@@ -7,5 +7,5 @@ export interface AddBankCardModel {
 }
 
 export interface AddBankCard {
-    add(bankCard: AddBankCardModel): Promise<BankCardModel>
+    add(bankCard: AddBankCardModel, bankAccountId: string): Promise<BankCardModel>
 }

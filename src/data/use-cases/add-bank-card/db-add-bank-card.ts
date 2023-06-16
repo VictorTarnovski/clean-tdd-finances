@@ -8,8 +8,8 @@ export class DbAddBankCard implements AddBankCard {
         this.addBankCardRepository = addBankCardRepository
     }
 
-    async add(bankCardData: AddBankCardModel): Promise<BankCardModel> {
-        const bankCard = await this.addBankCardRepository.add(bankCardData)
+    async add(bankCardData: AddBankCardModel, bankAccountId: string): Promise<BankCardModel> {
+        const bankCard = await this.addBankCardRepository.add(bankCardData, bankAccountId)
         return bankCard
     }
 }
