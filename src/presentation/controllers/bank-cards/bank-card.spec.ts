@@ -8,8 +8,8 @@ import { BankCardModel } from "../../../domain/models/bank-card"
 
 const makeAddBankCardStub = () => {
     class AddBankCardStub implements AddBankCard {
-        async add(bankCard: AddBankCardModel): Promise<BankCardModel> {
-            return { id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '2023-06-14'}
+        async add(bankCard: AddBankCardModel, bankAccountId: string): Promise<BankCardModel> {
+            return { id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '06/14/2023'}
         }
     }
     return new AddBankCardStub()
@@ -35,8 +35,9 @@ describe('BankCard Controller', () => {
         const httpRequest: HttpRequest = {
             body: {
                 flag: "any_flag",
-                expiresAt: "2027-02-01",
-            }
+                expiresAt: "02/01/2027",
+            },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(badRequest( new MissingParamError('number')))
@@ -48,8 +49,9 @@ describe('BankCard Controller', () => {
         const httpRequest: HttpRequest = {
             body: {
                 number: 1,
-                expiresAt: "2027-02-01",
-            }
+                expiresAt: "02/01/2027",
+            },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(badRequest( new MissingParamError('flag')))
@@ -62,7 +64,8 @@ describe('BankCard Controller', () => {
             body: {
                 number: 1,
                 flag: 'any_flag'
-            }
+            },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(badRequest( new MissingParamError('expiresAt')))
@@ -72,7 +75,8 @@ describe('BankCard Controller', () => {
     test('Should return 400 if card number is not an integer', async () => {
         const { sut } = makeSut()
         const httpRequest = {
-            body: { number: '1', flag: 'any_flag', expiresAt: '2027-06-14' }
+            body: { number: '1', flag: 'any_flag', expiresAt: '06/14/2027' },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.body).toEqual(new InvalidParamError('number'))
@@ -81,7 +85,7 @@ describe('BankCard Controller', () => {
     test('Should return 400 if flag is not a string', async () => {
         const { sut } = makeSut()
         const httpRequest = {
-            body: { number: 1, flag: { name: 'any_flag' }, expiresAt: '2027-06-14' }
+            body: { number: 1, flag: { name: 'any_flag' }, expiresAt: '06/14/2027' }, params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.body).toEqual(new InvalidParamError('flag'))
@@ -90,37 +94,51 @@ describe('BankCard Controller', () => {
     test('Should return 400 if expiresAt is not correctly passed', async () => {
         const { sut } = makeSut()
         const httpRequest = {
-            body: { number: 1, flag: 'any_flag', expiresAt: 20270614 }
+            body: { number: 1, flag: 'any_flag', expiresAt: 20270614 },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.body).toEqual(new InvalidParamError('expiresAt'))
+    })
+
+    test('Should return 400 if no bankAccountId is provided', async () => {
+        const { sut } = makeSut()
+        const httpRequest: HttpRequest = {
+            body: { number: 1, flag: 'any_flag', expiresAt: '06/14/2023' },
+            params: {}
+        }
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.body).toEqual(new MissingParamError('bankAccountId'))
     })
 
     test('Should call AddBankCard with correct values', () => {
         const { sut, addBankCardStub } = makeSut()
         const addSpy = jest.spyOn(addBankCardStub, 'add')
         const httpRequest = {
-            body: { number: 1, flag: 'any_flag', expiresAt: '2023-06-14' }
+            params: { bankAccountId: 'valid_id'},
+            body: { number: 1, flag: 'any_flag', expiresAt: '06/14/2023' }
         }
         sut.handle(httpRequest)
         expect(addSpy).toHaveBeenCalledTimes(1)
-        expect(addSpy).toHaveBeenCalledWith({ number: 1, flag: 'any_flag', expiresAt: '2023-06-14' })
+        expect(addSpy).toHaveBeenCalledWith({ number: 1, flag: 'any_flag', expiresAt: '06/14/2023' }, 'valid_id')
     })
 
     test('Should return 200 if valid data is provided', async () => {
         const { sut } = makeSut()
         const httpRequest = {
-            body: { number: 1, flag: 'valid_flag', expiresAt: '2023-06-14' }
+            body: { number: 1, flag: 'valid_flag', expiresAt: '06/14/2023' },
+            params: { bankAccountId: 'valid_id'}
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '2023-06-14' })
+        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, flag: 'valid_flag', expiresAt: '06/14/2023' })
     })
 
     test('Should return 500 if AddBankCard throws', async () => {
         const { sut, addBankCardStub } = makeSut()
         const httpRequest = {
-            body: { number: 1, flag: 'valid_flag', expiresAt: '2023-06-14' }
+            body: { number: 1, flag: 'valid_flag', expiresAt: '06/14/2023' },
+            params: { bankAccountId: 'valid_id'}
         }
         jest.spyOn(addBankCardStub, 'add').mockRejectedValueOnce(new Error())
         const httpResponse = await sut.handle(httpRequest)

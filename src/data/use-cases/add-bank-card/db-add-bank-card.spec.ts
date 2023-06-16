@@ -6,13 +6,14 @@ import { DbAddBankCard } from "./db-add-bank-card"
 const makeAddBankCardRepository = () => {
     
     class AddBankCardRepositoryStub implements AddBankCardRepository {
-        add(bankCardData: AddBankCardModel): Promise<BankCardModel> {
-            const fakeBankCard = {
-                id: 'valid_id',
-                number: 1,
-                flag: 'valid_flag',
-                expiresAt: '2023-06-14'
-            }
+        add(bankCardData: AddBankCardModel, bankAccountId: string): Promise<BankCardModel> {
+            const fakeBankCard = 
+                {
+                    id: 'valid_id',
+                    number: 1,
+                    flag: 'valid_flag',
+                    expiresAt: '06/14/2023'
+                }
             return new Promise(resolve => resolve(fakeBankCard))
         }
     }
@@ -36,13 +37,13 @@ describe('DbAddBankCard Usecase', () => {
         const bankCardData = {
             number: 1,
             flag: 'valid_flag',
-            expiresAt: '2023-06-14'
+            expiresAt: '06/14/2023'
         }
-        await sut.add(bankCardData)
+        await sut.add(bankCardData, 'valid_id')
         expect(addSpy).toBeCalledWith({
             number: 1,
             flag: 'valid_flag',
-            expiresAt: '2023-06-14'
-        })
+            expiresAt: '06/14/2023'
+        }, 'valid_id')
     })
 })
