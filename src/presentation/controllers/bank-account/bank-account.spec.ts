@@ -11,7 +11,7 @@ describe('BankAccount Controller', () => {
     const makeAddBankAccontStub = (): AddBankAccount => {
         class addAccountStub implements AddBankAccount {
             async add(account: AddBankAccountModel): Promise<BankAccountModel> {
-                const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD'}
+                const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD', cards: []}
                 return fakeAccount
             }
         }
@@ -82,7 +82,7 @@ describe('BankAccount Controller', () => {
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD'})
+        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD', cards: []})
     })
 
     test('Should return 500 if AddBankAccount throws', async () => {

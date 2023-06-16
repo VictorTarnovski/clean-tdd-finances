@@ -2,7 +2,7 @@ import { MongoBankAccountRepository } from "./bank-account"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoHelper from "../mongo-helper"
 
-describe('MonngoBankAccountRepository', () => {
+describe('MongoBankAccountRepository', () => {
 
     beforeAll(async () => {
         const mongo = await MongoMemoryServer.create()
