@@ -6,18 +6,22 @@ import { SignUpController } from "./signup"
 
 describe('SignUp Controller', () => {
     
+    const makeEmailValidatorStub = () => {
+        class EmailValidatorStub implements EmailValidator{
+            isValid(emaiL: string): boolean {
+                return true
+            }
+        }
+        return new EmailValidatorStub()
+    }
+
     interface SutTypes {
         sut: SignUpController
         emailValidatorStub: EmailValidator
     }
 
     const makeSut = (): SutTypes => {
-        class EmailValidatorStub implements EmailValidator{
-            isValid(emaiL: string): boolean {
-                return true
-            }
-        }
-        const emailValidatorStub = new EmailValidatorStub()
+        const emailValidatorStub = makeEmailValidatorStub()
         const sut = new SignUpController(emailValidatorStub)
         return { sut, emailValidatorStub }
     }
