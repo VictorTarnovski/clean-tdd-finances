@@ -3,12 +3,15 @@ import { HttpRequest, HttpResponse } from "../../protocols"
 import { Controller } from "../../protocols"
 import { InvalidParamError, MissingParamError, badRequest, ok, serverError } from "../bank-account/bank-account-protocols"
 import { EmailValidator } from "../../protocols/email-validator"
+import { AddAccount } from "../../../domain/use-cases/add-account"
 
 export class SignUpController implements Controller {
     private readonly emailValidator: EmailValidator
+    private readonly addAccount: AddAccount
 
-    constructor(emailValidator: EmailValidator) {
+    constructor(emailValidator: EmailValidator, addAccount: AddAccount) {
         this.emailValidator = emailValidator
+        this.addAccount = addAccount
     }
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse>{
@@ -23,7 +26,8 @@ export class SignUpController implements Controller {
             if(password !== passwordConfirmation) return badRequest(new InvalidParamError('passwordConfirmation'))
             const isValid = this.emailValidator.isValid(email)
             if (!isValid) return badRequest(new InvalidParamError('email'))
-            return ok('ok')
+            const account = await this.addAccount.add({ name, email, password })
+            return ok(account)
         } catch (error: any) {
             return serverError(error)
         }
