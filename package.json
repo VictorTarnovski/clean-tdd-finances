@@ -6,6 +6,7 @@
   "scripts": {
     "start": "set NODE_ENV=production && sucrase-node src/main/server.ts",
     "test": "set NODE_ENV=dev && jest --watchAll --collectCoverage",
+    "test:staged": "set NODE_ENV=dev && npm test",
     "test:unit": "set NODE_ENV=dev && npm test -- --watch -c jest-unit-config.js",
     "test:integration": "set NODE_ENV=dev && npm test -- --watch -c jest-integration-config.js"
   },
