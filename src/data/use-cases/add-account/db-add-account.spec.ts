@@ -1,4 +1,4 @@
-import { DbAaddAccount } from "./db-add-account"
+import { DbAddAccount } from "./db-add-account"
 import { AccountModel, AddAccountModel, Encrypter, AddAccountRepository } from "./db-add-account-protocols"
 
 const makeEncrypterStub = (): Encrypter => {
@@ -26,7 +26,7 @@ const makeAddAccountRepositoryStub = (): AddAccountRepository => {
 }
 
 interface SutTypes {
-    sut: DbAaddAccount,
+    sut: DbAddAccount,
     encrypterStub: Encrypter,
     addAccountRepositoryStub: AddAccountRepository
 }
@@ -34,14 +34,14 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
     const encrypterStub = makeEncrypterStub()
     const addAccountRepositoryStub = makeAddAccountRepositoryStub()
-    const sut = new DbAaddAccount(encrypterStub, addAccountRepositoryStub)
+    const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub)
     return {
         sut,
         encrypterStub,
         addAccountRepositoryStub
     }
 }
-describe('DbAaddAccount Usecase', () => {
+describe('DbAddAccount Usecase', () => {
                     
     test('Should call Encrypter with correct password', async () => {
         const { sut, encrypterStub } = makeSut()
