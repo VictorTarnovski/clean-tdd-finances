@@ -20,8 +20,11 @@ describe('MongoAccountRepository', () => {
         await bankAccountCollection.deleteMany()
     })
 
+    const makeSut = () => {
+        return new MongoAccountRepository()
+    }
    test('Should return an acount on sucess', async () => {
-    const sut = new MongoAccountRepository()
+    const sut = makeSut()
     const account = await sut.add({
         name: 'any_name',
         email: 'any_email@mail.com',
