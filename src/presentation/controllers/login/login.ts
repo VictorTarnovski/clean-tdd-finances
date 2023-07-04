@@ -1,7 +1,7 @@
 import { Controller } from "../../protocols"
 import { HttpRequest, HttpResponse } from "../../protocols"
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, ok } from '../../helpers/http-helper'
+import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { EmailValidator } from "../../protocols/email-validator"
 
 export class LoginController implements Controller {
@@ -10,7 +10,8 @@ export class LoginController implements Controller {
         this.emailValidator = emailValidator
     }
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-        const { email, password } = httpRequest.body
+        try {
+            const { email, password } = httpRequest.body
         if(!email) {
             return badRequest(new MissingParamError('email'))
         }
@@ -22,5 +23,9 @@ export class LoginController implements Controller {
             return badRequest(new InvalidParamError('email'))
         }
         return ok('ok')
+        } catch (error: any) {
+            return serverError(error)
+        }
+        
     }
 }
