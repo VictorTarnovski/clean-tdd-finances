@@ -3,6 +3,7 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError } from '../../helpers/http-helper'
 import { LoginController } from "./login"
 import { EmailValidator } from "../../protocols/email-validator"
+import { Authentication } from '../../../domain/use-cases/authentication'
 
 const makeEmailValidatorStub = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
@@ -11,6 +12,15 @@ const makeEmailValidatorStub = (): EmailValidator => {
         }
     }
     return new EmailValidatorStub()
+}
+
+const makeAuthenticationStub = (): Authentication => {
+    class AuthenticationStub implements Authentication {
+        async auth(email: string, password: string): Promise<string> {
+            return 'fake_token'
+        }
+    }
+    return new AuthenticationStub()
 }
 
 const makeFakeRequest = (): HttpRequest => (
@@ -24,15 +34,18 @@ const makeFakeRequest = (): HttpRequest => (
 
 interface SutTypes {
     sut: LoginController
-    emailValidatorStub: EmailValidator
+    emailValidatorStub: EmailValidator,
+    authenticationStub: Authentication
 }
 
 const makeSut = (): SutTypes => {
     const emailValidatorStub = makeEmailValidatorStub()
-    const sut = new LoginController(emailValidatorStub)
+    const authenticationStub = makeAuthenticationStub()
+    const sut = new LoginController(emailValidatorStub, authenticationStub)
     return {
       sut,
-      emailValidatorStub
+      emailValidatorStub,
+      authenticationStub
     }
 }
 
@@ -85,4 +98,13 @@ describe('Login Controller', () => {
     const httpResponse: HttpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(mockedError))
    })
+
+   test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    const httpRequest: HttpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(authSpy).toHaveBeenCalledWith('any_mail@mail.com', 'any_password')
+   })
+
 })
