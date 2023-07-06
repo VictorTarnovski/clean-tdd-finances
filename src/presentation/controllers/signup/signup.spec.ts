@@ -34,10 +34,10 @@ describe('SignUp Controller', () => {
         return new AddAccountStub()
     }
 
-    const makeValidationStub = () => {
+    const makeValidationStub = (): Validation => {
         class ValidationStub implements Validation {
-            validate(input: any): Error {
-                throw new Error()
+            validate(input: any): Error | null {
+                return null
             }
         }
         return new ValidationStub()
@@ -194,5 +194,15 @@ describe('SignUp Controller', () => {
         const httpRequest: HttpRequest = makeFakeRequest()
         await sut.handle(httpRequest)
         expect(validateSpy).toBeCalledWith(httpRequest.body)
+    })
+
+    test('Should return 400 if validation returns an error', async () => {
+        const { sut, validationStub } = makeSut()
+        const mockedError = new MissingParamError('any_field')
+        jest.spyOn(validationStub, 'validate').mockReturnValueOnce(mockedError)
+        const httpRequest: HttpRequest = makeFakeRequest()
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse).toEqual(badRequest(mockedError))
     })
 })
