@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols"
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized, ok } from '../../helpers/http-helper'
 import { LoginController } from "./login"
 import { EmailValidator } from "../../protocols/email-validator"
 import { Authentication } from '../../../domain/use-cases/authentication'
@@ -107,15 +107,7 @@ describe('Login Controller', () => {
     expect(authSpy).toHaveBeenCalledWith('any_mail@mail.com', 'any_password')
    })
 
-   test('Should return 401 if invalid credentials are provided', async () => {
-    const { sut, authenticationStub } = makeSut()
-    jest.spyOn(authenticationStub, 'auth').mockResolvedValueOnce(null)
-    const httpRequest: HttpRequest = makeFakeRequest()
-    const httpResponse: HttpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(unauthorized())
-   })
-
-   test('Should return 500 if Authentication throws', async () => {
+   test('Should return 500 if Authentication thorws', async () => {
     const { sut, authenticationStub } = makeSut()
     const mockedError = new Error('mocked error')
     jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
@@ -124,6 +116,14 @@ describe('Login Controller', () => {
     const httpRequest: HttpRequest = makeFakeRequest()
     const httpResponse: HttpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(mockedError))
+   })
+
+   test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockResolvedValueOnce(null)
+    const httpRequest: HttpRequest = makeFakeRequest()
+    const httpResponse: HttpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(unauthorized())
    })
 
    test('Should return 200 if valid credentials are provided', async () => {
