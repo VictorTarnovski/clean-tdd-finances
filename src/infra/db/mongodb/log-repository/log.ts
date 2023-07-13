@@ -1,5 +1,5 @@
 import { errorMonitor } from "events"
-import { LogErrorRepository } from "../../../../data/protocols/log-error-repository"
+import { LogErrorRepository } from "../../../../data/protocols/db/log-error-repository"
 import mongoHelper from "../mongo-helper"
 
 export class MongoLogRespository implements LogErrorRepository {

@@ -1,6 +1,6 @@
 import { BankCardModel } from "../../../domain/models/bank-card"
 import { AddBankCardModel } from "../../../domain/use-cases/add-bank-card"
-import { AddBankCardRepository } from "../../protocols/add-bank-card-repository"
+import { AddBankCardRepository } from "../../protocols/db/add-bank-card-repository"
 import { DbAddBankCard } from "./db-add-bank-card"
 
 const makeAddBankCardRepository = () => {

@@ -1,4 +1,4 @@
-import { AddBankAccountRepository } from "../../../../data/protocols/add-bank-account-repository"
+import { AddBankAccountRepository } from "../../../../data/protocols/db/add-bank-account-repository"
 import { BankAccountModel } from "../../../../domain/models/bank-account"
 import { AddBankAccountModel } from "../../../../domain/use-cases/add-bank-account"
 import mongoHelper from "../mongo-helper"
