@@ -4,12 +4,14 @@ import { MongoBankAccountRepository } from "../../../infra/db/mongodb/bank-accou
 import { MongoLogRespository } from "../../../infra/db/mongodb/log-repository/log"
 import { Controller } from "../../../presentation/protocols"
 import { LogControllerDecorator } from "../../decorators/log"
+import { makeBankAccountValidation } from "./bank-account-validation"
 
 
 export const makeBankAccountController = (): Controller => {
     const addBankAccountRepository = new MongoBankAccountRepository()
     const dbAddBankAccount = new DbAddBankAccount(addBankAccountRepository)
-    const bankAccountController = new BankAccountController(dbAddBankAccount)
+    const validationComposite = makeBankAccountValidation()
+    const bankAccountController = new BankAccountController(dbAddBankAccount, validationComposite)
     const mongoLogRespository = new MongoLogRespository()
     return new LogControllerDecorator(bankAccountController, mongoLogRespository)
 }
