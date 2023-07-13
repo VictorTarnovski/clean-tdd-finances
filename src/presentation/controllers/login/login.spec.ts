@@ -3,7 +3,7 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError, unauthorized, ok } from '../../helpers/http/http-helper'
 import { LoginController } from "./login"
 import { EmailValidator } from "../../protocols/email-validator"
-import { Authentication, authenticationModel } from '../../../domain/use-cases/authentication'
+import { Authentication, AuthenticationModel } from '../../../domain/use-cases/authentication'
 
 const makeEmailValidatorStub = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
@@ -16,7 +16,7 @@ const makeEmailValidatorStub = (): EmailValidator => {
 
 const makeAuthenticationStub = (): Authentication => {
     class AuthenticationStub implements Authentication {
-        async auth(authentication: authenticationModel): Promise<string | null> {
+        async auth(authentication: AuthenticationModel): Promise<string | null> {
             return 'fake_token'
         }
     }
