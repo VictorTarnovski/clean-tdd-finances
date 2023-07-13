@@ -3,7 +3,7 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError, unauthorized, ok } from '../../helpers/http/http-helper'
 import { LoginController } from "./login"
 import { EmailValidator } from "../../protocols/email-validator"
-import { Authentication } from '../../../domain/use-cases/authentication'
+import { Authentication, authenticationModel } from '../../../domain/use-cases/authentication'
 
 const makeEmailValidatorStub = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
@@ -16,7 +16,7 @@ const makeEmailValidatorStub = (): EmailValidator => {
 
 const makeAuthenticationStub = (): Authentication => {
     class AuthenticationStub implements Authentication {
-        async auth(email: string, password: string): Promise<string | null> {
+        async auth(authentication: authenticationModel): Promise<string | null> {
             return 'fake_token'
         }
     }
@@ -104,7 +104,7 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     const httpRequest: HttpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(authSpy).toHaveBeenCalledWith('any_mail@mail.com', 'any_password')
+    expect(authSpy).toHaveBeenCalledWith({ email: 'any_mail@mail.com', password: 'any_password'})
    })
 
    test('Should return 500 if Authentication thorws', async () => {
