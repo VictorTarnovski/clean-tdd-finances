@@ -3,7 +3,7 @@ import { Controller } from "../../protocols"
 import { InvalidParamError, badRequest, ok, serverError } from "../bank-account/bank-account-protocols"
 import { EmailValidator } from "../../protocols/email-validator"
 import { AddAccount } from "../../../domain/use-cases/add-account"
-import { Validation } from "../../helpers/validators/validation"
+import { Validation } from "../../protocols/validation"
 
 export class SignUpController implements Controller {
     private readonly addAccount: AddAccount

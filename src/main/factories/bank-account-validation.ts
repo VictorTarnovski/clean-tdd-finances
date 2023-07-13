@@ -1,6 +1,6 @@
 import { ValidationComposite } from "../../presentation/helpers/validators/validation-composite"
 import { RequiredFieldValidation } from "../../presentation/helpers/validators/required-field-validation/required-field-validation"
-import { Validation } from "../../presentation/helpers/validators/validation"
+import { Validation } from "../../presentation/protocols/validation"
 import { SupportedValuesValidation } from "../../presentation/helpers/validators/supported-values-validation/supported-values-validation"
 
 

@@ -5,7 +5,7 @@ import { AccountModel } from "../../../domain/models/account"
 import { AddAccountModel } from "../../../domain/use-cases/add-account"
 import { AddAccount } from '../../../domain/use-cases/add-account'
 import { HttpRequest } from "../../protocols/http"
-import { Validation } from "../../helpers/validators/validation"
+import { Validation } from "../../protocols/validation"
 
 describe('SignUp Controller', () => {
 
