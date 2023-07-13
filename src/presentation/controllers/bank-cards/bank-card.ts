@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from "../../protocols"
-import { badRequest, ok, serverError } from "../../helpers/http-helper"
+import { badRequest, ok, serverError } from "../../helpers/http/http-helper"
 import { MissingParamError, InvalidParamError } from "../../errors"
 import { AddBankCard } from "../../../domain/use-cases/add-bank-card"
 

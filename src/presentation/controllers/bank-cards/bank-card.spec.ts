@@ -1,7 +1,7 @@
 import { BankCardController } from "./bank-card"
 
 import { HttpRequest } from "../../protocols"
-import { badRequest } from '../../helpers/http-helper'
+import { badRequest } from '../../helpers/http/http-helper'
 import { MissingParamError, InvalidParamError, ServerError } from '../../errors'
 import { AddBankCard, AddBankCardModel } from '../../../domain/use-cases/add-bank-card'
 import { BankCardModel } from "../../../domain/models/bank-card"
