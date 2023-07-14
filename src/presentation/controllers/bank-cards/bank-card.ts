@@ -2,30 +2,23 @@ import { Controller, HttpRequest, HttpResponse } from "../../protocols"
 import { badRequest, ok, serverError } from "../../helpers/http/http-helper"
 import { MissingParamError, InvalidParamError } from "../../errors"
 import { AddBankCard } from "../../../domain/use-cases/add-bank-card"
+import { Validation } from "../../protocols/validation"
 
 export class BankCardController implements Controller {
-    addBankCard: AddBankCard
-    constructor(addBankCard: AddBankCard) {
+    private readonly addBankCard: AddBankCard
+    private readonly validation: Validation
+    constructor(addBankCard: AddBankCard, validation: Validation) {
         this.addBankCard = addBankCard
+        this.validation = validation
     }
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            if(!httpRequest.params['bankAccountId']) {
-                return badRequest(new MissingParamError('bankAccountId'))
-            }
-            const requiredFields: string[] = ['number', 'flag', 'expiresAt']
-            for(const field of requiredFields) {   
-                if(!httpRequest.body[field]) {
-                    return badRequest(new MissingParamError(field))
-                }
+            const error = this.validation.validate(httpRequest.body)
+            if(error) {
+                return badRequest(error)
             }
             const { number, flag, expiresAt } = httpRequest.body
             const { bankAccountId } = httpRequest.params
-            if(typeof number !== 'number') { return badRequest(new InvalidParamError('number'))}
-            if(typeof flag !== 'string') { return badRequest(new InvalidParamError('flag'))}
-            if(expiresAt.length !== 10) {
-                return badRequest(new InvalidParamError('expiresAt'))
-            }
             const bankCard = await this.addBankCard.add({ number, flag, expiresAt }, bankAccountId)
             return ok(bankCard)
         } catch (error: any) {

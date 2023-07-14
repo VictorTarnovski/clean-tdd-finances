@@ -4,12 +4,14 @@ import { MongoBankCardRepository } from "../../../infra/db/mongodb/bank-card-res
 import { MongoLogRespository } from "../../../infra/db/mongodb/log-repository/log"
 import { Controller } from "../../../presentation/protocols"
 import { LogControllerDecorator } from "../../decorators/log"
+import { makeBankCardValidation } from "./bank-card-validation"
 
 
 export const makeBankCardController = (): Controller => {
     const addBankCardRepository = new MongoBankCardRepository()
     const dbAddBankCard = new DbAddBankCard(addBankCardRepository)
-    const bankCardController = new BankCardController(dbAddBankCard)
+    const validationComposite = makeBankCardValidation()
+    const bankCardController = new BankCardController(dbAddBankCard, validationComposite)
     const mongoLogRespository = new MongoLogRespository()
     return new LogControllerDecorator(bankCardController, mongoLogRespository)
 }
