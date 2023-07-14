@@ -15,7 +15,7 @@ export class SupportedValuesValidation implements Validation {
                 matches = matches + 1
             }
         }
-        if(matches !== this.supportedValues.length) {
+        if(matches === 0) {
             return new InvalidParamError(this.fieldName)
         }
         return null
