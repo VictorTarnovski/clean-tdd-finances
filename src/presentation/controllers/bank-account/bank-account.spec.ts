@@ -5,7 +5,7 @@ import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBa
 const makeAddBankAccontStub = (): AddBankAccount => {
     class addAccountStub implements AddBankAccount {
         async add(account: AddBankAccountModel): Promise<BankAccountModel> {
-            const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD', cards: []}
+            const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD', balance: 0 , cards: []}
             return fakeAccount
         }
     }
@@ -71,7 +71,7 @@ describe('BankAccount Controller', () => {
         const httpRequest = makeFakeRequest()
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD', cards: []})
+        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD', balance: 0, cards: []})
     })
 
     test('Should return 500 if AddBankAccount throws', async () => {

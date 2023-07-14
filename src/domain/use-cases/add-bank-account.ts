@@ -2,7 +2,8 @@ import { BankAccountModel } from "../models/bank-account"
 
 export interface AddBankAccountModel {
     number: number,
-    currency: string
+    currency: string,
+    balance?: number
 }
 
 export interface AddBankAccount {

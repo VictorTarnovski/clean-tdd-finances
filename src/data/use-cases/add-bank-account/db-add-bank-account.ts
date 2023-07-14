@@ -9,7 +9,7 @@ export class DbAddBankAccount implements AddBankAccount {
     }
 
     async add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {
-        const bankAccount = await this.addBankAccountRepository.add(bankAccountData)
+        const bankAccount = await this.addBankAccountRepository.add(Object.assign({}, bankAccountData, {balance: bankAccountData.balance ? bankAccountData.balance : 0}))
         return bankAccount
     }
 }

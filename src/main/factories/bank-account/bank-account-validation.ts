@@ -4,7 +4,7 @@ import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation
 
 export const makeBankAccountValidation = (): ValidationComposite => {
     const validations: Validation[] = []
-     for (const field of ['number', 'balance', 'currency']) {
+     for (const field of ['number', 'currency']) {
         validations.push(new RequiredFieldValidation(field))
      }
      const supportedCurrencies: string[] = ['USD', 'EUR', 'GBP', 'JPY', 'BRL']

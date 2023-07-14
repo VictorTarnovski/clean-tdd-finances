@@ -11,6 +11,7 @@ const makeAddBankAccountRepository = () => {
                 id: 'valid_id',
                 number: 1,
                 currency: 'USD',
+                balance: 0,
                 cards: []
             }
             return new Promise(resolve => resolve(fakeBankAccount))
@@ -40,7 +41,8 @@ describe('DbAddBankAccount Usecase', () => {
         await sut.add(bankAccountData)
         expect(addSpy).toBeCalledWith({
             number: 1,
-            currency: 'USD'
+            currency: 'USD',
+            balance: 0
         })
     })
 })
