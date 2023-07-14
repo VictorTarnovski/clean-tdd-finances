@@ -7,8 +7,8 @@ export class MongoBankAccountRepository implements AddBankAccountRepository {
     async add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {
         const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
 
-        await bankAccountsCollection.insertOne(Object.assign({}, bankAccountData, { cards: [] }))
-        const mongoBankAccount = await bankAccountsCollection.findOne(bankAccountData)
+        const { insertedId } = await bankAccountsCollection.insertOne(Object.assign({}, bankAccountData, { cards: [] }))
+        const mongoBankAccount = await bankAccountsCollection.findOne(insertedId)
         const bankAccount = mongoHelper.map(mongoBankAccount)
         return bankAccount
     }
