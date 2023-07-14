@@ -1,5 +1,5 @@
 import { Validation } from "../../protocols/validation"
-import { HttpRequest, HttpResponse, badRequest, ok, MissingParamError, InvalidParamError, serverError, AddBankAccount, Controller } from "./bank-account-protocols"
+import { HttpRequest, HttpResponse, badRequest, ok, serverError, AddBankAccount, Controller } from "./bank-account-protocols"
 
 export class BankAccountController implements Controller {
     private readonly addBankAccount: AddBankAccount
