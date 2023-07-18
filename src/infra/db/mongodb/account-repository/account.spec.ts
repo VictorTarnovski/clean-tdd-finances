@@ -25,7 +25,7 @@ describe('MongoAccountRepository', () => {
     const makeSut = () => {
         return new MongoAccountRepository()
     }
-   test('Should return an acount on add sucess', async () => {
+   test('Should return an acount on add success', async () => {
     const sut = makeSut()
     const account = await sut.add({
         name: 'any_name',
@@ -39,7 +39,7 @@ describe('MongoAccountRepository', () => {
     expect(account.password).toBe('any_password')
    })
 
-   test('Should return an acount on loadByEmail sucess', async () => {
+   test('Should return an acount on loadByEmail success', async () => {
     const sut = makeSut()
     await accountCollection.insertOne({
         name: 'any_name',
@@ -60,7 +60,7 @@ describe('MongoAccountRepository', () => {
     expect(account).toBeFalsy()
    })
 
-   test('Should update the acount acessToken on updateAccessToken sucess', async () => {
+   test('Should update the acount acessToken on updateAccessToken success', async () => {
     const sut = makeSut()
     const { insertedId } = await accountCollection.insertOne({
         name: 'any_name',

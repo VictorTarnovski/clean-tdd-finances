@@ -19,7 +19,7 @@ describe('MongoBankAccountRepository', () => {
         await bankAccountCollection.deleteMany()
     })
     
-    test('Should return an account on sucess', async () => {
+    test('Should return an account on success', async () => {
         const sut = new MongoBankAccountRepository()
         const bankAccount = await sut.add({ 
             number: 123,

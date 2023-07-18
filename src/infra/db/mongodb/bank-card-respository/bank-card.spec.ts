@@ -23,7 +23,7 @@ describe('MongoBankCardRepository', () => {
         bankAccount = mongoHelper.map(mongoBankAccount)
     })
     
-    test('Should return an card on sucess', async () => {
+    test('Should return an card on success', async () => {
         const sut = new MongoBankCardRepository()
         const bankAccountId = bankAccount!.id
         const bankCard = await sut.add({ 

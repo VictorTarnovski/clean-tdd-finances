@@ -25,7 +25,7 @@ describe('MongoLogRespository', () => {
         return new MongoLogRespository()
     }
 
-    test('Should create an error log on sucess', async () => {
+    test('Should create an error log on success', async () => {
         const sut = makeSut()
         await sut.logError('any_stack')
         const count = await errorCollection.countDocuments()

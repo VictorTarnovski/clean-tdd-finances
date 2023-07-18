@@ -24,7 +24,7 @@ describe('Bcrypt Adapter', () => {
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
    })
 
-   test('Should return a valid hash on hash sucess', async () => {
+   test('Should return a valid hash on hash success', async () => {
     const sut = makeSut()
     const hash = await sut.hash('any_value')
     expect(hash).toBe('hashed_value')
@@ -45,7 +45,7 @@ describe('Bcrypt Adapter', () => {
     expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash')
    })
 
-   test('Should return true on compare sucess', async () => {
+   test('Should return true on compare success', async () => {
     const sut = makeSut()
     const isEqual = await sut.compare('any_value', 'hashed_value')
     expect(isEqual).toBe(true)
