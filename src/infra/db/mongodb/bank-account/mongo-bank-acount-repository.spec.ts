@@ -1,4 +1,4 @@
-import { MongoBankAccountRepository } from "./bank-account"
+import { MongoBankAccountRepository } from "./mongo-bank-account-repository"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoHelper from "../mongo-helper"
 

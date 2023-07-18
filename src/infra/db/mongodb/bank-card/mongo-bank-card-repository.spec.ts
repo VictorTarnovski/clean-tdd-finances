@@ -1,4 +1,4 @@
-import { MongoBankCardRepository } from "./bank-card"
+import { MongoBankCardRepository } from "./mongo-bank-card-repository"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoHelper from "../mongo-helper"
 import { BankAccountModel } from "../../../../domain/models/bank-account"
@@ -19,7 +19,7 @@ describe('MongoBankCardRepository', () => {
         const bankAccountCollection = await mongoHelper.getCollection('bank-accounts')
         await bankAccountCollection.deleteMany()
         const { insertedId } = await bankAccountCollection.insertOne({ number: 123, currency: 'USD' })
-        const mongoBankAccount = await bankAccountCollection.findOne({ _id: insertedId})
+        const mongoBankAccount = await bankAccountCollection.findOne({ _id: insertedId })
         bankAccount = mongoHelper.map(mongoBankAccount)
     })
     

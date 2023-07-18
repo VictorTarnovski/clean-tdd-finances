@@ -1,4 +1,4 @@
-import { AddBankCardRepository } from "../../../../data/protocols/db/add-bank-card-repository"
+import { AddBankCardRepository } from "../../../../data/protocols/db/bank-card/add-bank-card-repository"
 import { BankCardModel } from "../../../../domain/models/bank-card"
 import { AddBankCardModel } from "../../../../domain/use-cases/add-bank-card"
 import mongoHelper from "../mongo-helper"

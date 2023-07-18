@@ -1,10 +1,10 @@
-import { BankAccountController } from "../../../presentation/controllers/bank-account/bank-account"
+import { BankAccountController } from "../../../presentation/controllers/bank-account/bank-account-controller"
 import { DbAddBankAccount } from "../../../data/use-cases/add-bank-account/db-add-bank-account"
-import { MongoBankAccountRepository } from "../../../infra/db/mongodb/bank-account-respository/bank-account"
-import { MongoLogRespository } from "../../../infra/db/mongodb/log-repository/log"
+import { MongoBankAccountRepository } from "../../../infra/db/mongodb/bank-account/mongo-bank-account-repository"
+import { MongoLogRespository } from "../../../infra/db/mongodb/log/mongo-log-repository"
 import { Controller } from "../../../presentation/protocols"
-import { LogControllerDecorator } from "../../decorators/log"
-import { makeBankAccountValidation } from "./bank-account-validation"
+import { LogControllerDecorator } from "../../decorators/log-controller.decorator"
+import { makeBankAccountValidation } from "./bank-account-validation-factory"
 
 
 export const makeBankAccountController = (): Controller => {

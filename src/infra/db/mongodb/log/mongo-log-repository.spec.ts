@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
 import { Collection } from "mongodb"
 import mongoHelper from "../mongo-helper"
-import { MongoLogRespository } from "./log"
+import { MongoLogRespository } from "./mongo-log-repository"
 
 describe('MongoLogRespository', () => {
     let errorCollection: Collection

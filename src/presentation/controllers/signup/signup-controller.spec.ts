@@ -1,6 +1,6 @@
 import { MissingParamError } from "../../errors"
-import { badRequest, serverError } from "../bank-account/bank-account-protocols"
-import { SignUpController } from "./signup"
+import { badRequest, serverError } from "../bank-account/bank-account-controller-protocols"
+import { SignUpController } from "./signup-controller"
 import { AccountModel } from "../../../domain/models/account"
 import { AddAccountModel } from "../../../domain/use-cases/add-account"
 import { AddAccount } from '../../../domain/use-cases/add-account'

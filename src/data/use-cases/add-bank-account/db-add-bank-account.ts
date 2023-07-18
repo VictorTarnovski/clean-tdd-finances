@@ -1,6 +1,6 @@
 import { BankAccountModel } from "../../../domain/models/bank-account"
 import { AddBankAccount, AddBankAccountModel } from "../../../domain/use-cases/add-bank-account"
-import { AddBankAccountRepository } from "../../protocols/db/add-bank-account-repository"
+import { AddBankAccountRepository } from "../../protocols/db/bank-account/add-bank-account-repository"
 
 export class DbAddBankAccount implements AddBankAccount {
     private readonly addBankAccountRepository: AddBankAccountRepository

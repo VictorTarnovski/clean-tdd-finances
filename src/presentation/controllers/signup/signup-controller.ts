@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols"
 import { Controller } from "../../protocols"
-import { InvalidParamError, badRequest, ok, serverError } from "../bank-account/bank-account-protocols"
+import { InvalidParamError, badRequest, ok, serverError } from "../bank-account/bank-account-controller-protocols"
 import { EmailValidator } from "../../protocols/email-validator"
 import { AddAccount } from "../../../domain/use-cases/add-account"
 import { Validation } from "../../protocols/validation"

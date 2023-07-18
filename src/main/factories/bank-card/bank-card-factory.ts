@@ -1,10 +1,10 @@
-import { BankCardController } from "../../../presentation/controllers/bank-cards/bank-card"
+import { BankCardController } from "../../../presentation/controllers/bank-cards/bank-card-controller"
 import { DbAddBankCard } from "../../../data/use-cases/add-bank-card/db-add-bank-card"
-import { MongoBankCardRepository } from "../../../infra/db/mongodb/bank-card-respository/bank-card"
-import { MongoLogRespository } from "../../../infra/db/mongodb/log-repository/log"
+import { MongoBankCardRepository } from "../../../infra/db/mongodb/bank-card/mongo-bank-card-repository"
+import { MongoLogRespository } from "../../../infra/db/mongodb/log/mongo-log-repository"
 import { Controller } from "../../../presentation/protocols"
-import { LogControllerDecorator } from "../../decorators/log"
-import { makeBankCardValidation } from "./bank-card-validation"
+import { LogControllerDecorator } from "../../decorators/log-controller.decorator"
+import { makeBankCardValidation } from "./bank-card-validation-factory"
 
 
 export const makeBankCardController = (): Controller => {

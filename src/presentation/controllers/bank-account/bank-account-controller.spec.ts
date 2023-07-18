@@ -1,6 +1,6 @@
 import { Validation } from '../../protocols/validation'
-import { BankAccountController } from './bank-account'
-import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './bank-account-protocols'
+import { BankAccountController } from './bank-account-controller'
+import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './bank-account-controller-protocols'
 
 const makeAddBankAccontStub = (): AddBankAccount => {
     class addAccountStub implements AddBankAccount {

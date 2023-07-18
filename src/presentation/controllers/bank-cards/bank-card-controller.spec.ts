@@ -1,4 +1,4 @@
-import { BankCardController } from "./bank-card"
+import { BankCardController } from "./bank-card-controller"
 import { HttpRequest } from "../../protocols"
 import { badRequest, serverError } from '../../helpers/http/http-helper'
 import { ServerError } from '../../errors'
