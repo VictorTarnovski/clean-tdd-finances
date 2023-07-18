@@ -6,12 +6,7 @@ import { EmailValidator } from "../../protocols/email-validator"
 import { Authentication } from "../../../domain/use-cases/authentication"
 
 export class LoginController implements Controller {
-    private readonly emailValidator: EmailValidator
-    private readonly authentication: Authentication
-    constructor(emailValidator: EmailValidator, authentication: Authentication) {
-        this.emailValidator = emailValidator
-        this.authentication = authentication
-    }
+    constructor(private readonly emailValidator: EmailValidator, private readonly authentication: Authentication) {}
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
          const requiredFields: string[] = ['email', 'password']

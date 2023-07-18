@@ -6,13 +6,7 @@ import { AddAccount } from "../../../domain/use-cases/add-account"
 import { Validation } from "../../protocols/validation"
 
 export class SignUpController implements Controller {
-    private readonly addAccount: AddAccount
-    private readonly validation: Validation
-
-    constructor (addAccount: AddAccount, validation: Validation) {
-        this.addAccount = addAccount
-        this.validation = validation
-    }
+    constructor (private readonly addAccount: AddAccount, private readonly validation: Validation) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse>{
         try {   

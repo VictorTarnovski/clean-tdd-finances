@@ -5,12 +5,7 @@ import { AddBankCard } from "../../../domain/use-cases/add-bank-card"
 import { Validation } from "../../protocols/validation"
 
 export class BankCardController implements Controller {
-    private readonly addBankCard: AddBankCard
-    private readonly validation: Validation
-    constructor(addBankCard: AddBankCard, validation: Validation) {
-        this.addBankCard = addBankCard
-        this.validation = validation
-    }
+    constructor(private readonly addBankCard: AddBankCard, private readonly validation: Validation) {}
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const error = this.validation.validate(httpRequest.body)

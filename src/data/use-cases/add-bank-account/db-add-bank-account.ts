@@ -3,10 +3,7 @@ import { AddBankAccount, AddBankAccountModel } from "../../../domain/use-cases/a
 import { AddBankAccountRepository } from "../../protocols/db/bank-account/add-bank-account-repository"
 
 export class DbAddBankAccount implements AddBankAccount {
-    private readonly addBankAccountRepository: AddBankAccountRepository
-    constructor(addBankAccountRepository: AddBankAccountRepository) {
-        this.addBankAccountRepository = addBankAccountRepository
-    }
+    constructor(private readonly addBankAccountRepository: AddBankAccountRepository) {}
 
     async add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {
         const bankAccount = await this.addBankAccountRepository.add(Object.assign({}, bankAccountData, {balance: bankAccountData.balance ? bankAccountData.balance : 0}))
