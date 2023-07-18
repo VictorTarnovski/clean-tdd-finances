@@ -1,4 +1,4 @@
-import { AccountModel, AuthenticationModel, LoadAccountByEmailRepository, HashComparer, Encrypter, UpdateAcessTokenRepository } from "../authentication/db-authentication-protocols"
+import { AccountModel, AuthenticationModel, LoadAccountByEmailRepository, HashComparer, Encrypter, UpdateAccessTokenRepository } from "../authentication/db-authentication-protocols"
 import { DbAuthentication } from "./db-authentication"
 
 const makeFakeAuthentication = (): AuthenticationModel => ({email: 'any_mail@mail.com', password: 'any_password'})
@@ -36,13 +36,13 @@ const makeEncrypterStub = (): Encrypter => {
     return new EncrypterStub()
 }
 
-const makeUpdateAcessTokenRepository = (): UpdateAcessTokenRepository => {
-    class UpdateAcessTokenRepositoryStub implements UpdateAcessTokenRepository { 
-        async updateAcessToken(id: string, token: string): Promise<void> {
+const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
+    class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository { 
+        async updateAccessToken(id: string, token: string): Promise<void> {
             return 
         }
     }
-    return new UpdateAcessTokenRepositoryStub()
+    return new UpdateAccessTokenRepositoryStub()
 }
 
 interface SutTypes {
@@ -50,21 +50,21 @@ interface SutTypes {
     loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository,
     hashComparerStub: HashComparer,
     encrypterStub: Encrypter,
-    updateAcessTokenRepositoryStub: UpdateAcessTokenRepository
+    updateAccessTokenRepositoryStub: UpdateAccessTokenRepository
 }
 
 const makeSut = (): SutTypes  => {
     const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepositoryStub()
     const hashComparerStub = makeHashComparerStub()
     const encrypterStub = makeEncrypterStub()
-    const updateAcessTokenRepositoryStub = makeUpdateAcessTokenRepository()
-    const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateAcessTokenRepositoryStub)
+    const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository()
+    const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateAccessTokenRepositoryStub)
     return {
         sut,
         loadAccountByEmailRepositoryStub,
         hashComparerStub,
         encrypterStub,
-        updateAcessTokenRepositoryStub
+        updateAccessTokenRepositoryStub
     }
 }
 
@@ -131,16 +131,16 @@ describe('DbAuthentication UseCase', () => {
     expect(accesToken).toBe('fake_token')
    })
 
-   test('Should call UpdateAcessTokenRepository with correct values', async () => {
-    const { sut, updateAcessTokenRepositoryStub } = makeSut()
-    const updateSpy = jest.spyOn(updateAcessTokenRepositoryStub, 'updateAcessToken')
+   test('Should call UpdateAccessTokenRepository with correct values', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut()
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
     await sut.auth(makeFakeAuthentication())
     expect(updateSpy).toHaveBeenCalledWith('any_id', 'fake_token')
    })
 
-   test('Should throw if UpdateAcessTokenRepository throws', async () => {
-    const { sut, updateAcessTokenRepositoryStub } = makeSut()
-    jest.spyOn(updateAcessTokenRepositoryStub, 'updateAcessToken').mockRejectedValueOnce(new Error())
+   test('Should throw if UpdateAccessTokenRepository throws', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut()
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockRejectedValueOnce(new Error())
     const promise = sut.auth(makeFakeAuthentication())
     await expect(promise).rejects.toThrow()
    })
