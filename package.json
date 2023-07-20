@@ -6,7 +6,8 @@
   "scripts": {
     "start": "set NODE_ENV=production && node dist/main/server.js",
     "build": "rimraf dist && npx tsc",
-    "dev": "set NODE_ENV=dev && sucrase-node src/main/server.ts",
+    "dev": "set NODE_ENV=dev && npm run build && docker-compose up -d",
+    "down": "docker-compose down",
     "test": "set NODE_ENV=dev && jest --watchAll --collectCoverage",
     "test:staged": "set NODE_ENV=dev && npm test",
     "test:unit": "set NODE_ENV=dev && npm test -- --watch -c jest-unit-config.js",
@@ -29,7 +30,6 @@
     "jest": "^29.5.0",
     "mongodb-memory-server": "^8.13.0",
     "rimraf": "^5.0.1",
-    "sucrase": "^3.32.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
