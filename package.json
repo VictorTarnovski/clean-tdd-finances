@@ -6,7 +6,8 @@
   "scripts": {
     "start": "set NODE_ENV=production && node dist/main/server.js",
     "build": "rimraf dist && npx tsc",
-    "dev": "set NODE_ENV=dev && npm run build && docker-compose up -d",
+    "debug": "set NODE_ENV=dev && node --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
+    "up": "set NODE_ENV=dev && npm run build && docker-compose up -d",
     "down": "docker-compose down",
     "test": "set NODE_ENV=dev && jest --watchAll --collectCoverage",
     "test:staged": "set NODE_ENV=dev && npm test",

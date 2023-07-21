@@ -9,14 +9,16 @@ services:
     ports:
       - "27017:27017"
   api:
-    container_name: clean-tdd-finances-api-container
+    container_name: api-container
     build: .
     image: clean-tdd-finances-api
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
       - ./dist:/usr/repos/clean-tdd-finances/dist
+      - ./package.json:/usr/repos/clean-tdd-finances/package.json
     ports:
       - "5050:5050"
+      - "9222:9222"
     links:
      - mongo
