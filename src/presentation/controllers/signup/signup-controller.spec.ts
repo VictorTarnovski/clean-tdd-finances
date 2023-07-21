@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../errors"
-import { badRequest, serverError } from "../bank-account/bank-account-controller-protocols"
+import { badRequest, ok, serverError } from "../../helpers/http/http-helper"
 import { SignUpController } from "./signup-controller"
 import { AccountModel } from "../../../domain/models/account"
 import { AddAccountModel } from "../../../domain/use-cases/add-account"
@@ -94,7 +94,7 @@ describe('SignUp Controller', () => {
         const { sut } = makeSut()
         const httpRequest: HttpRequest = makeFakeRequest()
         const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(200)
+        expect(httpResponse).toEqual(ok({ accessToken: 'fake_token' }))
     })
 
     test('Should call Validation with correct values', async () => {
