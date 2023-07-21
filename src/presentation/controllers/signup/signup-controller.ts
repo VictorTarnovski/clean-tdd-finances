@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols"
 import { Controller } from "../../protocols"
-import { badRequest, ok, serverError } from "../bank-account/bank-account-controller-protocols"
+import { EmailInUseError, badRequest, forbidden, ok, serverError } from "../bank-account/bank-account-controller-protocols"
 import { AddAccount } from "../../../domain/use-cases/add-account"
 import { Validation } from "../../protocols/validation"
 import { Authentication } from "../../../domain/use-cases/authentication"
@@ -15,7 +15,10 @@ export class SignUpController implements Controller {
                 return badRequest(error)
             }
             const { name, email, password } = httpRequest.body
-            await this.addAccount.add({ name, email, password })
+            const account = await this.addAccount.add({ name, email, password })
+            if (!account) {
+                return forbidden(new EmailInUseError())
+            }
             const accessToken = await this.authentication.auth({ email, password })
             return ok({ accessToken: accessToken })
         } catch (error: any) {
