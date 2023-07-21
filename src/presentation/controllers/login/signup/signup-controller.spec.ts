@@ -1,12 +1,11 @@
-import { MissingParamError, EmailInUseError } from "../../errors"
-import { badRequest, ok, serverError, forbidden } from "../../helpers/http/http-helper"
+import { MissingParamError, EmailInUseError } from "../../../errors"
+import { badRequest, ok, serverError, forbidden } from "../../../helpers/http/http-helper"
 import { SignUpController } from "./signup-controller"
-import { AccountModel } from "../../../domain/models/account"
-import { AddAccountModel } from "../../../domain/use-cases/add-account"
-import { AddAccount } from '../../../domain/use-cases/add-account'
-import { HttpRequest, HttpResponse } from "../../protocols/http"
-import { Validation } from "../../../presentation/protocols"
-import { Authentication, AuthenticationModel } from "../../../domain/use-cases/authentication"
+import { AccountModel } from "../../../../domain/models/account"
+import { AddAccountModel } from "../../../../domain/use-cases/add-account"
+import { AddAccount } from '../../../../domain/use-cases/add-account'
+import { HttpRequest, HttpResponse, Validation } from "../../../protocols"
+import { Authentication, AuthenticationModel } from "../../../../domain/use-cases/authentication"
 
 const makeAddAccountStub = () => {
     class AddAccountStub implements AddAccount {

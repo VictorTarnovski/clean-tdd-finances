@@ -1,9 +1,9 @@
-import { HttpRequest, HttpResponse } from "../../protocols"
-import { Controller } from "../../protocols"
-import { EmailInUseError, badRequest, forbidden, ok, serverError } from "../bank-account/bank-account-controller-protocols"
-import { AddAccount } from "../../../domain/use-cases/add-account"
-import { Validation } from "../../protocols/validation"
-import { Authentication } from "../../../domain/use-cases/authentication"
+import { HttpRequest, HttpResponse } from "../../../protocols"
+import { Controller } from "../../../protocols"
+import { EmailInUseError, badRequest, forbidden, ok, serverError } from "../../bank-account/bank-account-controller-protocols"
+import { AddAccount } from "../../../../domain/use-cases/add-account"
+import { Validation } from "../../../protocols/validation"
+import { Authentication } from "../../../../domain/use-cases/authentication"
 
 export class SignUpController implements Controller {
     constructor (private readonly addAccount: AddAccount, private readonly validation: Validation, private readonly authentication: Authentication) {}
