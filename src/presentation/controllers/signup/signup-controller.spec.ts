@@ -5,7 +5,7 @@ import { AccountModel } from "../../../domain/models/account"
 import { AddAccountModel } from "../../../domain/use-cases/add-account"
 import { AddAccount } from '../../../domain/use-cases/add-account'
 import { HttpRequest, HttpResponse } from "../../protocols/http"
-import { Validation } from "../../protocols/validation"
+import { Validation } from "../../../presentation/protocols"
 import { Authentication, AuthenticationModel } from "../../../domain/use-cases/authentication"
 
 const makeAddAccountStub = () => {

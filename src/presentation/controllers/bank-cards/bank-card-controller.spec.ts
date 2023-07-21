@@ -4,7 +4,7 @@ import { badRequest, serverError } from '../../helpers/http/http-helper'
 import { ServerError } from '../../errors'
 import { AddBankCard, AddBankCardModel } from '../../../domain/use-cases/add-bank-card'
 import { BankCardModel } from "../../../domain/models/bank-card"
-import { Validation } from "../../protocols/validation"
+import { Validation } from "../../../presentation/protocols"
 
 const makeAddBankCardStub = () => {
     class AddBankCardStub implements AddBankCard {

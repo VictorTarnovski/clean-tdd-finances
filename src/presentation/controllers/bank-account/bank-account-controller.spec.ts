@@ -1,4 +1,4 @@
-import { Validation } from '../../protocols/validation'
+import { Validation } from '../../../presentation/protocols'
 import { BankAccountController } from './bank-account-controller'
 import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './bank-account-controller-protocols'
 

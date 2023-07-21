@@ -1,4 +1,4 @@
-import { InvalidParamError } from "../../../errors"
+import { InvalidParamError } from "../../../presentation/errors"
 import { SupportedValuesValidation } from "./supported-values-validation"
 
 const makeSut = (): SupportedValuesValidation => {

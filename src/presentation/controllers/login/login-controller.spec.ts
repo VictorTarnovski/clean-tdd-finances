@@ -1,8 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols"
-import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError, unauthorized, ok } from '../../helpers/http/http-helper'
+import { serverError, unauthorized, ok } from '../../helpers/http/http-helper'
 import { LoginController } from "./login-controller"
-import { EmailValidator } from "../../protocols/email-validator"
 import { Authentication, AuthenticationModel } from '../../../domain/use-cases/authentication'
 import { Validation } from "../../protocols/validation"
 
