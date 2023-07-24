@@ -1,5 +1,5 @@
-import { Validation } from "../../../../presentation/protocols/validation"
-import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation } from "../../../../validation/validators"
+import { Validation } from "../../../../../presentation/protocols/validation"
+import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation } from "../../../../../validation/validators"
 
 
 export const makeBankAccountValidation = (): ValidationComposite => {

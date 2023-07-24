@@ -1,8 +1,8 @@
-import { Validation } from "../../../../presentation/protocols"
-import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation } from "../../../../validation/validators"
-import { makeBankAccountValidation } from "./bank-account-validation-factory"
+import { Validation } from "../../../../../presentation/protocols"
+import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation } from "../../../../../validation/validators"
+import { makeBankAccountValidation } from "./add-bank-account-validation-factory"
 
-jest.mock('../../../../validation/validators/validation-composite')
+jest.mock('../../../../../validation/validators/validation-composite')
 
 describe('BankAccountValidation Factory', () => {
    test('Should call ValidationComposite with all validations', () => {
