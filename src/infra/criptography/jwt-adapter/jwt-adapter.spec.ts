@@ -1,9 +1,11 @@
-import { Encrypter } from "../../../data/protocols/criptography/encrypter"
-import jwt, { Jwt } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { JwtAdapter } from "./jwt-adapter"
 
 jest.mock('jsonwebtoken', () => ({
     async sign() {
+        return 'any_token'
+    },
+    async verify() {
         return 'any_token'
     }
 }))
@@ -31,10 +33,19 @@ describe('Sign()', () => {
     expect(acessToken).toBe('any_token')
    })
 
-   test('Should thorw if jwt throws', async () => {
+   test('Should thorw if sign throws', async () => {
     const { sut } = makeSut()
     jest.spyOn(jwt, 'sign').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.encrypt('any_id')
     expect(promise).rejects.toThrow()
    })
 })
+
+describe('Verify()', () => {
+    test('Should call verify with correct values', async () => {
+     const { sut } = makeSut()
+     const verifySpy = jest.spyOn(jwt, 'verify')
+     await sut.decrypt('any_token')
+     expect(verifySpy).toHaveBeenCalledWith('any_token', 'secret')
+    })
+ })
