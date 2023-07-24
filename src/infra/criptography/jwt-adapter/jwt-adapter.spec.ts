@@ -17,7 +17,7 @@ const makeSut = (): SutTypes => {
     return { sut }
 }
 
-describe('JwtAdapter', () => {
+describe('Sign()', () => {
    test('Should call sign with correct values', async () => {
     const { sut } = makeSut()
     const signSpy = jest.spyOn(jwt, 'sign')
