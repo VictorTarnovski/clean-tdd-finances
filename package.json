@@ -9,10 +9,12 @@
     "debug": "set NODE_ENV=dev && nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "up": "set NODE_ENV=dev && npm run build && docker-compose up -d",
     "down": "docker-compose down",
-    "test": "set NODE_ENV=dev && jest --watchAll --collectCoverage",
-    "test:staged": "set NODE_ENV=dev && npm test",
+    "test": "set NODE_ENV=dev && jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "set NODE_ENV=dev && jest --passWithNoTests --runInBand",
     "test:unit": "set NODE_ENV=dev && npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "set NODE_ENV=dev && npm test -- --watch -c jest-integration-config.js"
+    "test:integration": "set NODE_ENV=dev && npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "set NODE_ENV=dev && jest --passWithNoTests --onlyChanged --watch --detectOpenHandles",
+    "test:ci": "set NODE_ENV=dev && npm test -- --coverage"
   },
   "keywords": [],
   "author": "",
