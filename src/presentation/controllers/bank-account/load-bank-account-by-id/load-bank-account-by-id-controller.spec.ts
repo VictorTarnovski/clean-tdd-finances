@@ -1,5 +1,5 @@
-import { BankAccountModel, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
-import { ok } from "../../../helpers/http/http-helper"
+import { BankAccountModel, LoadBankAccountById, NotFoundError } from "./load-bank-account-by-id-controller-protocols"
+import { notFound, ok } from "../../../helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
 const makeBankAccount = (): BankAccountModel => ({
@@ -45,5 +45,12 @@ describe('LoadBankAccountById Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ params: { bankAccountId: 'valid_id' }})
     expect(httpResponse).toEqual(ok(makeBankAccount()))
+  })
+
+  test('Should return 404 if LoadBankAccountById fails', async () => {
+    const { sut, loadBankAccountByIdStub } = makeSut()
+    jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(async () => null)
+    const httpResponse = await sut.handle({ params: { bankAccountId: 'invalid_id' }})
+    expect(httpResponse).toEqual(notFound('bankAccount'))
   })
 })
