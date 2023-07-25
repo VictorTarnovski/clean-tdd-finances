@@ -17,6 +17,7 @@ export class MongoBankAccountRepository implements AddBankAccountRepository, Loa
     async loadById(id: string): Promise<BankAccountModel | null> {
         const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
         const mongoBankAccount = await bankAccountsCollection.findOne({ _id: new ObjectId(id) })
+        if (!mongoBankAccount) return null
         const bankAccount = mongoHelper.map(mongoBankAccount)
         return bankAccount
     }
