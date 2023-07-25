@@ -3,7 +3,7 @@ import { badRequest, ok, serverError } from "../../../helpers/http/http-helper"
 import { AddBankCard } from "../../../../domain/use-cases/add-bank-card"
 import { Validation } from "../../../protocols/validation"
 
-export class BankCardController implements Controller {
+export class AddBankCardController implements Controller {
     constructor(private readonly addBankCard: AddBankCard, private readonly validation: Validation) {}
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {

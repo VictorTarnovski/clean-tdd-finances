@@ -1,7 +1,7 @@
 import { Validation } from "../../../protocols/validation"
 import { HttpRequest, HttpResponse, badRequest, ok, serverError, AddBankAccount, Controller } from "./add-bank-account-controller-protocols"
 
-export class BankAccountController implements Controller {
+export class AddBankAccountController implements Controller {
     constructor(private readonly addBankAccount: AddBankAccount, private readonly validation: Validation) {}
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try { 

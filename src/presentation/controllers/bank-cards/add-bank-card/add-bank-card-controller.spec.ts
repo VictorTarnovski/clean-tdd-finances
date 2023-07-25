@@ -1,10 +1,10 @@
-import { BankCardController } from "./bank-card-controller"
+import { AddBankCardController } from "./add-bank-card-controller"
 import { HttpRequest } from "../../../protocols"
 import { badRequest, serverError } from '../../../helpers/http/http-helper'
 import { ServerError } from '../../../errors'
 import { AddBankCard, AddBankCardModel } from '../../../../domain/use-cases/add-bank-card'
 import { BankCardModel } from "../../../../domain/models/bank-card"
-import { Validation } from "../../../../presentation/protocols"
+import { Validation } from "../../../protocols"
 
 const makeAddBankCardStub = () => {
     class AddBankCardStub implements AddBankCard {
@@ -30,7 +30,7 @@ const makeFakeRequest = (): HttpRequest => ({
 })
 
 interface SutTypes {
-    sut: BankCardController,
+    sut: AddBankCardController,
     addBankCardStub: AddBankCard,
     validationStub: Validation
 }
@@ -38,7 +38,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
     const addBankCardStub = makeAddBankCardStub()
     const validationStub = makeValidationStub()
-    const sut = new BankCardController(addBankCardStub, validationStub)
+    const sut = new AddBankCardController(addBankCardStub, validationStub)
     return {
         sut,
         addBankCardStub,

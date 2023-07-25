@@ -1,5 +1,5 @@
 import { Validation } from '../../../../presentation/protocols'
-import { BankAccountController } from './add-bank-account-controller'
+import { AddBankAccountController } from './add-bank-account-controller'
 import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './add-bank-account-controller-protocols'
 
 const makeAddBankAccontStub = (): AddBankAccount => {
@@ -25,7 +25,7 @@ const makeFakeRequest = (): HttpRequest => ({
     body: { number: 1, currency: 'USD' }
 })
 interface SutTypes {
-    sut: BankAccountController
+    sut: AddBankAccountController
     addBankAccountStub: AddBankAccount,
     validationStub: Validation
 }
@@ -33,7 +33,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
     const addBankAccountStub = makeAddBankAccontStub()
     const validationStub = makeValidationStub()
-    const sut = new BankAccountController(addBankAccountStub, validationStub)
+    const sut = new AddBankAccountController(addBankAccountStub, validationStub)
     return { sut, addBankAccountStub, validationStub }
 }
 
