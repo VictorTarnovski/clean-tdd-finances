@@ -2,17 +2,43 @@ import { BankAccountModel } from "../../../domain/models/bank-account"
 import { LoadBankAccountByIdRepository } from "../../../data/protocols/db/bank-account/load-bank-account-by-id-repository"
 import { DbLoadBankAccountById } from "../load-bank-account-by-id/db-load-bank-account-by-id"
 
+interface SutTypes {
+  sut: DbLoadBankAccountById
+  loadBankAccountByIdRepositoryStub: LoadBankAccountByIdRepository
+}
+
+const makeLoadBankAccountByIdRepositoryStub = (): LoadBankAccountByIdRepository => {
+  class LoadBankAccountByIdRepositoryStub implements LoadBankAccountByIdRepository {
+    async loadById(id: string): Promise<BankAccountModel | null> {
+      return makeBankAccount()
+    }
+  }
+  return new LoadBankAccountByIdRepositoryStub()
+}
+
+const makeBankAccount = (): BankAccountModel => ({ id: 'valid_id', number: 123456, currency: 'USD', balance: 0, cards: []})
+
+const makeSut = (): SutTypes => {
+  const loadBankAccountByIdRepositoryStub = makeLoadBankAccountByIdRepositoryStub()
+  const sut = new DbLoadBankAccountById(loadBankAccountByIdRepositoryStub)
+  return {
+    sut,
+    loadBankAccountByIdRepositoryStub
+  }
+}
+
+
 describe('DbLoadBankAccountById UseCase', () => {
    test('Should call LoadBankAccountByIdRepository with correct id', async () => {
-    class LoadBankAccountByIdRepositoryStub implements LoadBankAccountByIdRepository {
-      async loadById(id: string): Promise<BankAccountModel | null> {
-        return null
-      }
-    }
-    const loadBankAccountByIdRepositoryStub = new LoadBankAccountByIdRepositoryStub()
+    const { sut, loadBankAccountByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadBankAccountByIdRepositoryStub, 'loadById')
-    const sut = new DbLoadBankAccountById(loadBankAccountByIdRepositoryStub)
     await sut.load('valid_id')
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
+   })
+
+   test('Should return an BankAccount on success', async () => {
+    const { sut } = makeSut()
+    const bankAccount = await sut.load('valid_id')
+    expect(bankAccount).toEqual(makeBankAccount())
    })
 })
