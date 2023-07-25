@@ -1,4 +1,5 @@
 import { BankAccountModel, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
+import { ok } from "../../../helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
 const makeBankAccount = (): BankAccountModel => ({
@@ -38,5 +39,11 @@ describe('LoadBankAccountById Controller', () => {
     const loadByIdSpy = jest.spyOn(loadBankAccountByIdStub, 'load')
     await sut.handle({ params: { bankAccountId: 'valid_id'}})
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
+  })
+
+  test('Should return 200 on sucess', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ params: { bankAccountId: 'valid_id' }})
+    expect(httpResponse).toEqual(ok(makeBankAccount()))
   })
 })
