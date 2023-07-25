@@ -48,4 +48,11 @@ describe('DbLoadBankAccountById UseCase', () => {
     const bankAccount = await sut.load('valid_id')
     expect(bankAccount).toBeNull()
    })
+
+   test('Should throw if LoadBankAccountByIdRepository thorws', async () => {
+    const { sut, loadBankAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadBankAccountByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => { throw new Error() })
+    const promise = sut.load('valid_id')
+    expect(promise).rejects.toThrow()
+   })
 })
