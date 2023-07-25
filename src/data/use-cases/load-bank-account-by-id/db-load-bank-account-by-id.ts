@@ -5,7 +5,8 @@ import { LoadBankAccountByIdRepository } from "../../protocols/db/bank-account/l
 export class DbLoadBankAccountById implements LoadBankAccountById {
   constructor(private readonly loadBankAccountByIdRepository: LoadBankAccountByIdRepository) {}
   async load(bankAccountId: string): Promise<BankAccountModel | null> {
-    await this.loadBankAccountByIdRepository.loadById(bankAccountId)
-    return null
+    const bankAccount = await this.loadBankAccountByIdRepository.loadById(bankAccountId)
+    if(!bankAccount) return null
+    return bankAccount
   }
 }
