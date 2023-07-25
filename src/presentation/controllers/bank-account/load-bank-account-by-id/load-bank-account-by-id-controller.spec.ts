@@ -1,4 +1,4 @@
-import { BankAccountModel, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
+import { BankAccountModel, HttpRequest, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
 import { notFound, ok, serverError } from "../../../helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
@@ -19,6 +19,8 @@ const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
   return new LoadBankAccountByIdStub()
 }
 
+const makeFakeRequest = (): HttpRequest => ({ params: { bankAccountId: 'valid_id' }})
+
 interface SutTypes {
   sut: LoadBankAccountByIdController
   loadBankAccountByIdStub: LoadBankAccountById
@@ -37,20 +39,20 @@ describe('LoadBankAccountById Controller', () => {
   test('Should call LoadBankAccountById with correct id', async () => {
     const { sut, loadBankAccountByIdStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadBankAccountByIdStub, 'load')
-    await sut.handle({ params: { bankAccountId: 'valid_id'}})
+    await sut.handle(makeFakeRequest())
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
   })
 
   test('Should return 200 on sucess', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle({ params: { bankAccountId: 'valid_id' }})
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeBankAccount()))
   })
 
   test('Should return 404 if LoadBankAccountById fails', async () => {
     const { sut, loadBankAccountByIdStub } = makeSut()
     jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(async () => null)
-    const httpResponse = await sut.handle({ params: { bankAccountId: 'invalid_id' }})
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(notFound('bankAccount'))
   })
 
@@ -60,7 +62,7 @@ describe('LoadBankAccountById Controller', () => {
     jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(() => {
         throw mockedError
     })
-    const httpResponse = await sut.handle({ params: { bankAccountId: 'valid_id' }})
+    const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(mockedError))
    })
 })
