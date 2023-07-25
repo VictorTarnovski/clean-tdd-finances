@@ -1,6 +1,7 @@
 import { HttpRequest, HttpResponse } from "../../../protocols"
 import { Controller } from "../../../protocols"
-import { EmailInUseError, badRequest, forbidden, ok, serverError } from "../../bank-account/bank-account-controller-protocols"
+import { EmailInUseError } from "../../../errors"
+import { badRequest, forbidden, ok, serverError } from "../../../helpers/http/http-helper"
 import { AddAccount } from "../../../../domain/use-cases/add-account"
 import { Validation } from "../../../protocols/validation"
 import { Authentication } from "../../../../domain/use-cases/authentication"
