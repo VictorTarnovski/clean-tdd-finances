@@ -97,7 +97,7 @@ describe('UpdateAcessToken', () => {
         await accountCollection.deleteMany()
     })
 
-    test('Should update the acount acessToken on updateAccessToken success', async () => {
+    test('Should update the account accessToken on updateAccessToken success', async () => {
         const sut = makeSut()
         const { insertedId } = await accountCollection.insertOne({
             name: 'any_name',
@@ -107,7 +107,7 @@ describe('UpdateAcessToken', () => {
         await sut.updateAccessToken(insertedId.toHexString(), 'any_token')
         const account = await accountCollection.findOne({ _id: insertedId })
         expect(account).toBeTruthy()
-        expect(account!.acessToken).toBe('any_token')
+        expect(account!.accessToken).toBe('any_token')
     })
 }
 )
@@ -145,16 +145,45 @@ describe('LoadByToken', () => {
         expect(account!.password).toBe('any_password')
     })
 
-    test('Should return an acount on loadByToken with role', async () => {
+    test('Should return an acount on loadByToken with admin role', async () => {
         const sut = makeSut()
         await accountCollection.insertOne({
             name: 'any_name',
             email: 'any_email@mail.com',
             password: 'any_password',
             accessToken: 'any_token',
-            role: 'any_role'
+            role: 'admin'
         })
-        const account = await sut.loadByToken('any_token', 'any_role')
+        const account = await sut.loadByToken('any_token', 'admin')
+        expect(account).toBeTruthy()
+        expect(account!.id).toBeTruthy()
+        expect(account!.name).toBe('any_name')
+        expect(account!.email).toBe('any_email@mail.com')
+        expect(account!.password).toBe('any_password')
+    })
+
+    test('Should return null on loadByToken with invalid role', async () => {
+        const sut = makeSut()
+        await accountCollection.insertOne({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            password: 'any_password',
+            accessToken: 'any_token'
+        })
+        const account = await sut.loadByToken('any_token', 'admin')
+        expect(account).toBeFalsy()
+    })
+
+    test('Should return an account on loadByToken if user is admin', async () => {
+        const sut = makeSut()
+        await accountCollection.insertOne({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            password: 'any_password',
+            accessToken: 'any_token',
+            role: 'admin'
+        })
+        const account = await sut.loadByToken('any_token')
         expect(account).toBeTruthy()
         expect(account!.id).toBeTruthy()
         expect(account!.name).toBe('any_name')
