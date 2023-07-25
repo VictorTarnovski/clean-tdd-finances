@@ -1,12 +1,12 @@
 import { Validation } from "../../../../../presentation/protocols"
 import { ValidationComposite, RequiredFieldValidation, SupportedValuesValidation } from "../../../../../validation/validators"
-import { makeBankAccountValidation } from "./add-bank-account-validation-factory"
+import { makeAddBankAccountValidation } from "./add-bank-account-validation-factory"
 
 jest.mock('../../../../../validation/validators/validation-composite')
 
-describe('BankAccountValidation Factory', () => {
+describe('AddBankAccountValidation Factory', () => {
    test('Should call ValidationComposite with all validations', () => {
-      makeBankAccountValidation()
+      makeAddBankAccountValidation()
       const validations: Validation[] = []
       for (const field of ['number', 'currency']) {
          validations.push(new RequiredFieldValidation(field))
