@@ -1,5 +1,5 @@
 import { BankAccountModel, HttpRequest, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
-import { notFound, ok, serverError } from "../../../helpers/http/http-helper"
+import { notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
 const makeBankAccount = (): BankAccountModel => ({

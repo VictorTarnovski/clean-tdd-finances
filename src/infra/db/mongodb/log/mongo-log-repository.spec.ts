@@ -1,6 +1,6 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
 import { Collection } from "mongodb"
-import mongoHelper from "../mongo-helper"
+import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { MongoLogRespository } from "./mongo-log-repository"
 
 describe('MongoLogRespository', () => {

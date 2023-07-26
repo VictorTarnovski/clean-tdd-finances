@@ -1,7 +1,7 @@
-import { HttpRequest, HttpResponse, LoadAccountByToken, AccountModel} from './auth-middleware-protocols'
-import { forbidden, ok, serverError } from '../helpers/http/http-helper'
-import { AccessDeniedError } from '../errors'
+import { forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { AccessDeniedError } from '@/presentation/errors'
 import { AuthMiddleware } from './auth-middleware'
+import { HttpRequest, HttpResponse, LoadAccountByToken, AccountModel} from './auth-middleware-protocols'
 
 const makeFakeRequest = (): HttpRequest => ({ headers: { 'x-access-token': 'any_token' }})
 

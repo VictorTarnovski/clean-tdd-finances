@@ -1,7 +1,7 @@
 import { MongoBankCardRepository } from "./mongo-bank-card-repository"
 import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoHelper from "../mongo-helper"
-import { BankAccountModel } from "../../../../domain/models/bank-account"
+import mongoHelper from "@/infra/db/mongodb/mongo-helper"
+import { BankAccountModel } from "@/domain/models/bank-account"
 
 describe('MongoBankCardRepository', () => {
     let bankAccount: BankAccountModel | null

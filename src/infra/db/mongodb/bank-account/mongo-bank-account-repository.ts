@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb"
-import { AddBankAccountRepository } from "../../../../data/protocols/db/bank-account/add-bank-account-repository"
-import { LoadBankAccountByIdRepository } from "../../../../data/protocols/db/bank-account/load-bank-account-by-id-repository"
-import { BankAccountModel } from "../../../../domain/models/bank-account"
-import { AddBankAccountModel } from "../../../../domain/use-cases/add-bank-account"
-import mongoHelper from "../mongo-helper"
+import { AddBankAccountRepository } from "@/data/protocols/db/bank-account/add-bank-account-repository"
+import { LoadBankAccountByIdRepository } from "@/data/protocols/db/bank-account/load-bank-account-by-id-repository"
+import { BankAccountModel } from "@/domain/models/bank-account"
+import { AddBankAccountModel } from "@/domain/use-cases/add-bank-account"
+import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 
 export class MongoBankAccountRepository implements AddBankAccountRepository, LoadBankAccountByIdRepository {
     async add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {

@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
-import { ok, notFound, serverError } from "../add-bank-account/add-bank-account-controller-protocols"
+import { ok, notFound, serverError } from "@/presentation/helpers/http/http-helper"
 
 export class LoadBankAccountByIdController implements Controller {
   constructor(private readonly loadBankAccountById: LoadBankAccountById) { }

@@ -1,6 +1,8 @@
+import 'module-alias/register'
 import app from './config/app'
-import mongoHelper from '../infra/db/mongodb/mongo-helper'
 import env from './config/env'
+import mongoHelper from '@/infra/db/mongodb/mongo-helper'
+
 
 mongoHelper.connect(env.mongo_url).then(() => {
     app.listen(env.port, () => {

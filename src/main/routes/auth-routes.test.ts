@@ -1,6 +1,6 @@
 import request from 'supertest'
-import app from '../config/app'
-import mongoHelper from '../../infra/db/mongodb/mongo-helper'
+import app from '@/main/config/app'
+import mongoHelper from '@/infra/db/mongodb/mongo-helper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'

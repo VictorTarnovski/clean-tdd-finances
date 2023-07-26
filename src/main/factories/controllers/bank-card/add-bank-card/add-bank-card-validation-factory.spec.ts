@@ -1,5 +1,5 @@
-import { Validation } from "../../../../../presentation/protocols"
-import { ValidationComposite, RequiredFieldValidation } from "../../../../../validation/validators"
+import { Validation } from "@/presentation/protocols"
+import { ValidationComposite, RequiredFieldValidation } from "@/validation/validators"
 import { makeBankCardValidation } from "./add-bank-card-validation-factory"
 
 jest.mock('../../../../../validation/validators/validation-composite')

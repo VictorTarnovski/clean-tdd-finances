@@ -1,7 +1,7 @@
-import { Controller, HttpRequest, HttpResponse } from "../../../protocols"
-import { badRequest, ok, serverError } from "../../../helpers/http/http-helper"
-import { AddBankCard } from "../../../../domain/use-cases/add-bank-card"
-import { Validation } from "../../../protocols/validation"
+import { Controller, HttpRequest, HttpResponse } from "@/presentation/protocols"
+import { badRequest, ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { AddBankCard } from "@/domain/use-cases/add-bank-card"
+import { Validation } from "@/presentation/protocols/validation"
 
 export class AddBankCardController implements Controller {
     constructor(private readonly addBankCard: AddBankCard, private readonly validation: Validation) {}

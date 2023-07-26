@@ -1,4 +1,4 @@
-import { BankCardModel } from "../models/bank-card"
+import { BankCardModel } from "@/domain/models/bank-card"
 
 export interface AddBankCardModel {
     number: number,

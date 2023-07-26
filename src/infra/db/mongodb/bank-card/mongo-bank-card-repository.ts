@@ -1,7 +1,7 @@
-import { AddBankCardRepository } from "../../../../data/protocols/db/bank-card/add-bank-card-repository"
-import { BankCardModel } from "../../../../domain/models/bank-card"
-import { AddBankCardModel } from "../../../../domain/use-cases/add-bank-card"
-import mongoHelper from "../mongo-helper"
+import { AddBankCardRepository } from "@/data/protocols/db/bank-card/add-bank-card-repository"
+import { BankCardModel } from "@/domain/models/bank-card"
+import { AddBankCardModel } from "@/domain/use-cases/add-bank-card"
+import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
 
 export class MongoBankCardRepository implements AddBankCardRepository {

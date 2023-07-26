@@ -1,6 +1,6 @@
-import { BankAccountModel } from "../../../domain/models/bank-account"
-import { AddBankAccountModel } from "../../../domain/use-cases/add-bank-account"
-import { AddBankAccountRepository } from "../../protocols/db/bank-account/add-bank-account-repository"
+import { BankAccountModel } from "@/domain/models/bank-account"
+import { AddBankAccountModel } from "@/domain/use-cases/add-bank-account"
+import { AddBankAccountRepository } from "@/data/protocols/db/bank-account/add-bank-account-repository"
 import { DbAddBankAccount } from "./db-add-bank-account"
 
 const makeAddBankAccountRepository = () => {

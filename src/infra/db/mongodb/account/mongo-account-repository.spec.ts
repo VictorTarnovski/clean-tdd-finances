@@ -1,6 +1,6 @@
 import { MongoAccountRepository } from "./mongo-account-repository"
 import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoHelper from "../mongo-helper"
+import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { Collection } from "mongodb"
 
 let accountCollection: Collection

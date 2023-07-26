@@ -1,4 +1,5 @@
-import { HttpService, RequestModel, ResponseModel, httpMethods } from "../protocols/http-service"
+import { HttpService, RequestModel, ResponseModel, httpMethods } from "@/infra/http/protocols/http-service"
+
 import axios from 'axios'
 export class AxiosAdapter implements HttpService {
     async post({ url, requestBody, requestParams, requestHeaders }: RequestModel): Promise<ResponseModel> {

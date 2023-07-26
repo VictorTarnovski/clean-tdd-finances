@@ -1,4 +1,4 @@
-import { Validation } from "../../../protocols/validation"
+import { Validation } from "@/presentation/protocols/validation"
 import { HttpRequest, HttpResponse, badRequest, ok, serverError, AddBankAccount, Controller } from "./add-bank-account-controller-protocols"
 
 export class AddBankAccountController implements Controller {
