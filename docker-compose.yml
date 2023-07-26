@@ -14,6 +14,8 @@ services:
     image: clean-tdd-finances-api
     restart: always
     command: npm run debug
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/clean-tdd-finances
     volumes:
       - ./dist/:/usr/repos/clean-tdd-finances/dist/
       - ./package.json:/usr/repos/clean-tdd-finances/package.json
