@@ -24,7 +24,7 @@ const makeValidationStub = (): Validation => {
 const makeFakeRequest = (): HttpRequest => ({
     body: { number: 1, currency: 'USD' }
 })
-interface SutTypes {
+type SutTypes = {
     sut: AddBankAccountController
     addBankAccountStub: AddBankAccount,
     validationStub: Validation

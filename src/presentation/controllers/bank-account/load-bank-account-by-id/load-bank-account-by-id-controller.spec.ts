@@ -21,7 +21,7 @@ const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
 
 const makeFakeRequest = (): HttpRequest => ({ params: { bankAccountId: 'valid_id' }})
 
-interface SutTypes {
+type SutTypes = {
   sut: LoadBankAccountByIdController
   loadBankAccountByIdStub: LoadBankAccountById
 }

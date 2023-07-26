@@ -1,6 +1,6 @@
 import { BankCardModel } from "./bank-card"
 
-export interface BankAccountModel {
+export type BankAccountModel = {
     id: string,
     number: number,
     currency: string,

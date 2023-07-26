@@ -29,7 +29,7 @@ const makeFakeRequest = (): HttpRequest => ({
     body: { number: 1, flag: 'any_flag', expiresAt: '06/14/2023' }
 })
 
-interface SutTypes {
+type SutTypes = {
     sut: AddBankCardController,
     addBankCardStub: AddBankCard,
     validationStub: Validation

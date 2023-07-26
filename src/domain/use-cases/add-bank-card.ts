@@ -1,6 +1,6 @@
 import { BankCardModel } from "@/domain/models/bank-card"
 
-export interface AddBankCardModel {
+export type AddBankCardModel = {
     number: number,
     flag: string,
     expiresAt: string

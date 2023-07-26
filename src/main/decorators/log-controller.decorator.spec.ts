@@ -24,7 +24,7 @@ describe('LogController Decorator',  () => {
         return new ControllerStub()
     }
 
-    interface SutTypes {
+    type SutTypes = {
         sut: LogControllerDecorator,
         controllerStub: Controller,
         logErrorRepositoryStub: LogErrorRepository
