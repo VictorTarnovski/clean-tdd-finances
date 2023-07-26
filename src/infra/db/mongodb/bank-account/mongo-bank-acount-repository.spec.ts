@@ -51,4 +51,16 @@ describe('MongoBankAccountRepository', () => {
         const bankAccount = await sut.loadById(new ObjectId().toHexString())
         expect(bankAccount).toBeFalsy()
     })
+
+    test('Should map the bankCards of the bankAccount on loadByID success', async () => {
+        const sut = new MongoBankAccountRepository()
+        const { insertedId } = await bankAccountCollection.insertOne({
+            number: 123,
+            currency: 'USD',
+            balance: 0,
+            cards: [{ _id: new ObjectId(), number: 123, currency: 'USD' }]
+        })
+        const bankAccount = await sut.loadById(insertedId.toHexString())
+        expect(bankAccount!.cards[0].id).toBeTruthy()
+    })
 })
