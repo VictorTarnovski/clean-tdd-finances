@@ -1,4 +1,4 @@
-import { AccessDeniedError, BankAccountModel, HttpRequest, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
+import { AccessDeniedError, BankAccountModel, HttpRequest, LoadBankAccountById, LoadAccountById, AccountModel } from "./load-bank-account-by-id-controller-protocols"
 import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
@@ -11,6 +11,13 @@ const makeBankAccount = (): BankAccountModel => ({
   accountId: 'valid_account_id'
 })
 
+const makeAccount = () => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email',
+  password: 'hashed_password'
+})
+
 const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
   class LoadBankAccountByIdStub implements LoadBankAccountById {
     async load(): Promise<BankAccountModel | null> {
@@ -20,19 +27,31 @@ const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
   return new LoadBankAccountByIdStub()
 }
 
+const makeLoadAccountByIdStub = (): LoadAccountById => {
+  class LoadAccountByIdStub implements LoadAccountById {
+    async load(): Promise<AccountModel | null> {
+      return makeAccount()
+    }
+  }
+  return new LoadAccountByIdStub()
+}
+
 const makeFakeRequest = (): HttpRequest => ({ accountId: 'valid_account_id', params: { bankAccountId: 'valid_id' }})
 
 type SutTypes = {
   sut: LoadBankAccountByIdController
-  loadBankAccountByIdStub: LoadBankAccountById
+  loadBankAccountByIdStub: LoadBankAccountById,
+  loadAccountByIdStub: LoadAccountById
 }
 
 const makeSut = (): SutTypes => {
   const loadBankAccountByIdStub = makeLoadBankAccountByIdStub()
-  const sut = new LoadBankAccountByIdController(loadBankAccountByIdStub)
+  const loadAccountByIdStub = makeLoadAccountByIdStub()
+  const sut = new LoadBankAccountByIdController(loadBankAccountByIdStub, loadAccountByIdStub)
   return {
     sut,
-    loadBankAccountByIdStub
+    loadBankAccountByIdStub,
+    loadAccountByIdStub
   }
 }
 
@@ -42,12 +61,6 @@ describe('LoadBankAccountById Controller', () => {
     const loadByIdSpy = jest.spyOn(loadBankAccountByIdStub, 'load')
     await sut.handle(makeFakeRequest())
     expect(loadByIdSpy).toHaveBeenCalledWith('valid_id')
-  })
-
-  test('Should return 200 on sucess', async () => {
-    const { sut } = makeSut()
-    const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(ok(makeBankAccount()))
   })
 
   test('Should return 404 if LoadBankAccountById fails', async () => {
@@ -82,4 +95,18 @@ describe('LoadBankAccountById Controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
+
+  test('Should return 200 if the provided accountId is equal to bankAccount accountId', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(makeBankAccount()))
+  })
+
+  test('Should call LoadAccountById with correct id', async () => {
+    const { sut, loadAccountByIdStub } = makeSut()
+    const loadSpy = jest.spyOn(loadAccountByIdStub, 'load')
+    await sut.handle(makeFakeRequest())
+    expect(loadSpy).toHaveBeenCalledWith('valid_account_id')
+  })
+
 })
