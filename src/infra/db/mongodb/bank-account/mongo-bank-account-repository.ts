@@ -18,10 +18,8 @@ export class MongoBankAccountRepository implements AddBankAccountRepository, Loa
         const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
         const mongoBankAccount = await bankAccountsCollection.findOne({ _id: new ObjectId(id) })
         if (!mongoBankAccount) return null
-        for(const i in mongoBankAccount.cards) {
-            mongoBankAccount.cards[i] = mongoHelper.map(mongoBankAccount.cards[i])
-        }
         const bankAccount = mongoHelper.map(mongoBankAccount)
+        bankAccount.cards = mongoHelper.mapCollection(bankAccount.cards)
         return bankAccount
     }
 }

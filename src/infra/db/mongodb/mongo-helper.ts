@@ -32,6 +32,10 @@ class MongoHelper {
         const { _id, ...rest } = data
         return { id: _id.toHexString(), ...rest }
     }
+
+    mapCollection(data: any[]): any {
+        return data.map(item => this.map(item))
+    }
 }
 
 export default new MongoHelper()
