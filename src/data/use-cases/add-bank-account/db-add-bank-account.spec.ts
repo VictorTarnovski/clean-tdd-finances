@@ -31,7 +31,7 @@ const makeSut = () => {
 
 describe('DbAddBankAccount Usecase', () => {
 
-    test('Should call AddBankAccountRepository with correct values', async () => {
+    test('Should call AddBankAccountRepository with balance 0', async () => {
         const { sut, addBankAccountRepository } = makeSut()
         const addSpy = jest.spyOn(addBankAccountRepository, 'add')
         const bankAccountData = {
@@ -39,10 +39,18 @@ describe('DbAddBankAccount Usecase', () => {
             currency: 'USD'
         }
         await sut.add(bankAccountData)
-        expect(addSpy).toBeCalledWith({
+        expect(addSpy).toBeCalledWith({ number: 1, currency: 'USD', balance: 0 })
+    })
+
+    test('Should call AddBankAccountRepository with provided balance', async () => {
+        const { sut, addBankAccountRepository } = makeSut()
+        const addSpy = jest.spyOn(addBankAccountRepository, 'add')
+        const bankAccountData = {
             number: 1,
             currency: 'USD',
-            balance: 0
-        })
+            balance: 123.25
+        }
+        await sut.add(bankAccountData)
+        expect(addSpy).toBeCalledWith({ number: 1, currency: 'USD', balance: 123.25 })
     })
 })
