@@ -2,7 +2,7 @@ import { Controller, HttpRequest, HttpResponse, LoadBankAccountById, AccessDenie
 import { ok, notFound, serverError, forbidden } from "@/presentation/helpers/http/http-helper"
 
 export class LoadBankAccountByIdController implements Controller {
-  constructor(private readonly loadBankAccountById: LoadBankAccountById, private readonly loadAccountById: LoadAccountById) { }
+  constructor(private readonly loadBankAccountById: LoadBankAccountById, private readonly loadAccountById: LoadAccountById ) { }
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { bankAccountId } = httpRequest.params
@@ -10,7 +10,7 @@ export class LoadBankAccountByIdController implements Controller {
       const account = await this.loadAccountById.load(accountId!)
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
       if (!bankAccount) return notFound('bankAccount')
-      if(bankAccount.accountId !== accountId) {
+      if(account?.role !== 'admin' && bankAccount.accountId !== account!.id) {
         return forbidden(new AccessDeniedError())
       }
       return ok(bankAccount)
