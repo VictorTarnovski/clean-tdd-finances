@@ -29,8 +29,8 @@ describe('Sign()', () => {
 
   test('Should returns a token on sign success', async () => {
     const { sut } = makeSut()
-    const acessToken = await sut.encrypt('any_id')
-    expect(acessToken).toBe('any_token')
+    const accessToken = await sut.encrypt('any_id')
+    expect(accessToken).toBe('any_token')
   })
 
   test('Should thorw if sign throws', async () => {

@@ -80,7 +80,7 @@ describe('LoadByEmail', () => {
 }
 )
 
-describe('UpdateAcessToken', () => {
+describe('UpdateAccessToken', () => {
 
     beforeAll(async () => {
         const mongo = await MongoMemoryServer.create()

@@ -11,11 +11,11 @@ export class LoginController implements Controller {
                 return badRequest(error)
             }
             const { email, password } = httpRequest.body
-            const acessToken = await this.authentication.auth({ email, password })
-            if (!acessToken) {
+            const accessToken = await this.authentication.auth({ email, password })
+            if (!accessToken) {
                 return unauthorized()
             }
-            return ok({ acessToken: acessToken })
+            return ok({ accessToken: accessToken })
         } catch (error: any) {
             return serverError(error)
         }

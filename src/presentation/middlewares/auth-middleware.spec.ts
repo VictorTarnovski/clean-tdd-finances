@@ -14,7 +14,7 @@ const makeFakeAccount = () => ({
 
 const makeLoadAccountByTokenStub = (): LoadAccountByToken  => {
    class LoadAccountByTokenStub implements LoadAccountByToken {
-      async load(acessToken: string, role?: string): Promise<AccountModel | null> {
+      async load(accessToken: string, role?: string): Promise<AccountModel | null> {
          return makeFakeAccount()
       }
    }
