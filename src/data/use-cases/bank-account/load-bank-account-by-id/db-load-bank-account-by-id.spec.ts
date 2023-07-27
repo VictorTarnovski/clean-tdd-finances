@@ -1,6 +1,6 @@
 import { BankAccountModel } from "@/domain/models/bank-account"
 import { LoadBankAccountByIdRepository } from "@/data/protocols/db/bank-account/load-bank-account-by-id-repository"
-import { DbLoadBankAccountById } from "@/data/use-cases/load-bank-account-by-id/db-load-bank-account-by-id"
+import { DbLoadBankAccountById } from "@/data/use-cases/bank-account/load-bank-account-by-id/db-load-bank-account-by-id"
 
 type SutTypes = {
   sut: DbLoadBankAccountById
