@@ -16,7 +16,7 @@ const makeLoadBankAccountByIdRepositoryStub = (): LoadBankAccountByIdRepository 
   return new LoadBankAccountByIdRepositoryStub()
 }
 
-const makeBankAccount = (): BankAccountModel => ({ id: 'valid_id', number: 123456, currency: 'USD', balance: 0, cards: []})
+const makeBankAccount = (): BankAccountModel => ({ id: 'valid_id', number: 123456, currency: 'USD', balance: 0, cards: [], accountId: 'valid_account_id'})
 
 const makeSut = (): SutTypes => {
   const loadBankAccountByIdRepositoryStub = makeLoadBankAccountByIdRepositoryStub()

@@ -1,5 +1,5 @@
-import { BankAccountModel, HttpRequest, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
-import { notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { AccessDeniedError, BankAccountModel, HttpRequest, LoadBankAccountById } from "./load-bank-account-by-id-controller-protocols"
+import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
 const makeBankAccount = (): BankAccountModel => ({
@@ -7,7 +7,8 @@ const makeBankAccount = (): BankAccountModel => ({
   number: 123456789,
   currency: 'USD',
   balance: 0,
-  cards: []
+  cards: [],
+  accountId: 'valid_account_id'
 })
 
 const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
@@ -19,7 +20,7 @@ const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
   return new LoadBankAccountByIdStub()
 }
 
-const makeFakeRequest = (): HttpRequest => ({ params: { bankAccountId: 'valid_id' }})
+const makeFakeRequest = (): HttpRequest => ({ accountId: 'valid_account_id', params: { bankAccountId: 'valid_id' }})
 
 type SutTypes = {
   sut: LoadBankAccountByIdController
@@ -65,4 +66,20 @@ describe('LoadBankAccountById Controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(mockedError))
    })
+
+   test('Should return 403 if the provided accountId is not equal to bankAccount accountId', async () => {
+    const { sut, loadBankAccountByIdStub } = makeSut()
+    jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(async () => {
+      return {
+        id: 'valid_id',
+        number: 123456789,
+        currency: 'USD',
+        balance: 0,
+        cards: [],
+        accountId: 'other_account_id'
+      }
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
 })

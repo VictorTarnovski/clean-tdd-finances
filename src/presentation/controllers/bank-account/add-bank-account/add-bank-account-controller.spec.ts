@@ -2,14 +2,15 @@ import { Validation } from '@/presentation/protocols'
 import { AddBankAccountController } from './add-bank-account-controller'
 import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './add-bank-account-controller-protocols'
 
+const makeBankAccount = (): BankAccountModel => ({ id: 'valid_id', number: 1, currency: 'USD', balance: 0 , cards: [], accountId: 'valid_account_id'})
+
 const makeAddBankAccontStub = (): AddBankAccount => {
-    class addAccountStub implements AddBankAccount {
+    class addBankAccount implements AddBankAccount {
         async add(account: AddBankAccountModel): Promise<BankAccountModel> {
-            const fakeAccount = { id: 'valid_id', number: 1, currency: 'USD', balance: 0 , cards: []}
-            return fakeAccount
+            return makeBankAccount()
         }
     }
-    return new addAccountStub()
+    return new addBankAccount()
 }
 
 const makeValidationStub = (): Validation => {
@@ -71,7 +72,7 @@ describe('BankAccount Controller', () => {
         const httpRequest = makeFakeRequest()
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual({ id: 'valid_id', number: 1, currency: 'USD', balance: 0, cards: []})
+        expect(httpResponse.body).toEqual(makeBankAccount())
     })
 
     test('Should return 500 if AddBankAccount throws', async () => {

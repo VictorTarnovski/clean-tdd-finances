@@ -12,7 +12,8 @@ const makeAddBankAccountRepository = () => {
                 number: 1,
                 currency: 'USD',
                 balance: 0,
-                cards: []
+                cards: [],
+                accountId: 'valid_account_id'
             }
             return new Promise(resolve => resolve(fakeBankAccount))
         }
