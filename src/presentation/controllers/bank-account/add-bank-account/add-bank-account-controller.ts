@@ -9,10 +9,11 @@ export class AddBankAccountController implements Controller {
             if (error) {
                 return badRequest(error)
             }
-            const { number, currency } = httpRequest.body
+            const { number, currency, balance } = httpRequest.body
             const bankAccount = await this.addBankAccount.add({
                 number,
-                currency
+                currency,
+                balance
             })
             return ok(bankAccount)  
         } catch (error: any) {

@@ -6,7 +6,8 @@ export class DbAddBankAccount implements AddBankAccount {
     constructor(private readonly addBankAccountRepository: AddBankAccountRepository) {}
 
     async add(bankAccountData: AddBankAccountModel): Promise<BankAccountModel> {
-        const bankAccount = await this.addBankAccountRepository.add(Object.assign({}, bankAccountData, {balance: bankAccountData.balance ? bankAccountData.balance : 0}))
+        const balance = bankAccountData.balance ? bankAccountData.balance : 0
+        const bankAccount = await this.addBankAccountRepository.add(Object.assign({}, bankAccountData, { balance }))
         return bankAccount
     }
 }
