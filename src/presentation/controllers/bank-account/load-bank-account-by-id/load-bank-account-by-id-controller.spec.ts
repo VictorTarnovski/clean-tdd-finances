@@ -1,42 +1,11 @@
-import { AccessDeniedError, BankAccountModel, HttpRequest, LoadBankAccountById, LoadAccountById, AccountModel } from "./load-bank-account-by-id-controller-protocols"
+import { AccessDeniedError, HttpRequest, LoadBankAccountById, LoadAccountById } from "./load-bank-account-by-id-controller-protocols"
 import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
+import { mockBankAccountModel } from "@/domain/tests"
+import { mockLoadBankAccountById, mockLoadAccountById } from "@/presentation/tests"
 
-const makeBankAccount = (): BankAccountModel => ({
-  id: 'valid_bank_account_id',
-  number: 123456789,
-  currency: 'USD',
-  balance: 0,
-  cards: [],
-  accountId: 'valid_account_id'
-})
 
-const makeAccount = () => ({
-  id: 'valid_account_id',
-  name: 'valid_name',
-  email: 'valid_email',
-  password: 'hashed_password'
-})
-
-const makeLoadBankAccountByIdStub = (): LoadBankAccountById => {
-  class LoadBankAccountByIdStub implements LoadBankAccountById {
-    async load(): Promise<BankAccountModel | null> {
-      return makeBankAccount()
-    }
-  }
-  return new LoadBankAccountByIdStub()
-}
-
-const makeLoadAccountByIdStub = (): LoadAccountById => {
-  class LoadAccountByIdStub implements LoadAccountById {
-    async load(): Promise<AccountModel | null> {
-      return makeAccount()
-    }
-  }
-  return new LoadAccountByIdStub()
-}
-
-const makeFakeRequest = (): HttpRequest => ({ accountId: 'valid_account_id', params: { bankAccountId: 'valid_bank_account_id' } })
+const mockRequest = (): HttpRequest => ({ accountId: 'any_account_id', params: { bankAccountId: 'any_bank_account_id' } })
 
 type SutTypes = {
   sut: LoadBankAccountByIdController
@@ -45,8 +14,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadBankAccountByIdStub = makeLoadBankAccountByIdStub()
-  const loadAccountByIdStub = makeLoadAccountByIdStub()
+  const loadBankAccountByIdStub = mockLoadBankAccountById()
+  const loadAccountByIdStub = mockLoadAccountById()
   const sut = new LoadBankAccountByIdController(loadBankAccountByIdStub, loadAccountByIdStub)
   return {
     sut,
@@ -59,63 +28,43 @@ describe('LoadBankAccountById Controller', () => {
   test('Should call LoadBankAccountById with correct id', async () => {
     const { sut, loadBankAccountByIdStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadBankAccountByIdStub, 'load')
-    await sut.handle(makeFakeRequest())
-    expect(loadByIdSpy).toHaveBeenCalledWith('valid_bank_account_id')
+    await sut.handle(mockRequest())
+    expect(loadByIdSpy).toHaveBeenCalledWith('any_bank_account_id')
   })
 
   test('Should return 404 if LoadBankAccountById fails', async () => {
     const { sut, loadBankAccountByIdStub } = makeSut()
     jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(async () => null)
-    const httpResponse = await sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound('bankAccount'))
   })
 
   test('Should return 500 if LoadBankAccountById thorws', async () => {
     const { sut, loadBankAccountByIdStub } = makeSut()
     const mockedError = new Error('mocked error')
-    jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(() => {
-      throw mockedError
-    })
-    const httpResponse = await sut.handle(makeFakeRequest())
+    jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(() => { throw mockedError })
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(mockedError))
   })
 
   test('Should call LoadAccountById with correct id', async () => {
     const { sut, loadAccountByIdStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByIdStub, 'load')
-    await sut.handle(makeFakeRequest())
-    expect(loadSpy).toHaveBeenCalledWith('valid_account_id')
+    await sut.handle(mockRequest())
+    expect(loadSpy).toHaveBeenCalledWith('any_account_id')
   })
 
   test('Should return 200 if the provided accountId is equal to bankAccount accountId', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(ok(makeBankAccount()))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(mockBankAccountModel()))
   })
 
   test("Should return 200 if the provided accountId is a admin's one", async () => {
-    const { sut, loadBankAccountByIdStub, loadAccountByIdStub } = makeSut()
-    jest.spyOn(loadAccountByIdStub, 'load').mockImplementationOnce(async () => {
-      return {
-        id: 'admin_id',
-        name: 'admin_name',
-        email: 'admin_email',
-        password: 'hashed_password',
-        role: 'admin'
-      }
-    })
-    jest.spyOn(loadBankAccountByIdStub, 'load').mockImplementationOnce(async () => {
-      return {
-        id: 'valid_id',
-        number: 123456789,
-        currency: 'USD',
-        balance: 0,
-        cards: [],
-        accountId: 'other_account_id'
-      }
-    })
-    const httpResponse = await sut.handle({ accountId: 'admin_id', params: { bankAccountId: 'valid_id' } })
-    expect(httpResponse).toEqual(ok({ id: 'valid_id', number: 123456789, currency: 'USD', balance: 0, cards: [], accountId: 'other_account_id' }))
+    const { sut, loadAccountByIdStub } = makeSut()
+    jest.spyOn(loadAccountByIdStub, 'load').mockImplementationOnce(async () => ({ id: 'admin_id', name: 'admin_name', email: 'admin_email', password: 'hashed_password', role: 'admin' }))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(mockBankAccountModel()))
   })
 
   test('Should return 403 if the provided accountId is not equal to bankAccount accountId', async () => {
@@ -130,7 +79,7 @@ describe('LoadBankAccountById Controller', () => {
         accountId: 'other_account_id'
       }
     })
-    const httpResponse = await sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 })

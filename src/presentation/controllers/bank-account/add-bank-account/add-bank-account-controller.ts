@@ -1,5 +1,5 @@
 import { Validation } from "@/presentation/protocols/validation"
-import { HttpRequest, HttpResponse, badRequest, ok, serverError, AddBankAccount, Controller } from "./add-bank-account-controller-protocols"
+import { HttpRequest, HttpResponse, badRequest, ok, serverError, AddBankAccount, Controller, unauthorized } from "./add-bank-account-controller-protocols"
 
 export class AddBankAccountController implements Controller {
     constructor(private readonly addBankAccount: AddBankAccount, private readonly validation: Validation) {}
@@ -10,10 +10,15 @@ export class AddBankAccountController implements Controller {
                 return badRequest(error)
             }
             const { number, currency, balance } = httpRequest.body
+            const { accountId } = httpRequest
+            if(!accountId) { return unauthorized() }
+            const accountBalance = balance ? balance : 0
             const bankAccount = await this.addBankAccount.add({
                 number,
                 currency,
-                balance
+                balance: accountBalance,
+                cards: [],
+                accountId
             })
             return ok(bankAccount)  
         } catch (error: any) {

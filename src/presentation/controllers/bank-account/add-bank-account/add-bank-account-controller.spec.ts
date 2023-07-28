@@ -1,30 +1,12 @@
 import { Validation } from '@/presentation/protocols'
 import { AddBankAccountController } from './add-bank-account-controller'
-import { MissingParamError, ServerError, BankAccountModel, AddBankAccount, AddBankAccountModel, HttpRequest, HttpResponse, badRequest } from './add-bank-account-controller-protocols'
+import { MissingParamError, ServerError, AddBankAccount, HttpRequest, HttpResponse, badRequest, ok } from './add-bank-account-controller-protocols'
+import { mockBankAccountModel } from '@/domain/tests'
+import { mockValidation } from '@/presentation/tests'
+import { mockAddBankAccont } from '@/presentation/tests'
 
-const makeBankAccount = (): BankAccountModel => ({ id: 'valid_id', number: 1, currency: 'USD', balance: 0 , cards: [], accountId: 'valid_account_id'})
+const mockRequest = (): HttpRequest => ({ accountId: 'any_account_id', body: { number: 285992, currency: 'BRL' } })
 
-const makeAddBankAccontStub = (): AddBankAccount => {
-    class addBankAccount implements AddBankAccount {
-        async add(account: AddBankAccountModel): Promise<BankAccountModel> {
-            return makeBankAccount()
-        }
-    }
-    return new addBankAccount()
-}
-
-const makeValidationStub = (): Validation => {
-    class ValidationStub implements Validation {
-        validate(input: any): Error | null {
-            return null
-        }
-    }
-    return new ValidationStub()
-}
-
-const makeFakeRequest = (): HttpRequest => ({
-    body: { number: 1, currency: 'USD' }
-})
 type SutTypes = {
     sut: AddBankAccountController
     addBankAccountStub: AddBankAccount,
@@ -32,8 +14,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-    const addBankAccountStub = makeAddBankAccontStub()
-    const validationStub = makeValidationStub()
+    const addBankAccountStub = mockAddBankAccont()
+    const validationStub = mockValidation()
     const sut = new AddBankAccountController(addBankAccountStub, validationStub)
     return { sut, addBankAccountStub, validationStub }
 }
@@ -43,16 +25,16 @@ describe('BankAccount Controller', () => {
     test('Should call AddBankAccount with correct values', async () => {
         const { sut, addBankAccountStub } = makeSut()
         const addSpy = jest.spyOn(addBankAccountStub, 'add')
-        const httpRequest = makeFakeRequest()
+        const httpRequest = mockRequest()
         await sut.handle(httpRequest)
         expect(addSpy).toHaveBeenCalledTimes(1)
-        expect(addSpy).toHaveBeenCalledWith({ number: 1, currency: 'USD' })
+        expect(addSpy).toHaveBeenCalledWith({ number: 285992, currency: 'BRL', balance: 0, cards: [], accountId: 'any_account_id'})
     })
 
     test('Should call Validation with correct values', async () => {
         const { sut, validationStub } = makeSut()
         const validateSpy = jest.spyOn(validationStub, 'validate')
-        const httpRequest = makeFakeRequest()
+        const httpRequest = mockRequest()
         await sut.handle(httpRequest)
         expect(validateSpy).toHaveBeenCalledTimes(1)
         expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
@@ -61,23 +43,22 @@ describe('BankAccount Controller', () => {
     test('Should return 400 if Validation returns an Error', async () => {
         const { sut, validationStub } = makeSut()
         const mockedError = new MissingParamError('currency')
-        const validateSpy = jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
-        const httpRequest = makeFakeRequest()
+        jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
+        const httpRequest = mockRequest()
         const httpResponse: HttpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(badRequest(mockedError))
     })
 
     test('Should return 200 if valid data is provided', async () => {
         const { sut } = makeSut()
-        const httpRequest = makeFakeRequest()
+        const httpRequest = mockRequest()
         const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual(makeBankAccount())
+        expect(httpResponse).toEqual(ok(mockBankAccountModel()))
     })
 
     test('Should return 500 if AddBankAccount throws', async () => {
         const { sut, addBankAccountStub } = makeSut()
-        const httpRequest = makeFakeRequest()
+        const httpRequest = mockRequest()
         jest.spyOn(addBankAccountStub, 'add').mockRejectedValueOnce(new Error())
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
@@ -86,7 +67,7 @@ describe('BankAccount Controller', () => {
 
     test('Should return 500 if Validation throws', async () => {
         const { sut, validationStub } = makeSut()
-        const httpRequest = makeFakeRequest()
+        const httpRequest = mockRequest()
         jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {throw new Error()})
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
