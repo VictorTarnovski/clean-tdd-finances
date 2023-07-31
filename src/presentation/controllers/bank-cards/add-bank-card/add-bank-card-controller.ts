@@ -19,6 +19,7 @@ export class AddBankCardController implements Controller {
             const { number, flag, expiresAt } = httpRequest.body
             const { bankAccountId } = httpRequest.params
             const exists = await this.loadBankAccountById.load(bankAccountId)
+            if(!exists) { return notFound('bankAccount') }
             const bankCard = await this.addBankCard.add({ number, flag, expiresAt }, bankAccountId)
             return ok(bankCard)
         } catch (error: any) {
