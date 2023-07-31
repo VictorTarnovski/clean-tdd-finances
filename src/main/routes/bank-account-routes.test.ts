@@ -6,7 +6,6 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import { mockBankAccountModel } from '@/domain/tests'
 
 let bankAccountCollection: Collection
 let accountCollection: Collection
@@ -17,12 +16,15 @@ beforeAll(async () => {
   const mongo = await MongoMemoryServer.create()
   const uri = mongo.getUri()
   await mongoHelper.connect(uri)
+
+  // Creates the user account to authenticate
   accountCollection = await mongoHelper.getCollection('accounts')
   const hashed_password = await hash('any_password', 12)
   const { insertedId } = await accountCollection.insertOne({ name: 'Victor', email: 'victor@mail.com', password: hashed_password })
   accountId = insertedId.toHexString()
   accessToken = sign({ id: accountId }, env.jwtSecret)
   await accountCollection.updateOne({ _id: insertedId }, { $set: { accessToken } })
+
 })
 
 beforeEach(async () => {
@@ -57,7 +59,7 @@ describe('GET /bank-accounts/:bankAccountId', () => {
       accountId
     })
     await request(app)
-      .get(`/api/bank-accounts/${ insertedId.toHexString() }`)
+      .get(`/api/bank-accounts/${insertedId.toHexString()}`)
       .set({ 'x-access-token': accessToken })
       .expect(200)
   })
