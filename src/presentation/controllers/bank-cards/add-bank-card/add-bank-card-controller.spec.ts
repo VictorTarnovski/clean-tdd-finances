@@ -4,8 +4,9 @@ import { badRequest, serverError } from '@/presentation/helpers/http/http-helper
 import { ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/add-bank-card'
 import { Validation } from "@/presentation/protocols"
-import { mockValidation, mockAddBankCard } from "@/presentation/tests"
+import { mockValidation, mockAddBankCard, mockLoadBankAccountById } from "@/presentation/tests"
 import { mockAddBankCardModel, mockBankCardModel } from "@/domain/tests"
+import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
 
 const mockRequest = (): HttpRequest => ({
     params: { bankAccountId: 'any_bank_account_id'},
@@ -16,26 +17,28 @@ type SutTypes = {
     sut: AddBankCardController,
     addBankCardStub: AddBankCard,
     validationStub: Validation
+    loadBankAccountById: LoadBankAccountById
 }
 
 const makeSut = (): SutTypes => {
     const addBankCardStub = mockAddBankCard()
     const validationStub = mockValidation()
-    const sut = new AddBankCardController(addBankCardStub, validationStub)
+    const loadBankAccountById = mockLoadBankAccountById()
+    const sut = new AddBankCardController(addBankCardStub, validationStub, loadBankAccountById)
     return {
         sut,
         addBankCardStub,
-        validationStub
+        validationStub,
+        loadBankAccountById
     }
 }
 
-describe('BankCard Controller', () => {
+describe('AddBankCard Controller', () => {
 
-    test('Should call AddBankCard with correct values', () => {
+    test('Should call AddBankCard with correct values', async () => {
         const { sut, addBankCardStub } = makeSut()
         const addSpy = jest.spyOn(addBankCardStub, 'add')
-        const httpRequest = mockRequest()
-        sut.handle(httpRequest)
+        await sut.handle(mockRequest())
         expect(addSpy).toHaveBeenCalledTimes(1)
         expect(addSpy).toHaveBeenCalledWith(mockAddBankCardModel(), 'any_bank_account_id')
     })
@@ -66,7 +69,7 @@ describe('BankCard Controller', () => {
         expect(validateSpy).toHaveBeenCalledWith(mockAddBankCardModel())
     })
 
-    test('Should return an Error Validation returns an Error', async () => {
+    test('Should return an Error if Validation returns an Error', async () => {
         const { sut, validationStub } = makeSut()
         const mockedError = new Error() 
         jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
@@ -82,5 +85,12 @@ describe('BankCard Controller', () => {
         jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { throw mockedError })
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(serverError(mockedError))
+    })
+
+    test('Should call LoadBankAcountById with correct id', async () => {
+        const { sut, loadBankAccountById } = makeSut()
+        const loadSpy = jest.spyOn(loadBankAccountById, 'load')
+        await sut.handle(mockRequest())
+        expect(loadSpy).toHaveBeenCalledWith('any_bank_account_id')
     })
 })
