@@ -1,6 +1,6 @@
 import { AddBankCardController } from "./add-bank-card-controller"
 import { HttpRequest } from "@/presentation/protocols"
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/add-bank-card'
 import { Validation } from "@/presentation/protocols"
@@ -92,5 +92,12 @@ describe('AddBankCard Controller', () => {
         const loadSpy = jest.spyOn(loadBankAccountById, 'load')
         await sut.handle(mockRequest())
         expect(loadSpy).toHaveBeenCalledWith('any_bank_account_id')
+    })
+
+    test('Should return 404 if LoadBankAcountById returns null', async () => {
+        const { sut, loadBankAccountById } = makeSut()
+        jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(async () => null)
+        const httpResponse = await sut.handle(mockRequest())
+        expect(httpResponse).toEqual(notFound('bankAccount'))
     })
 })
