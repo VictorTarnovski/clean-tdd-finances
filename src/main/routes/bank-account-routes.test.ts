@@ -61,4 +61,33 @@ describe('GET /bank-accounts/:bankAccountId', () => {
       .set({ 'x-access-token': accessToken })
       .expect(200)
   })
+
+  test('Should return 404 if bankAccount not exists', async () => {
+    await request(app)
+      .get(`/api/bank-accounts/${accountId}`)
+      .set({ 'x-access-token': accessToken })
+      .expect(404)
+  })
+})
+
+describe('POST /bank-accounts/:bankAccountId/bank-cards', () => {
+
+  test('Should return 200 on success', async () => {
+    const { insertedId } = await bankAccountCollection.insertOne({
+      number: 285992,
+      currency: 'BRL',
+      balance: 123.25,
+      cards: [],
+      accountId
+    })
+    await request(app)
+      .post(`/api/bank-accounts/${insertedId.toHexString()}/bank-cards`)
+      .set({ 'x-access-token': accessToken })
+      .send({
+        number: 5585411679142753,
+        flag: 'MASTER',
+        expiresAt: '28/04/2025',
+      })
+      .expect(200)
+  })
 })
