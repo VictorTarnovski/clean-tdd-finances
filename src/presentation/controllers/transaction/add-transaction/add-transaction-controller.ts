@@ -1,10 +1,11 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
 import { badRequest, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AddTransaction } from "@/domain/use-cases/add-transaction"
+import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
 
 export class AddTransactionController implements Controller {
   constructor(
-    private readonly addTransaction: AddTransaction, private readonly validation: Validation
+    private readonly addTransaction: AddTransaction, private readonly validation: Validation, private readonly loadBanKAccountById: LoadBankAccountById
   ) { }
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -19,7 +20,8 @@ export class AddTransactionController implements Controller {
         bankAccountId,
         cardId
       } = httpRequest.body
-      await this.addTransaction.add({ description, value, operation, bankAccountId, cardId})
+      await this.loadBanKAccountById.load(bankAccountId)
+      await this.addTransaction.add({ description, value, operation, bankAccountId, cardId })
       return ok('ok')
     } catch (error: any) {
       return serverError(error)
