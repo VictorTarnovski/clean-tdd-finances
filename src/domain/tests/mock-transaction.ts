@@ -7,7 +7,7 @@ export const mockTransactionModel = (): TransactionModel => ({
   value: 100,
   operation: 'addition',
   bankAccountId: 'any_bank_account_id',
-  cardId: 'any_bank_card_id',
+  bankCardId: 'any_bank_card_id',
 })
 
 export const mockAddTransactionModel = (): AddTransactionModel => ({
@@ -15,5 +15,5 @@ export const mockAddTransactionModel = (): AddTransactionModel => ({
   value: 100,
   operation: 'addition',
   bankAccountId: 'any_bank_account_id',
-  cardId: 'any_bank_card_id',
+  bankCardId: 'any_bank_card_id',
 })

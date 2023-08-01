@@ -3,7 +3,7 @@ import { AddBankAccountController } from './add-bank-account-controller'
 import { MissingParamError, ServerError, AddBankAccount, HttpRequest, HttpResponse, badRequest, ok } from './add-bank-account-controller-protocols'
 import { mockBankAccountModel } from '@/domain/tests'
 import { mockValidation } from '@/presentation/tests'
-import { mockAddBankAccont } from '@/presentation/tests'
+import { mockAddBankAccount } from '@/presentation/tests'
 
 const mockRequest = (): HttpRequest => ({ accountId: 'any_account_id', body: { number: 285992, currency: 'BRL' } })
 
@@ -14,7 +14,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-    const addBankAccountStub = mockAddBankAccont()
+    const addBankAccountStub = mockAddBankAccount()
     const validationStub = mockValidation()
     const sut = new AddBankAccountController(addBankAccountStub, validationStub)
     return { sut, addBankAccountStub, validationStub }

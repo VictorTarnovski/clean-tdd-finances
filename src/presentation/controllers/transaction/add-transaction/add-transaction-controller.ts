@@ -18,13 +18,13 @@ export class AddTransactionController implements Controller {
         value,
         operation,
         bankAccountId,
-        cardId
+        bankCardId
       } = httpRequest.body
       const exists = await this.loadBanKAccountById.load(bankAccountId)
       if(!exists) {
         return notFound('bankAccount')
       }
-      const transaction = await this.addTransaction.add({ description, value, operation, bankAccountId, cardId })
+      const transaction = await this.addTransaction.add({ description, value, operation, bankAccountId, bankCardId })
       return ok(transaction)
     } catch (error: any) {
       return serverError(error)
