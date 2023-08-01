@@ -1,13 +1,14 @@
-import { Controller, HttpRequest, HttpResponse } from "@/presentation/protocols"
+import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
 import { ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AddTransaction } from "@/domain/use-cases/add-transaction"
 
 export class AddTransactionController implements Controller {
   constructor(
-    private readonly addTransaction: AddTransaction,
+    private readonly addTransaction: AddTransaction, private readonly validation: Validation
   ) { }
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const error = this.validation.validate(httpRequest.body)
       const {
         description,
         value,
