@@ -24,8 +24,6 @@ beforeAll(async () => {
   const hashed_password = await hash('any_password', 12)
   const mongoAccount = await accountCollection.insertOne({ name: 'Victor', email: 'victor@mail.com', password: hashed_password })
   accountId = mongoAccount.insertedId.toHexString()
-  accessToken = sign({ id: accountId }, env.jwtSecret)
-  await accountCollection.updateOne({ _id: mongoAccount.insertedId }, { $set: { accessToken } })
 
   // Creates the bank Account
   bankAccountCollection = await mongoHelper.getCollection('bank-accounts')
@@ -43,6 +41,7 @@ beforeEach(async () => {
   transactionCollection = await mongoHelper.getCollection('transactions')
   transactionCollection.deleteMany()
   accessToken = sign({ id: accountId }, env.jwtSecret)
+  await accountCollection.updateOne({ _id: new ObjectId(accountId) }, { $set: { accessToken } })
 })
 
 describe('POST /transactions', () => {
@@ -69,6 +68,20 @@ describe('POST /transactions', () => {
         value: 10,
         operation: 'addition',
         bankAccountId: new ObjectId().toHexString()
+      })
+      .expect(404)
+  })
+
+  test('Should return 404 if bankCard not exists', async () => {
+    await request(app)
+      .post('/api/transactions')
+      .set({ 'x-access-token': accessToken })
+      .send({
+        description: 'any_description',
+        value: 10,
+        operation: 'addition',
+        bankAccountId,
+        bankCardId: new ObjectId().toHexString()
       })
       .expect(404)
   })
