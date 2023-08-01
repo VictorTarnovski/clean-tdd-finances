@@ -52,4 +52,12 @@ describe('MongoBankAccountRepository', () => {
     const bankAccount = await sut.loadById(insertedId.toHexString())
     expect(bankAccount!.cards[0].id).toBeTruthy()
   })
+
+  test('Should change the Balance of the bankAccount on save success', async () => {
+    const sut = new MongoBankAccountRepository()
+    const { insertedId } = await bankAccountCollection.insertOne(mockAddBankAccountModel())
+    const balance = mockAddBankAccountModel().balance + 10
+    const bankAccount = await sut.saveBalance(balance, insertedId.toHexString())
+    expect(bankAccount.balance).toBe(balance)
+  })
 })
