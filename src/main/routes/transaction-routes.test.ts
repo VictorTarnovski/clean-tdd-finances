@@ -3,7 +3,7 @@ import app from '@/main/config/app'
 import env from '@/main/config/env'
 import mongoHelper from '@/infra/db/mongodb/mongo-helper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 
@@ -58,5 +58,18 @@ describe('POST /transactions', () => {
         bankAccountId
       })
       .expect(200)
+  })
+
+  test('Should return 404 if bankAccount not exists', async () => {
+    await request(app)
+      .post('/api/transactions')
+      .set({ 'x-access-token': accessToken })
+      .send({
+        description: 'any_description',
+        value: 10,
+        operation: 'addition',
+        bankAccountId: new ObjectId().toHexString()
+      })
+      .expect(404)
   })
 })
