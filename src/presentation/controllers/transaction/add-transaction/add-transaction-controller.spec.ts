@@ -8,13 +8,14 @@ import { ServerError } from '@/presentation/errors'
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { LoadBankCardById } from '@/domain/use-cases/bank-card/load-bank-card-by-id'
 import { SaveBankAccountBalance } from '@/domain/use-cases/bank-account/save-bank-account-balance'
+import mockdate from 'mockdate'
 
 const calculateBalance = (): number | undefined => {
   switch (mockAddTransactionModel().operation) {
     case 'addition':
       return mockBankAccountModel().balance + mockAddTransactionModel().value
     case 'subtraction':
-        return mockBankAccountModel().balance - mockAddTransactionModel().value
+      return mockBankAccountModel().balance - mockAddTransactionModel().value
     default:
       break
   }
@@ -50,6 +51,9 @@ const makeSut = (): SutTypes => {
 
 describe('AddTransaction Controller', () => {
 
+  beforeAll(() => mockdate.set(new Date()))
+  afterAll(() => mockdate.reset())
+
   test('Should call AddTransaction with correct values', async () => {
     const { sut, addTransactionStub } = makeSut()
     const addSpy = jest.spyOn(addTransactionStub, 'add')
@@ -83,7 +87,7 @@ describe('AddTransaction Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(mockedError))
   })
-  
+
   test('Should return 500 if Validation throws', async () => {
     const { sut, validationStub } = makeSut()
     const mockedError = new Error()
@@ -149,6 +153,6 @@ describe('AddTransaction Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(mockTransactionModel()))
+    expect(httpResponse).toEqual(ok(mockBankAccountModel()))
   })
 })

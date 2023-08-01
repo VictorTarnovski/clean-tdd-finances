@@ -1,6 +1,7 @@
 import { mockAddTransactionModel, mockTransactionModel } from "@/domain/tests"
 import { DbAddTransaction } from "./db-add-transaction"
 import { mockAddTransactionRepository } from "@/data/tests"
+import mockdate from 'mockdate'
 
 const makeSut = () => {
   const addTransactionRepository = mockAddTransactionRepository()
@@ -13,6 +14,9 @@ const makeSut = () => {
 
 describe('DbAddTransaction Usecase', () => {
 
+  beforeAll(() => mockdate.set(new Date()))
+  afterAll(() => mockdate.reset())
+  
   test('Should call AddTransactionRepository with correct values', async () => {
     const { sut, addTransactionRepository } = makeSut()
     const addSpy = jest.spyOn(addTransactionRepository, 'add')

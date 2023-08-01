@@ -36,10 +36,10 @@ export class AddTransactionController implements Controller {
           return notFound('bankCard')
         }
       }
-      const transaction = await this.addTransaction.add({ description, value, operation, bankAccountId, bankCardId })
+      const transaction = await this.addTransaction.add({ description, value, operation, createdAt: new Date(), bankAccountId, bankCardId })
       const newBalance = operation === 'addition' ? bankAccount.balance + transaction.value : bankAccount.balance - transaction.value
-      await this.saveBankAccountBalance.save(newBalance, bankAccountId)
-      return ok(transaction)
+      const updatedBankAccount = await this.saveBankAccountBalance.save(newBalance, bankAccountId)
+      return ok(updatedBankAccount)
     } catch (error: any) {
       return serverError(error)
     }

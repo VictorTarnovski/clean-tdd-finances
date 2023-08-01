@@ -6,6 +6,7 @@ export const mockTransactionModel = (): TransactionModel => ({
   description: 'any_description',
   value: 100,
   operation: 'addition',
+  createdAt: new Date(),
   bankAccountId: 'any_bank_account_id',
   bankCardId: 'any_bank_card_id',
 })
@@ -14,6 +15,7 @@ export const mockAddTransactionModel = (): AddTransactionModel => ({
   description: 'any_description',
   value: 100,
   operation: 'addition',
+  createdAt: new Date(),
   bankAccountId: 'any_bank_account_id',
   bankCardId: 'any_bank_card_id',
 })

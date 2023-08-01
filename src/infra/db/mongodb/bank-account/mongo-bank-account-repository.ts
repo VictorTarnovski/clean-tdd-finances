@@ -27,6 +27,7 @@ export class MongoBankAccountRepository implements AddBankAccountRepository, Loa
     await bankAccountsCollection.findOneAndUpdate({ _id: new ObjectId(bankAccountId) }, { $set: { balance } })
     const mongoBankAccount = await bankAccountsCollection.findOne({ _id: new ObjectId(bankAccountId) })
     const bankAccount = await mongoHelper.map(mongoBankAccount)
+    bankAccount.cards = await mongoHelper.mapCollection(bankAccount.cards)
     return bankAccount
   }
 
