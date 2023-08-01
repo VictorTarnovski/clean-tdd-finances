@@ -24,8 +24,8 @@ export class AddTransactionController implements Controller {
       if(!exists) {
         return notFound('bankAccount')
       }
-      await this.addTransaction.add({ description, value, operation, bankAccountId, cardId })
-      return ok('ok')
+      const transaction = await this.addTransaction.add({ description, value, operation, bankAccountId, cardId })
+      return ok(transaction)
     } catch (error: any) {
       return serverError(error)
     }
