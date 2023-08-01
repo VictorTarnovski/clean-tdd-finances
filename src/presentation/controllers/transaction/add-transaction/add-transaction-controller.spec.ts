@@ -53,7 +53,6 @@ describe('AddTransaction Controller', () => {
     expect(validateSpy).toHaveBeenCalledWith(mockAddTransactionModel())
   })
 
-  
   test('Should return an Error if Validation returns an Error', async () => {
     const { sut, validationStub } = makeSut()
     const mockedError = new Error()
@@ -61,5 +60,15 @@ describe('AddTransaction Controller', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(mockedError))
+  })
+
+  
+  test('Should return 500 if Validation throws', async () => {
+    const { sut, validationStub } = makeSut()
+    const mockedError = new Error()
+    const httpRequest = mockRequest()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { throw mockedError })
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(mockedError))
   })
 })
