@@ -78,15 +78,6 @@ describe('AddTransaction Controller', () => {
     expect(httpResponse).toEqual(serverError(mockedError))
   })
 
-  test('Should return 500 if LoadBankAcountById throws', async () => {
-    const { sut, loadBankAccountById } = makeSut()
-    const mockedError = new Error()
-    const httpRequest = mockRequest()
-    jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(() => { throw mockedError })
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(serverError(mockedError))
-  })
-
   test('Should call LoadBankAcountById with correct id', async () => {
     const { sut, loadBankAccountById } = makeSut()
     const loadSpy = jest.spyOn(loadBankAccountById, 'load')
@@ -101,6 +92,15 @@ describe('AddTransaction Controller', () => {
     expect(httpResponse).toEqual(notFound('bankAccount'))
   })
 
+  test('Should return 500 if LoadBankAccountById throws', async () => {
+    const { sut, loadBankAccountById } = makeSut()
+    const mockedError = new Error()
+    const httpRequest = mockRequest()
+    jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(() => { throw mockedError })
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(mockedError))
+  })
+
   test('Should call LoadBankCardById with correct id', async () => {
     const { sut, loadBankCardById } = makeSut()
     const loadSpy = jest.spyOn(loadBankCardById, 'load')
@@ -113,6 +113,15 @@ describe('AddTransaction Controller', () => {
     jest.spyOn(loadBankCardById, 'load').mockImplementationOnce(async () => null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound('bankCard'))
+  })
+
+  test('Should return 500 if LoadBankCardById throws', async () => {
+    const { sut, loadBankCardById } = makeSut()
+    const mockedError = new Error()
+    const httpRequest = mockRequest()
+    jest.spyOn(loadBankCardById, 'load').mockImplementationOnce(() => { throw mockedError })
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(mockedError))
   })
 
   test('Should return 200 on success', async () => {
