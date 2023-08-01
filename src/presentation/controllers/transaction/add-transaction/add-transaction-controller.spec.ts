@@ -5,7 +5,7 @@ import { LoadBankAccountById } from '@/domain/use-cases/load-bank-account-by-id'
 import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddTransaction, mockLoadBankAccountById, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
-import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
+import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -86,5 +86,11 @@ describe('AddTransaction Controller', () => {
     jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(async () => null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound('bankAccount'))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(mockTransactionModel()))
   })
 })
