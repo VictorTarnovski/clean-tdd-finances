@@ -78,6 +78,15 @@ describe('AddTransaction Controller', () => {
     expect(httpResponse).toEqual(serverError(mockedError))
   })
 
+  test('Should return 500 if LoadBankAcountById throws', async () => {
+    const { sut, loadBankAccountById } = makeSut()
+    const mockedError = new Error()
+    const httpRequest = mockRequest()
+    jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(() => { throw mockedError })
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(mockedError))
+  })
+
   test('Should call LoadBankAcountById with correct id', async () => {
     const { sut, loadBankAccountById } = makeSut()
     const loadSpy = jest.spyOn(loadBankAccountById, 'load')
