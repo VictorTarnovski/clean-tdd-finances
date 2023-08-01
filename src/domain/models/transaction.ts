@@ -1,7 +1,8 @@
 export type TransactionModel = {
-  description: string,
-  value: number,
+  id: string
+  description: string
+  value: number
   operation: 'addition' | 'subtraction'
-  bankAccountId: string,
+  bankAccountId: string
   cardId?: string
 }
