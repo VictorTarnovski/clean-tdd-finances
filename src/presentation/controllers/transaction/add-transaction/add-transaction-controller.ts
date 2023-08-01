@@ -3,13 +3,15 @@ import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/ht
 import { AddTransaction } from "@/domain/use-cases/transaction/add-transaction"
 import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 import { LoadBankCardById } from "@/domain/use-cases/bank-card/load-bank-card-by-id"
+import { SaveBankAccountBalance } from "@/domain/use-cases/bank-account/save-bank-account-balance"
 
 export class AddTransactionController implements Controller {
   constructor(
     private readonly addTransaction: AddTransaction,
     private readonly validation: Validation,
     private readonly loadBankAccountById: LoadBankAccountById,
-    private readonly loadBankCardById: LoadBankCardById
+    private readonly loadBankCardById: LoadBankCardById,
+    private readonly saveBankAccountBalance: SaveBankAccountBalance
   ) { }
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -24,17 +26,19 @@ export class AddTransactionController implements Controller {
         bankAccountId,
         bankCardId
       } = httpRequest.body
-      const bankAccountExists = await this.loadBankAccountById.load(bankAccountId)
-      if (!bankAccountExists) {
+      const bankAccount = await this.loadBankAccountById.load(bankAccountId)
+      if (!bankAccount) {
         return notFound('bankAccount')
       }
       if(bankCardId) {
-        const bankCardExists = await this.loadBankCardById.load(bankCardId, bankAccountId)
-        if(!bankCardExists) {
+        const bankCard = await this.loadBankCardById.load(bankCardId, bankAccountId)
+        if(!bankCard) {
           return notFound('bankCard')
         }
       }
       const transaction = await this.addTransaction.add({ description, value, operation, bankAccountId, bankCardId })
+      const newBalance = operation === 'addition' ? bankAccount.balance + transaction.value : bankAccount.balance - transaction.value
+      await this.saveBankAccountBalance.save(newBalance, bankAccountId)
       return ok(transaction)
     } catch (error: any) {
       return serverError(error)
