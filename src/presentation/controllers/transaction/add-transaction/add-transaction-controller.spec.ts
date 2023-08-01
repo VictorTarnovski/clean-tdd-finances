@@ -4,7 +4,7 @@ import { AddTransaction } from '@/domain/use-cases/add-transaction'
 import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddTransaction, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { serverError, badRequest } from '@/presentation/helpers/http/http-helper'
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -51,5 +51,15 @@ describe('AddTransaction Controller', () => {
     sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledTimes(1)
     expect(validateSpy).toHaveBeenCalledWith(mockAddTransactionModel())
+  })
+
+  
+  test('Should return an Error if Validation returns an Error', async () => {
+    const { sut, validationStub } = makeSut()
+    const mockedError = new Error()
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(mockedError))
   })
 })
