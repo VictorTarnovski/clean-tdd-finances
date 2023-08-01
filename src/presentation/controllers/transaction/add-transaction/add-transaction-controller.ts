@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
-import { ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { badRequest, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AddTransaction } from "@/domain/use-cases/add-transaction"
 
 export class AddTransactionController implements Controller {
@@ -9,6 +9,9 @@ export class AddTransactionController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(httpRequest.body)
+      if(error) {
+        return badRequest(error)
+      }
       const {
         description,
         value,
