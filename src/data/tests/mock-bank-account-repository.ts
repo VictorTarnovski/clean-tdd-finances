@@ -3,6 +3,7 @@ import { AddBankAccountModel } from "@/domain/use-cases/bank-account/add-bank-ac
 import { BankAccountModel } from "@/domain/models/bank-account"
 import { mockBankAccountModel } from "@/domain/tests"
 import { LoadBankAccountByIdRepository } from "@/data/protocols/db/bank-account/load-bank-account-by-id-repository"
+import { SaveBalanceRepository } from "@/data/protocols/db/bank-account/save-balance-repository"
 
 export const mockAddBankAccountRepository = (): AddBankAccountRepository => {
 
@@ -22,4 +23,13 @@ export const mockLoadBankAccountByIdRepository = (): LoadBankAccountByIdReposito
     }
   }
   return new LoadBankAccountByIdRepositoryStub()
+}
+
+export const mockSaveBalanceRepository = (): SaveBalanceRepository => {
+  class SaveBalanceRepositoryStub implements SaveBalanceRepository {
+    async save(balance: number, bankAccountId: string): Promise<BankAccountModel> {
+      return mockBankAccountModel()
+    }
+  }
+  return new SaveBalanceRepositoryStub()
 }
