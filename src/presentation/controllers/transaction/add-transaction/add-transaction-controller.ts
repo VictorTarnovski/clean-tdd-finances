@@ -29,7 +29,7 @@ export class AddTransactionController implements Controller {
         return notFound('bankAccount')
       }
       if(bankCardId) {
-        const bankCardExists = await this.loadBankCardById.load(bankCardId)
+        const bankCardExists = await this.loadBankCardById.load(bankCardId, bankAccountId)
         if(!bankCardExists) {
           return notFound('bankCard')
         }

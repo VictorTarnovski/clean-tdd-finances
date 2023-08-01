@@ -1,5 +1,5 @@
 import { BankCardModel } from "@/domain/models/bank-card"
 
 export interface LoadBankCardByIdRepository {
-  loadById(id: string): Promise<BankCardModel | null>
+  loadById(bankCardId: string, bankAccountId: string): Promise<BankCardModel | null>
 }
