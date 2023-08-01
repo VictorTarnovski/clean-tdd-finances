@@ -39,7 +39,7 @@ describe('MongoBankCardRepository', () => {
     expect(bankCard).toBeTruthy()
     expect(bankCard.number).toBe(5585411679142753)
     expect(bankCard.flag).toBe('MASTER')
-    expect(bankCard.expiresAt).toBe('28/04/2025')
+    expect(bankCard.expiresAt).toStrictEqual(new Date('2025-04-28T00:00:00'))
     expect(bankCard.id).toBeTruthy()
   })
 })

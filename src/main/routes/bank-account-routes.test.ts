@@ -88,7 +88,7 @@ describe('POST /bank-accounts/:bankAccountId/bank-cards', () => {
       .send({
         number: 5585411679142753,
         flag: 'MASTER',
-        expiresAt: '28/04/2025',
+        expiresAt: '2025-04-28T00:00:00',
       })
       .expect(200)
   })

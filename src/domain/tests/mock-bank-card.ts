@@ -5,11 +5,11 @@ export const mockBankCardModel = (): BankCardModel => ({
   id: 'any_bank_card_id',
   number: 5585411679142753,
   flag: 'MASTER',
-  expiresAt: '28/04/2025',
+  expiresAt: new Date('2025-04-28T00:00:00'),
 })
 
 export const mockAddBankCardModel = (): AddBankCardModel => ({
   number: 5585411679142753,
   flag: 'MASTER',
-  expiresAt: '28/04/2025',
+  expiresAt: new Date('2025-04-28T00:00:00'),
 })
