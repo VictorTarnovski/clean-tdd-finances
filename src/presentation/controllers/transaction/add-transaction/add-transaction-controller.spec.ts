@@ -3,9 +3,10 @@ import { mockAddTransactionModel, mockTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/transaction/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/bank-account/load-bank-account-by-id'
 import { HttpRequest, Validation } from '@/presentation/protocols'
-import { mockAddTransaction, mockLoadBankAccountById, mockValidation } from '@/presentation/tests'
+import { mockAddTransaction, mockLoadBankAccountById, mockLoadBankCardById, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
+import { LoadBankCardById } from '@/domain/use-cases/bank-card/load-bank-card-by-id'
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -14,18 +15,21 @@ type SutTypes = {
   addTransactionStub: AddTransaction,
   validationStub: Validation,
   loadBankAccountById: LoadBankAccountById
+  loadBankCardById: LoadBankCardById
 }
 
 const makeSut = (): SutTypes => {
   const addTransactionStub = mockAddTransaction()
   const validationStub = mockValidation()
   const loadBankAccountById = mockLoadBankAccountById()
-  const sut = new AddTransactionController(addTransactionStub, validationStub, loadBankAccountById)
+  const loadBankCardById = mockLoadBankCardById()
+  const sut = new AddTransactionController(addTransactionStub, validationStub, loadBankAccountById, loadBankCardById)
   return {
     sut,
     addTransactionStub,
     validationStub,
-    loadBankAccountById
+    loadBankAccountById,
+    loadBankCardById
   }
 }
 
@@ -81,11 +85,18 @@ describe('AddTransaction Controller', () => {
     expect(loadSpy).toHaveBeenCalledWith('any_bank_account_id')
   })
 
-  test('Should return 404 if LoadBankAcountById returns null', async () => {
+  test('Should return 404 if LoadBankAccountById returns null', async () => {
     const { sut, loadBankAccountById } = makeSut()
     jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(async () => null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound('bankAccount'))
+  })
+
+  test('Should call LoadBankCardById with correct id', async () => {
+    const { sut, loadBankCardById } = makeSut()
+    const loadSpy = jest.spyOn(loadBankCardById, 'load')
+    await sut.handle(mockRequest())
+    expect(loadSpy).toHaveBeenCalledWith('any_bank_card_id')
   })
 
   test('Should return 200 on success', async () => {
