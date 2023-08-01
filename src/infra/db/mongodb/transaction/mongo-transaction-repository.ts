@@ -1,6 +1,6 @@
 import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-transaction-repository"
 import { TransactionModel } from "@/domain/models/transaction"
-import { AddTransactionModel } from "@/domain/use-cases/add-transaction"
+import { AddTransactionModel } from "@/domain/use-cases/transaction/add-transaction"
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 
 export class MongoTransactionRepository implements AddTransactionRepository {

@@ -1,9 +1,9 @@
 import { MissingParamError, EmailInUseError } from "@/presentation/errors"
 import { badRequest, ok, serverError, forbidden } from "@/presentation/helpers/http/http-helper"
 import { SignUpController } from "./signup-controller"
-import { AddAccount } from '@/domain/use-cases/add-account'
+import { AddAccount } from '@/domain/use-cases/account/add-account'
 import { HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
-import { Authentication } from "@/domain/use-cases/authentication"
+import { Authentication } from "@/domain/use-cases/authentication/authentication"
 import { mockValidation, mockAuthentication, mockAddAccount  } from "@/presentation/tests"
 
 const mockRequest = (): HttpRequest => ({

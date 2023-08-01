@@ -1,5 +1,5 @@
 import { TransactionModel } from "@/domain/models/transaction"
-import { AddTransactionModel } from "@/domain/use-cases/add-transaction"
+import { AddTransactionModel } from "@/domain/use-cases/transaction/add-transaction"
 
 export const mockTransactionModel = (): TransactionModel => ({
   id: 'any_transaction_id',

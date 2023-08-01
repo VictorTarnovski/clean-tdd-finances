@@ -1,4 +1,4 @@
-import { Authentication,  AuthenticationModel } from "@/domain/use-cases/authentication"
+import { Authentication,  AuthenticationModel } from "@/domain/use-cases/authentication/authentication"
 
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {

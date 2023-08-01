@@ -1,7 +1,7 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
-import { AddTransaction } from "@/domain/use-cases/add-transaction"
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { AddTransaction } from "@/domain/use-cases/transaction/add-transaction"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 
 export class AddTransactionController implements Controller {
   constructor(

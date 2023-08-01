@@ -1,5 +1,5 @@
 import { AddBankAccountRepository } from "@/data/protocols/db/bank-account/add-bank-account-repository"
-import { AddBankAccountModel } from "@/domain/use-cases/add-bank-account"
+import { AddBankAccountModel } from "@/domain/use-cases/bank-account/add-bank-account"
 import { BankAccountModel } from "@/domain/models/bank-account"
 import { mockBankAccountModel } from "@/domain/tests"
 import { LoadBankAccountByIdRepository } from "@/data/protocols/db/bank-account/load-bank-account-by-id-repository"

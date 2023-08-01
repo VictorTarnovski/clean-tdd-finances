@@ -2,11 +2,11 @@ import { AddBankCardController } from "./add-bank-card-controller"
 import { HttpRequest } from "@/presentation/protocols"
 import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
-import { AddBankCard } from '@/domain/use-cases/add-bank-card'
+import { AddBankCard } from '@/domain/use-cases/bank-card/add-bank-card'
 import { Validation } from "@/presentation/protocols"
 import { mockValidation, mockAddBankCard, mockLoadBankAccountById } from "@/presentation/tests"
 import { mockAddBankCardModel, mockBankCardModel } from "@/domain/tests"
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 
 const mockRequest = (): HttpRequest => ({
   params: { bankAccountId: 'any_bank_account_id' },

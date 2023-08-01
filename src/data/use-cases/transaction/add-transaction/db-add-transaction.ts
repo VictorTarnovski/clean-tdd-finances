@@ -1,5 +1,5 @@
 import { TransactionModel } from "@/domain/models/transaction"
-import { AddTransaction, AddTransactionModel } from "@/domain/use-cases/add-transaction"
+import { AddTransaction, AddTransactionModel } from "@/domain/use-cases/transaction/add-transaction"
 import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-transaction-repository"
 
 export class DbAddTransaction implements AddTransaction {

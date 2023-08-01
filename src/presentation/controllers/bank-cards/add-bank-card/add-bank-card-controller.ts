@@ -1,8 +1,8 @@
 import { Controller, HttpRequest, HttpResponse } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
-import { AddBankCard } from "@/domain/use-cases/add-bank-card"
+import { AddBankCard } from "@/domain/use-cases/bank-card/add-bank-card"
 import { Validation } from "@/presentation/protocols/validation"
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 
 export class AddBankCardController implements Controller {
     constructor(

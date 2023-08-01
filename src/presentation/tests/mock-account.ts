@@ -1,7 +1,7 @@
-import { AddAccount, AddAccountModel } from "@/domain/use-cases/add-account"
+import { AddAccount, AddAccountModel } from "@/domain/use-cases/account/add-account"
 import { AccountModel } from "@/domain/models/account"
 import { mockAccountModel } from "@/domain/tests"
-import { LoadAccountById } from "@/domain/use-cases/load-account-by-id"
+import { LoadAccountById } from "@/domain/use-cases/account/load-account-by-id"
 
 export const mockAddAccount = () => {
   class AddAccountStub implements AddAccount {

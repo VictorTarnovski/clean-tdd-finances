@@ -1,5 +1,5 @@
 import { BankCardModel } from "@/domain/models/bank-card"
-import { AddBankCardModel } from "@/domain/use-cases/add-bank-card"
+import { AddBankCardModel } from "@/domain/use-cases/bank-card/add-bank-card"
 
 export const mockBankCardModel = (): BankCardModel => ({
   id: 'any_bank_card_id',

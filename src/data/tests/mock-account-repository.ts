@@ -5,7 +5,7 @@ import { LoadAccountByTokenRepository } from "@/data/protocols/db/account/load-a
 import { UpdateAccessTokenRepository } from "@/data/use-cases/authentication/db-authentication-protocols"
 import { mockAccountModel } from "@/domain/tests"
 import { AccountModel } from "@/domain/models/account"
-import { AddAccountModel } from "@/domain/use-cases/add-account"
+import { AddAccountModel } from "@/domain/use-cases/account/add-account"
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepositoryStub {

@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse } from "@/presentation/protocols"
 import { serverError, unauthorized, ok } from '@/presentation/helpers/http/http-helper'
-import { Authentication, AuthenticationModel } from '@/domain/use-cases/authentication'
+import { Authentication, AuthenticationModel } from '@/domain/use-cases/authentication/authentication'
 import { Validation } from "@/presentation/protocols/validation"
 import { LoginController } from "./login-controller"
 import { mockValidation } from "@/presentation/tests"
