@@ -1,6 +1,7 @@
 import { LoadBankCardByIdRepository } from "@/data/protocols/db/bank-card/load-bank-card-by-id-repository"
 import { DbLoadBankCardById } from "@/data/use-cases/bank-card/load-bank-card-by-id/db-load-bank-card-by-id"
 import { mockLoadBankCardByIdRepository } from "@/data/tests"
+import { mockBankCardModel } from "@/domain/tests"
 
 type SutTypes = {
   sut: DbLoadBankCardById
@@ -36,5 +37,11 @@ describe('DbLoadBankCardById UseCase', () => {
     jest.spyOn(loadBankCardByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => { throw new Error() })
     const promise = sut.load('any_bank_card_id')
     expect(promise).rejects.toThrow()
+  })
+
+  test('Should return a bankCard on LoadBankCardByIdRepository success', async () => {
+    const { sut } = makeSut()
+    const bankCard = await sut.load('any_bank_card_id')
+    expect(bankCard).toEqual(mockBankCardModel())
   })
 })
