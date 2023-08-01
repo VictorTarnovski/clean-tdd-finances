@@ -3,6 +3,8 @@ import { mockAddTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/add-transaction'
 import { HttpRequest } from '@/presentation/protocols'
 import { mockAddTransaction } from '@/presentation/tests'
+import { ServerError } from '@/presentation/errors'
+import { serverError } from '@/presentation/helpers/http/http-helper'
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -28,5 +30,13 @@ describe('AddTransaction Controller', () => {
     await sut.handle(mockRequest())
     expect(addSpy).toHaveBeenCalledTimes(1)
     expect(addSpy).toHaveBeenCalledWith(mockAddTransactionModel())
+  })
+
+  test('Should return 500 if AddTransaction throws', async () => {
+    const { sut, addTransactionStub } = makeSut()
+    const httpRequest = mockRequest()
+    jest.spyOn(addTransactionStub, 'add').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new ServerError('Internal Server Error')))
   })
 })
