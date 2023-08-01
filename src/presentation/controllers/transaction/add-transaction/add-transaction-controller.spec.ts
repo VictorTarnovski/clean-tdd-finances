@@ -1,8 +1,8 @@
 import { AddTransactionController } from './add-transaction-controller'
 import { mockAddTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/add-transaction'
-import { HttpRequest } from '@/presentation/protocols'
-import { mockAddTransaction } from '@/presentation/tests'
+import { HttpRequest, Validation } from '@/presentation/protocols'
+import { mockAddTransaction, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
 import { serverError } from '@/presentation/helpers/http/http-helper'
 
@@ -10,15 +10,18 @@ const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
 type SutTypes = {
   sut: AddTransactionController,
-  addTransactionStub: AddTransaction
+  addTransactionStub: AddTransaction,
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addTransactionStub = mockAddTransaction()
-  const sut = new AddTransactionController(addTransactionStub)
+  const validationStub = mockValidation()
+  const sut = new AddTransactionController(addTransactionStub, validationStub)
   return {
     sut,
-    addTransactionStub
+    addTransactionStub,
+    validationStub
   }
 }
 
@@ -38,5 +41,15 @@ describe('AddTransaction Controller', () => {
     jest.spyOn(addTransactionStub, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new ServerError('Internal Server Error')))
+  })
+
+  
+  test('Should call Validation with correct values', () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    const httpRequest = mockRequest()
+    sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledTimes(1)
+    expect(validateSpy).toHaveBeenCalledWith(mockAddTransactionModel())
   })
 })
