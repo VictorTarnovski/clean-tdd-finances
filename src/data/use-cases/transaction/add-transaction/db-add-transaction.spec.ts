@@ -25,4 +25,11 @@ describe('DbAddTransaction Usecase', () => {
     const transaction = await sut.add(mockAddTransactionModel())
     expect(transaction).toEqual(mockTransactionModel())
   })
+
+  test('Should throw if AddTransactionRepository throws', async () => {
+    const { sut, addTransactionRepository } = makeSut()
+    jest.spyOn(addTransactionRepository, 'add').mockImplementationOnce(async () => { throw new Error()})
+    const promise = sut.add(mockAddTransactionModel())
+    expect(promise).rejects.toThrow()
+  })
 })
