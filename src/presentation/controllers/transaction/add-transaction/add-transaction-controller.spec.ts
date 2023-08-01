@@ -1,11 +1,11 @@
 import { AddTransactionController } from './add-transaction-controller'
-import { mockAddTransactionModel } from '@/domain/tests'
+import { mockAddTransactionModel, mockTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/load-bank-account-by-id'
 import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddTransaction, mockLoadBankAccountById, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
-import { serverError, badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -47,7 +47,6 @@ describe('AddTransaction Controller', () => {
     expect(httpResponse).toEqual(serverError(new ServerError('Internal Server Error')))
   })
 
-
   test('Should call Validation with correct values', () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -80,5 +79,12 @@ describe('AddTransaction Controller', () => {
     const loadSpy = jest.spyOn(loadBankAccountById, 'load')
     await sut.handle(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith('any_bank_account_id')
+  })
+
+  test('Should return 404 if LoadBankAcountById returns null', async () => {
+    const { sut, loadBankAccountById } = makeSut()
+    jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(async () => null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(notFound('bankAccount'))
   })
 })
