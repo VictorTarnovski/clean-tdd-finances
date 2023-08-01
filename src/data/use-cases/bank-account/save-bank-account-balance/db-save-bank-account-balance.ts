@@ -5,7 +5,7 @@ import { SaveBankAccountBalance } from '@/domain/use-cases/bank-account/save-ban
 export class DbSaveBankAccountBalance implements SaveBankAccountBalance {
   constructor(private readonly saveBalanceRepository: SaveBalanceRepository) { }
   async save(balance: number, bankAccountId: string): Promise<BankAccountModel> {
-    const bankAccount = await this.saveBalanceRepository.save(balance, bankAccountId)
+    const bankAccount = await this.saveBalanceRepository.saveBalance(balance, bankAccountId)
     return bankAccount
   }
 }

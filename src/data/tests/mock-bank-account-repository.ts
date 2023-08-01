@@ -27,7 +27,7 @@ export const mockLoadBankAccountByIdRepository = (): LoadBankAccountByIdReposito
 
 export const mockSaveBalanceRepository = (): SaveBalanceRepository => {
   class SaveBalanceRepositoryStub implements SaveBalanceRepository {
-    async save(balance: number, bankAccountId: string): Promise<BankAccountModel> {
+    async saveBalance(balance: number, bankAccountId: string): Promise<BankAccountModel> {
       return mockBankAccountModel()
     }
   }
