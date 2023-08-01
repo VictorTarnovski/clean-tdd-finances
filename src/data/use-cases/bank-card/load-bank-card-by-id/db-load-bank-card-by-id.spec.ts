@@ -21,27 +21,27 @@ describe('DbLoadBankCardById UseCase', () => {
   test('Should call LoadBankCardByIdRepository with correct id', async () => {
     const { sut, loadBankCardByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadBankCardByIdRepositoryStub, 'loadById')
-    await sut.load('any_bank_card_id')
-    expect(loadByIdSpy).toHaveBeenCalledWith('any_bank_card_id')
+    await sut.load('any_bank_card_id', 'any_bank_account_id')
+    expect(loadByIdSpy).toHaveBeenCalledWith('any_bank_card_id', 'any_bank_account_id')
   })
 
   test('Should return null if LoadBankCardByIdRepository returns null', async () => {
     const { sut, loadBankCardByIdRepositoryStub } = makeSut()
     jest.spyOn(loadBankCardByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => null)
-    const bankCard = await sut.load('any_bank_card_id')
+    const bankCard = await sut.load('any_bank_card_id', 'any_bank_account_id')
     expect(bankCard).toBeNull()
   })
 
   test('Should throw if LoadBankCardByIdRepository throws', async () => {
     const { sut, loadBankCardByIdRepositoryStub } = makeSut()
     jest.spyOn(loadBankCardByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => { throw new Error() })
-    const promise = sut.load('any_bank_card_id')
+    const promise = sut.load('any_bank_card_id', 'any_bank_account_id')
     expect(promise).rejects.toThrow()
   })
 
   test('Should return a bankCard on LoadBankCardByIdRepository success', async () => {
     const { sut } = makeSut()
-    const bankCard = await sut.load('any_bank_card_id')
+    const bankCard = await sut.load('any_bank_card_id', 'any_bank_account_id')
     expect(bankCard).toEqual(mockBankCardModel())
   })
 })

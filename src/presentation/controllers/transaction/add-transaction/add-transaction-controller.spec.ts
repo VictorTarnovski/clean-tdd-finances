@@ -101,11 +101,11 @@ describe('AddTransaction Controller', () => {
     expect(httpResponse).toEqual(serverError(mockedError))
   })
 
-  test('Should call LoadBankCardById with correct id', async () => {
+  test('Should call LoadBankCardById with correct ids', async () => {
     const { sut, loadBankCardById } = makeSut()
     const loadSpy = jest.spyOn(loadBankCardById, 'load')
     await sut.handle(mockRequest())
-    expect(loadSpy).toHaveBeenCalledWith('any_bank_card_id')
+    expect(loadSpy).toHaveBeenCalledWith('any_bank_card_id', 'any_bank_account_id')
   })
 
   test('Should return 404 if LoadBankCardById returns null', async () => {
