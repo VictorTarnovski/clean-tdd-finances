@@ -1,12 +1,24 @@
 import { AddTransactionController } from './add-transaction-controller'
-import { mockAddTransactionModel, mockTransactionModel } from '@/domain/tests'
+import { mockAddTransactionModel, mockBankAccountModel, mockTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/transaction/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/bank-account/load-bank-account-by-id'
 import { HttpRequest, Validation } from '@/presentation/protocols'
-import { mockAddTransaction, mockLoadBankAccountById, mockLoadBankCardById, mockValidation } from '@/presentation/tests'
+import { mockAddTransaction, mockLoadBankAccountById, mockLoadBankCardById, mockSaveBankAccountBalance, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { LoadBankCardById } from '@/domain/use-cases/bank-card/load-bank-card-by-id'
+import { SaveBankAccountBalance } from '@/domain/use-cases/bank-account/save-bank-account-balance'
+
+const calculateBalance = (): number | undefined => {
+  switch (mockAddTransactionModel().operation) {
+    case 'addition':
+      return mockBankAccountModel().balance + mockAddTransactionModel().value
+    case 'subtraction':
+        return mockBankAccountModel().balance - mockAddTransactionModel().value
+    default:
+      break
+  }
+}
 
 const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
 
@@ -15,7 +27,8 @@ type SutTypes = {
   addTransactionStub: AddTransaction,
   validationStub: Validation,
   loadBankAccountById: LoadBankAccountById
-  loadBankCardById: LoadBankCardById
+  loadBankCardById: LoadBankCardById,
+  saveBankAccountBalance: SaveBankAccountBalance
 }
 
 const makeSut = (): SutTypes => {
@@ -23,13 +36,15 @@ const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const loadBankAccountById = mockLoadBankAccountById()
   const loadBankCardById = mockLoadBankCardById()
-  const sut = new AddTransactionController(addTransactionStub, validationStub, loadBankAccountById, loadBankCardById)
+  const saveBankAccountBalance = mockSaveBankAccountBalance()
+  const sut = new AddTransactionController(addTransactionStub, validationStub, loadBankAccountById, loadBankCardById, saveBankAccountBalance)
   return {
     sut,
     addTransactionStub,
     validationStub,
     loadBankAccountById,
-    loadBankCardById
+    loadBankCardById,
+    saveBankAccountBalance
   }
 }
 
@@ -122,6 +137,13 @@ describe('AddTransaction Controller', () => {
     jest.spyOn(loadBankCardById, 'load').mockImplementationOnce(() => { throw mockedError })
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(mockedError))
+  })
+
+  test('Should call SaveBankAccountBalance with correct values', async () => {
+    const { sut, saveBankAccountBalance } = makeSut()
+    const saveSpy = jest.spyOn(saveBankAccountBalance, 'save')
+    await sut.handle(mockRequest())
+    expect(saveSpy).toHaveBeenCalledWith(calculateBalance(), 'any_bank_account_id')
   })
 
   test('Should return 200 on success', async () => {
