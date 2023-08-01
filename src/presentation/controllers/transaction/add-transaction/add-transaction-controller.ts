@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
-import { badRequest, ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AddTransaction } from "@/domain/use-cases/add-transaction"
 import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
 
@@ -20,7 +20,10 @@ export class AddTransactionController implements Controller {
         bankAccountId,
         cardId
       } = httpRequest.body
-      await this.loadBanKAccountById.load(bankAccountId)
+      const exists = await this.loadBanKAccountById.load(bankAccountId)
+      if(!exists) {
+        return notFound('bankAccount')
+      }
       await this.addTransaction.add({ description, value, operation, bankAccountId, cardId })
       return ok('ok')
     } catch (error: any) {
