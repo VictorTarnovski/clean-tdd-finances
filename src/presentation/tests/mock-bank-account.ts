@@ -3,7 +3,7 @@ import { AddBankAccount, AddBankAccountModel } from "@/domain/use-cases/add-bank
 import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
 import { mockBankAccountModel } from "@/domain/tests"
 
-export const mockAddBankAccont = (): AddBankAccount => {
+export const mockAddBankAccount = (): AddBankAccount => {
   class addBankAccount implements AddBankAccount {
     async add(account: AddBankAccountModel): Promise<BankAccountModel> {
       return mockBankAccountModel()
