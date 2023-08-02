@@ -1,9 +1,9 @@
-import { Controller, HttpRequest, HttpResponse } from "../protocols"
+import { Controller, HttpResponse } from "../protocols"
 import { ok } from "../helpers/http/http-helper"
 
 export const mockController = (): Controller => {
   class ControllerStub implements Controller {
-      async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+      async handle(request: any): Promise<HttpResponse> {
           return ok('ok')
       }
   }

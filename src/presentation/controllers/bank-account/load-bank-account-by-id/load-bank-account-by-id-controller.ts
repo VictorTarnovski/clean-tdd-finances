@@ -1,12 +1,14 @@
-import { Controller, HttpRequest, HttpResponse, LoadBankAccountById, AccessDeniedError, LoadAccountById } from "./load-bank-account-by-id-controller-protocols"
-import { ok, notFound, serverError, forbidden } from "@/presentation/helpers/http/http-helper"
+import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { AccessDeniedError } from "@/presentation/errors"
+import { LoadBankAccountById} from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadAccountById } from "@/domain/use-cases/load-account-by-id"
+import { Controller, HttpResponse } from "@/presentation/protocols"
 
 export class LoadBankAccountByIdController implements Controller {
   constructor(private readonly loadBankAccountById: LoadBankAccountById, private readonly loadAccountById: LoadAccountById ) { }
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: LoadBankAccountByIdController.Request): Promise<HttpResponse> {
     try {
-      const { bankAccountId } = httpRequest.params
-      const { accountId } = httpRequest
+      const { bankAccountId, accountId } = request
       const account = await this.loadAccountById.load(accountId!)
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
       if (!bankAccount) return notFound('bankAccount')
@@ -17,5 +19,12 @@ export class LoadBankAccountByIdController implements Controller {
     } catch (error: any) {
       return serverError(error)
     }
+  }
+}
+
+export namespace LoadBankAccountByIdController {
+  export type Request  = {
+    bankAccountId: string
+    accountId: string
   }
 }

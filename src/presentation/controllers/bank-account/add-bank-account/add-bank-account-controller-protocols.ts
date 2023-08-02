@@ -1,5 +1,0 @@
-export * from '@/presentation/protocols'
-export * from '@/domain/use-cases/add-bank-account'
-export * from '@/domain/models/bank-account'
-export * from '@/presentation/helpers/http/http-helper'
-export * from '@/presentation/errors'

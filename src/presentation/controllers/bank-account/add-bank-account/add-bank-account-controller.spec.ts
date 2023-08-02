@@ -1,11 +1,14 @@
-import { Validation } from '@/presentation/protocols'
-import { AddBankAccountController } from './add-bank-account-controller'
-import { MissingParamError, ServerError, AddBankAccount, HttpRequest, HttpResponse, badRequest, ok } from './add-bank-account-controller-protocols'
+import { HttpResponse, Validation } from '@/presentation/protocols'
+import { MissingParamError, ServerError } from '@/presentation/errors'
+import { ok, badRequest } from '@/presentation/helpers/http/http-helper'
+import { AddBankAccount } from '@/domain/use-cases/add-bank-account'
 import { mockBankAccountModel } from '@/domain/tests'
 import { mockValidation } from '@/presentation/tests'
 import { mockAddBankAccont } from '@/presentation/tests'
+import { AddBankAccountController } from './add-bank-account-controller'
 
-const mockRequest = (): HttpRequest => ({ accountId: 'any_account_id', body: { number: 285992, currency: 'BRL' } })
+
+const mockRequest = () => ({ number: 285992, currency: 'BRL', accountId: 'any_account_id' })
 
 type SutTypes = {
     sut: AddBankAccountController
@@ -25,8 +28,8 @@ describe('BankAccount Controller', () => {
     test('Should call AddBankAccount with correct values', async () => {
         const { sut, addBankAccountStub } = makeSut()
         const addSpy = jest.spyOn(addBankAccountStub, 'add')
-        const httpRequest = mockRequest()
-        await sut.handle(httpRequest)
+        const request = mockRequest()
+        await sut.handle(request)
         expect(addSpy).toHaveBeenCalledTimes(1)
         expect(addSpy).toHaveBeenCalledWith({ number: 285992, currency: 'BRL', balance: 0, cards: [], accountId: 'any_account_id'})
     })
@@ -34,42 +37,42 @@ describe('BankAccount Controller', () => {
     test('Should call Validation with correct values', async () => {
         const { sut, validationStub } = makeSut()
         const validateSpy = jest.spyOn(validationStub, 'validate')
-        const httpRequest = mockRequest()
-        await sut.handle(httpRequest)
+        const request = mockRequest()
+        await sut.handle(request)
         expect(validateSpy).toHaveBeenCalledTimes(1)
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+        expect(validateSpy).toHaveBeenCalledWith(request)
     })
 
     test('Should return 400 if Validation returns an Error', async () => {
         const { sut, validationStub } = makeSut()
         const mockedError = new MissingParamError('currency')
         jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
-        const httpRequest = mockRequest()
-        const httpResponse: HttpResponse = await sut.handle(httpRequest)
+        const request = mockRequest()
+        const httpResponse: HttpResponse = await sut.handle(request)
         expect(httpResponse).toEqual(badRequest(mockedError))
     })
 
     test('Should return 200 if valid data is provided', async () => {
         const { sut } = makeSut()
-        const httpRequest = mockRequest()
-        const httpResponse = await sut.handle(httpRequest)
+        const request = mockRequest()
+        const httpResponse = await sut.handle(request)
         expect(httpResponse).toEqual(ok(mockBankAccountModel()))
     })
 
     test('Should return 500 if AddBankAccount throws', async () => {
         const { sut, addBankAccountStub } = makeSut()
-        const httpRequest = mockRequest()
+        const request = mockRequest()
         jest.spyOn(addBankAccountStub, 'add').mockRejectedValueOnce(new Error())
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body).toEqual(new ServerError('Internal Server Error'))
     })
 
     test('Should return 500 if Validation throws', async () => {
         const { sut, validationStub } = makeSut()
-        const httpRequest = mockRequest()
+        const request = mockRequest()
         jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => {throw new Error()})
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(request)
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body).toEqual(new ServerError('Internal Server Error'))
     })

@@ -1,5 +1,4 @@
 import { AddBankCardController } from "./add-bank-card-controller"
-import { HttpRequest } from "@/presentation/protocols"
 import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/add-bank-card'
@@ -8,9 +7,9 @@ import { mockValidation, mockAddBankCard, mockLoadBankAccountById } from "@/pres
 import { mockAddBankCardModel, mockBankCardModel } from "@/domain/tests"
 import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
 
-const mockRequest = (): HttpRequest => ({
-  params: { bankAccountId: 'any_bank_account_id' },
-  body: mockAddBankCardModel()
+const mockRequest = () => ({
+  ...mockAddBankCardModel(),
+  bankAccountId: 'any_bank_account_id'
 })
 
 type SutTypes = {
@@ -45,17 +44,17 @@ describe('AddBankCard Controller', () => {
 
   test('Should return 200 if valid data is provided', async () => {
     const { sut } = makeSut()
-    const httpRequest = mockRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual(mockBankCardModel())
   })
 
   test('Should return 500 if AddBankCard throws', async () => {
     const { sut, addBankCardStub } = makeSut()
-    const httpRequest = mockRequest()
+    const request = mockRequest()
     jest.spyOn(addBankCardStub, 'add').mockRejectedValueOnce(new Error())
-    const httpResponse = await sut.handle(httpRequest)
+    const httpResponse = await sut.handle(request)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError('Internal Server Error'))
   })
@@ -63,27 +62,27 @@ describe('AddBankCard Controller', () => {
   test('Should call Validation with correct values', () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
-    const httpRequest = mockRequest()
-    sut.handle(httpRequest)
+    const request = mockRequest()
+    sut.handle(request)
     expect(validateSpy).toHaveBeenCalledTimes(1)
-    expect(validateSpy).toHaveBeenCalledWith(mockAddBankCardModel())
+    expect(validateSpy).toHaveBeenCalledWith(mockRequest())
   })
 
   test('Should return an Error if Validation returns an Error', async () => {
     const { sut, validationStub } = makeSut()
     const mockedError = new Error()
     jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { return mockedError })
-    const httpRequest = mockRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(badRequest(mockedError))
   })
 
   test('Should return 500 if Validation throws', async () => {
     const { sut, validationStub } = makeSut()
     const mockedError = new Error()
-    const httpRequest = mockRequest()
+    const request = mockRequest()
     jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { throw mockedError })
-    const httpResponse = await sut.handle(httpRequest)
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(serverError(mockedError))
   })
 

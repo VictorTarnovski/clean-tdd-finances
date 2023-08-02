@@ -1,11 +1,13 @@
-import { AccessDeniedError, HttpRequest, LoadBankAccountById, LoadAccountById } from "./load-bank-account-by-id-controller-protocols"
 import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
-import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
+import { AccessDeniedError } from "@/presentation/errors"
+import { LoadBankAccountById} from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadAccountById } from "@/domain/use-cases/load-account-by-id"
 import { mockBankAccountModel } from "@/domain/tests"
 import { mockLoadBankAccountById, mockLoadAccountById } from "@/presentation/tests"
+import { LoadBankAccountByIdController } from "./load-bank-account-by-id-controller"
 
 
-const mockRequest = (): HttpRequest => ({ accountId: 'any_account_id', params: { bankAccountId: 'any_bank_account_id' } })
+const mockRequest = () => ({ bankAccountId: 'any_bank_account_id', accountId: 'any_account_id' })
 
 type SutTypes = {
   sut: LoadBankAccountByIdController
