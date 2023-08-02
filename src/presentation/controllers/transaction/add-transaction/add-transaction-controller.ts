@@ -1,11 +1,11 @@
-import { Controller, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
+import { Controller, HttpResponse, Validation } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AddTransaction } from "@/domain/use-cases/transaction/add-transaction"
 import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 import { LoadBankCardById } from "@/domain/use-cases/bank-card/load-bank-card-by-id"
 import { SaveBankAccountBalance } from "@/domain/use-cases/bank-account/save-bank-account-balance"
 
-export class AddTransactionController implements Controller {
+export class AddTransactionController {
   constructor(
     private readonly addTransaction: AddTransaction,
     private readonly validation: Validation,
@@ -13,9 +13,9 @@ export class AddTransactionController implements Controller {
     private readonly loadBankCardById: LoadBankCardById,
     private readonly saveBankAccountBalance: SaveBankAccountBalance
   ) { }
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: AddTransactionController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(request)
       if (error) {
         return badRequest(error)
       }
@@ -25,14 +25,14 @@ export class AddTransactionController implements Controller {
         operation,
         bankAccountId,
         bankCardId
-      } = httpRequest.body
+      } = request
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
       if (!bankAccount) {
         return notFound('bankAccount')
       }
-      if(bankCardId) {
+      if (bankCardId) {
         const bankCard = await this.loadBankCardById.load(bankCardId, bankAccountId)
-        if(!bankCard) {
+        if (!bankCard) {
           return notFound('bankCard')
         }
       }
@@ -43,5 +43,15 @@ export class AddTransactionController implements Controller {
     } catch (error: any) {
       return serverError(error)
     }
+  }
+}
+
+export namespace AddTransactionController {
+  export type Request = {
+    description: string
+    value: number
+    operation: 'addition' | 'subtraction'
+    bankAccountId: string
+    bankCardId?: string
   }
 }

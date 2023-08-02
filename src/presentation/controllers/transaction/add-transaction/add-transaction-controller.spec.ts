@@ -2,7 +2,7 @@ import { AddTransactionController } from './add-transaction-controller'
 import { mockAddTransactionModel, mockBankAccountModel, mockTransactionModel } from '@/domain/tests'
 import { AddTransaction } from '@/domain/use-cases/transaction/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/bank-account/load-bank-account-by-id'
-import { HttpRequest, Validation } from '@/presentation/protocols'
+import { Validation } from '@/presentation/protocols'
 import { mockAddTransaction, mockLoadBankAccountById, mockLoadBankCardById, mockSaveBankAccountBalance, mockValidation } from '@/presentation/tests'
 import { ServerError } from '@/presentation/errors'
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
@@ -21,7 +21,7 @@ const calculateBalance = (): number | undefined => {
   }
 }
 
-const mockRequest = (): HttpRequest => ({ body: mockAddTransactionModel() })
+const mockRequest = () => mockAddTransactionModel()
 
 type SutTypes = {
   sut: AddTransactionController,
