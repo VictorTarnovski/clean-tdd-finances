@@ -1,5 +1,5 @@
 import { AccountModel } from "@/domain/models/account"
-import { LoadAccountById } from "@/domain/use-cases/load-account-by-id"
+import { LoadAccountById } from "@/domain/use-cases/account/load-account-by-id"
 import { LoadAccountByIdRepository } from "@/data/protocols/db/account/load-account-by-id-repository"
 
 export class DbLoadAccountById implements LoadAccountById {

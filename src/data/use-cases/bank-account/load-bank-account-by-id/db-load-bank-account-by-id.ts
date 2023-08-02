@@ -1,5 +1,5 @@
 import { BankAccountModel } from "@/domain/models/bank-account";
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 import { LoadBankAccountByIdRepository } from "@/data/protocols/db/bank-account/load-bank-account-by-id-repository"
 
 export class DbLoadBankAccountById implements LoadBankAccountById {

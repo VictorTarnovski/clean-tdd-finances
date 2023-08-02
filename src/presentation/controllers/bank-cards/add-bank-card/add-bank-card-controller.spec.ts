@@ -1,15 +1,17 @@
 import { AddBankCardController } from "./add-bank-card-controller"
-import { badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
+import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
-import { AddBankCard } from '@/domain/use-cases/add-bank-card'
+import { AddBankCard } from '@/domain/use-cases/bank-card/add-bank-card'
 import { Validation } from "@/presentation/protocols"
 import { mockValidation, mockAddBankCard, mockLoadBankAccountById } from "@/presentation/tests"
 import { mockAddBankCardModel, mockBankCardModel } from "@/domain/tests"
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 
 const mockRequest = () => ({
-  ...mockAddBankCardModel(),
-  bankAccountId: 'any_bank_account_id'
+  number: 5585411679142753,
+  flag: 'MASTER',
+  expiresAt: '2025-04-28T00:00:00',
+  bankAccountId: 'any_bank_account_id',
 })
 
 type SutTypes = {
@@ -47,7 +49,8 @@ describe('AddBankCard Controller', () => {
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual(mockBankCardModel())
+    expect(httpResponse).toEqual(ok(mockBankCardModel()))
+    expect(httpResponse.body.expiresAt).toStrictEqual(new Date(mockAddBankCardModel().expiresAt))
   })
 
   test('Should return 500 if AddBankCard throws', async () => {

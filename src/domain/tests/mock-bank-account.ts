@@ -1,5 +1,5 @@
 import { BankAccountModel } from "@/domain/models/bank-account"
-import { AddBankAccountModel } from "@/domain/use-cases/add-bank-account"
+import { AddBankAccountModel } from "@/domain/use-cases/bank-account/add-bank-account"
 
 
 export const mockAddBankAccountModel = (): AddBankAccountModel => ({
@@ -20,7 +20,7 @@ export const mockBankAccountModel = (): BankAccountModel => ({
       id: 'any_bank_card_id',
       number: 5585411679142753,
       flag: 'MASTER',
-      expiresAt: '28/04/2025',
+      expiresAt: new Date('2025-04-28T00:00:00')
     }
   ],
   accountId: 'any_account_id'

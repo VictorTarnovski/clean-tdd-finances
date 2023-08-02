@@ -1,5 +1,5 @@
 import { BankAccountModel } from "@/domain/models/bank-account"
-import { AddBankAccount, AddBankAccountModel } from "@/domain/use-cases/add-bank-account"
+import { AddBankAccount, AddBankAccountModel } from "@/domain/use-cases/bank-account/add-bank-account"
 import { AddBankAccountRepository } from "@/data/protocols/db/bank-account/add-bank-account-repository"
 
 export class DbAddBankAccount implements AddBankAccount {

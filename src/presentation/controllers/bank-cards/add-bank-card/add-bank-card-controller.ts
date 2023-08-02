@@ -1,8 +1,8 @@
 import { Controller, HttpResponse } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
-import { AddBankCard } from "@/domain/use-cases/add-bank-card"
+import { AddBankCard } from "@/domain/use-cases/bank-card/add-bank-card"
 import { Validation } from "@/presentation/protocols/validation"
-import { LoadBankAccountById } from "@/domain/use-cases/load-bank-account-by-id"
+import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 
 export class AddBankCardController implements Controller {
   constructor(
@@ -19,7 +19,7 @@ export class AddBankCardController implements Controller {
       const { number, flag, expiresAt, bankAccountId } = request
       const exists = await this.loadBankAccountById.load(bankAccountId)
       if (!exists) { return notFound('bankAccount') }
-      const bankCard = await this.addBankCard.add({ number, flag, expiresAt }, bankAccountId)
+      const bankCard = await this.addBankCard.add({ number, flag, expiresAt: new Date(expiresAt) }, bankAccountId)
       return ok(bankCard)
     } catch (error: any) {
       return serverError(error)
