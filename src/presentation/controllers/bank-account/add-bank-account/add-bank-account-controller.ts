@@ -1,6 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { ok, badRequest, unauthorized, serverError } from '@/presentation/helpers/http/http-helper'
-import { AddBankAccount } from '@/domain/use-cases/add-bank-account'
+import { AddBankAccount } from '@/domain/use-cases/bank-account/add-bank-account'
 
 export class AddBankAccountController implements Controller {
   constructor(private readonly addBankAccount: AddBankAccount, private readonly validation: Validation) { }

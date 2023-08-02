@@ -1,7 +1,7 @@
 import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { AccessDeniedError } from "@/presentation/errors"
-import { LoadBankAccountById} from "@/domain/use-cases/load-bank-account-by-id"
-import { LoadAccountById } from "@/domain/use-cases/load-account-by-id"
+import { LoadBankAccountById} from "@/domain/use-cases/bank-account/load-bank-account-by-id"
+import { LoadAccountById } from "@/domain/use-cases/account/load-account-by-id"
 import { Controller, HttpResponse } from "@/presentation/protocols"
 
 export class LoadBankAccountByIdController implements Controller {
