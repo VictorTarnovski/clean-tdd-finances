@@ -3,7 +3,7 @@ import app from '@/main/config/app'
 import env from '@/main/config/env'
 import mongoHelper from '@/infra/db/mongodb/mongo-helper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 
@@ -31,6 +31,7 @@ beforeEach(async () => {
   bankAccountCollection = await mongoHelper.getCollection('bank-accounts')
   bankAccountCollection.deleteMany()
   accessToken = sign({ id: accountId }, env.jwtSecret)
+  await accountCollection.updateOne({ _id: new ObjectId(accountId) }, { $set: { accessToken } })
 })
 
 describe('POST /bank-accounts', () => {
