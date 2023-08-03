@@ -13,7 +13,7 @@
     "test:verbose": "set NODE_ENV=dev && jest --passWithNoTests --runInBand",
     "test:unit": "set NODE_ENV=dev && npm test -- --watch -c jest-unit-config.js",
     "test:integration": "set NODE_ENV=dev && npm test -- --watch -c jest-integration-config.js",
-    "test:staged": "set NODE_ENV=dev && jest --passWithNoTests --onlyChanged --watch --detectOpenHandles",
+    "test:staged": "set NODE_ENV=dev && jest --passWithNoTests --onlyChanged --forceExit",
     "test:ci": "set NODE_ENV=dev && npm test -- --coverage"
   },
   "keywords": [],
