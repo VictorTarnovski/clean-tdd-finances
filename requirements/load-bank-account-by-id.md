@@ -1,4 +1,4 @@
-# Cadastro
+# Consulta conta bancária por id
 
 > ## Caso de sucesso
 

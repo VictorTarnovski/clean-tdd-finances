@@ -1,4 +1,4 @@
-# Cadastro
+# Adicionar conta bancária
 
 > ## Caso de sucesso
 

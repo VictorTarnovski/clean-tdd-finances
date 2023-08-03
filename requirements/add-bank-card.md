@@ -1,4 +1,4 @@
-# Cadastro
+# Adicionar cartão
 
 > ## Caso de sucesso
 
