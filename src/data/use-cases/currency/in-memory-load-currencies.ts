@@ -5,7 +5,7 @@ import { LoadCurrencies } from "@/domain/use-cases"
 export class InMemoryLoadCurrencies implements LoadCurrencies {
   constructor(private readonly loadCurrenciesRepository: LoadCurrenciesRepository) {}
   async load(): Promise<CurrencyModel[]> {
-    await this.loadCurrenciesRepository.loadCurrencies()
-    return []
+    const currencies = await this.loadCurrenciesRepository.loadCurrencies()
+    return currencies
   }
 }
