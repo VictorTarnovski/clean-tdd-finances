@@ -32,4 +32,13 @@ describe('DbLoadBanks Usecase', () => {
     const promise = sut.load()
     expect(promise).rejects.toThrow()
   })
+
+  test('Should return LoadBanksRepository loadBanks return', async () => {
+    const { sut, loadBanksRepositoryStub } = makeSut()
+    jest.spyOn(loadBanksRepositoryStub, 'loadBanks').mockImplementationOnce(async () => [
+      { id: 'any_id', name: 'any_bank', logo: 'any_logo_url' }
+    ])
+    const banks = await sut.load()
+    expect(banks).toEqual([{ id: 'any_id', name: 'any_bank', logo: 'any_logo_url' }])
+  })
 })
