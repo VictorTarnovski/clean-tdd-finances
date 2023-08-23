@@ -6,10 +6,10 @@ import { makeLogControllerDecorator } from '@/main/factories/decorators/log-cont
 import { makeLoadBankAccountByIdController } from '@/main/factories/controllers/bank-account/load-bank-account-by-id-controller-factory'
 import { auth } from '@/main/middlewares/auth'
 
-export default (router: Router): void => {
+export default async (router: Router): Promise<void> => {
   router.post('/bank-accounts',
     auth,
-    adaptRoute(makeLogControllerDecorator(makeAddBankAccountController()
+    adaptRoute(makeLogControllerDecorator((await makeAddBankAccountController())
     )
     )
   )
