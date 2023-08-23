@@ -25,4 +25,11 @@ describe('DbLoadBanks Usecase', () => {
     await sut.load()
     expect(loadSpy).toHaveBeenCalled()
   })
+
+  test('Should throw if LoadBanksRepository throw', async () => {
+    const { sut, loadBanksRepositoryStub } = makeSut()
+    jest.spyOn(loadBanksRepositoryStub, 'loadBanks').mockImplementationOnce(async () => { throw new Error() })
+    const promise = sut.load()
+    expect(promise).rejects.toThrow()
+  })
 })
