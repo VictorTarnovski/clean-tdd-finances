@@ -1,0 +1,28 @@
+import { LoadBanksRepository } from '@/data/protocols/db'
+import { DbLoadBanks } from '@/data/use-cases'
+import { mockLoadBanksRepository } from '../../mocks'
+
+
+type SutTypes = {
+  sut: DbLoadBanks
+  loadBanksRepositoryStub: LoadBanksRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadBanksRepositoryStub = mockLoadBanksRepository()
+  const sut = new DbLoadBanks(loadBanksRepositoryStub)
+  return {
+    sut,
+    loadBanksRepositoryStub
+  }
+}
+
+describe('DbLoadBanks Usecase', () => {
+
+  test('Should call LoadBanksRepository', async () => {
+    const { sut, loadBanksRepositoryStub } = makeSut()
+    const loadSpy = jest.spyOn(loadBanksRepositoryStub, 'loadBanks')
+    await sut.load()
+    expect(loadSpy).toHaveBeenCalled()
+  })
+})
