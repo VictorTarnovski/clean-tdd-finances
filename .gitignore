@@ -4,3 +4,4 @@ dist
 .env
 data
 !src/data
+!tests/data
