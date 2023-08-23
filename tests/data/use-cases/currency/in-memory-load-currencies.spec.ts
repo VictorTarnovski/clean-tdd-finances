@@ -1,6 +1,6 @@
 import { InMemoryLoadCurrencies } from "@/data/use-cases"
-import { mockLoadCurrenciesRepository } from "../mocks/mock-load-currencies-repository"
-import { mockCurrencyModels } from "../../domain/mocks/mock-currency"
+import { mockLoadCurrenciesRepository } from "../../mocks/mock-load-currencies-repository"
+import { mockCurrencyModels } from "../../../domain/mocks/mock-currency"
 
 const makeSut = () => {
   const loadCurrenciesRepositoryStub = mockLoadCurrenciesRepository()
