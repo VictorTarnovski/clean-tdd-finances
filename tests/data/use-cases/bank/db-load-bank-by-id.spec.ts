@@ -32,4 +32,11 @@ describe('DbLoadBankById Usecase', () => {
     const promise = sut.load('any_id')
     expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadBankByIdRepository returns null', async () => {
+    const { sut, loadBankByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadBankByIdRepositoryStub, 'loadBankById').mockImplementationOnce(async () => null)
+    const bank = await sut.load('any_id')
+    expect(bank).toBeNull()
+  })
 })
