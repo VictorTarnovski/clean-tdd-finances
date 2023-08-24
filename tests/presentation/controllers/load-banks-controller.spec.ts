@@ -1,6 +1,7 @@
 import { LoadBanksController } from "@/presentation/controllers/bank/load-banks-controller"
+import { ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { mockBankModels } from "../../domain/mocks"
 import { mockLoadBanks } from "../mocks"
-import { serverError } from "@/presentation/helpers/http/http-helper"
 
 const makeSut = () => {
   const loadBanksStub = mockLoadBanks()
@@ -25,6 +26,12 @@ describe('LoadBanks Controller', () => {
       jest.spyOn(loadBanksStub, 'load').mockImplementationOnce(async () => { throw error })
       const httpResponse = await sut.handle({})
       expect(httpResponse).toEqual(serverError(error))
+    })
+
+    test('Should return 200 on success', async () => {
+      const { sut } = makeSut()
+      const httpResponse = await sut.handle({})
+      expect(httpResponse).toEqual(ok(mockBankModels()))
     })
                     
 })
