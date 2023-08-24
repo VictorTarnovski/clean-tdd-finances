@@ -1,4 +1,4 @@
-import { AddBankCardController } from "@/presentation/controllers/bank-account/add-bank-card-controller"
+import { AddBankCardController } from "@/presentation/controllers/bank-cards/add-bank-card-controller"
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/bank-card/add-bank-card'

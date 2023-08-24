@@ -1,4 +1,4 @@
-import { AddBankCardController } from "@/presentation/controllers/bank-account/add-bank-card-controller"
+import { AddBankCardController } from "@/presentation/controllers/bank-cards/add-bank-card-controller"
 import { Controller } from "@/presentation/protocols"
 import { makeBankCardValidation } from "./add-bank-card-validation-factory"
 import { makeDbAddBankCard } from "@/main/factories/use-cases/bank-card/db-add-bank-card-factory"

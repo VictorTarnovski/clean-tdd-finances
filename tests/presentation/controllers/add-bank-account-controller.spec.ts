@@ -4,7 +4,7 @@ import { ok, badRequest } from '@/presentation/helpers/http/http-helper'
 import { AddBankAccount } from '@/domain/use-cases/bank-account/add-bank-account'
 import { mockBankAccountModel } from '../../domain/mocks'
 import { mockValidation, mockAddBankAccount } from '../mocks'
-import { AddBankAccountController } from '@/presentation/controllers/bank-cards/add-bank-account-controller'
+import { AddBankAccountController } from '@/presentation/controllers/bank-account/add-bank-account-controller'
 
 const mockRequest = () => ({ number: 285992, currency: 'BRL', accountId: 'any_account_id' })
 
