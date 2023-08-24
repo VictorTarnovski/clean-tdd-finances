@@ -13,7 +13,8 @@ export class MongoBankRepository implements LoadBanksRepository, LoadBankByIdRep
 
   async loadBankById(bankId: string): Promise<BankModel | null> {
     const bankCollection = await mongoHelper.getCollection('banks')
-    const mongoBank = await bankCollection.findOne(new ObjectId(bankId))  
+    const mongoBank = await bankCollection.findOne(new ObjectId(bankId))
+    if (!mongoBank) { return null}
     const bank = mongoHelper.map(mongoBank)
     return bank
   }
