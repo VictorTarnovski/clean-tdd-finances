@@ -37,4 +37,10 @@ describe('MongoBankRepository', () => {
     expect(bank?.name).toBe('any_name')
     expect(bank?.logo).toBe('any_logo.png')
   })
+
+  test('Should return null on loadById returns fail', async () => {
+    const sut = new MongoBankRepository()
+    const bank = await sut.loadBankById(new ObjectId().toHexString())
+    expect(bank).toBeFalsy()
+  })
 })
