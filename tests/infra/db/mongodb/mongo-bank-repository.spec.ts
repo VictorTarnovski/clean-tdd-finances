@@ -2,7 +2,8 @@ import { MongoBankRepository } from "@/infra/db/mongodb/mongo-bank-repository"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
-import { mockBankModels } from "../../../domain/mocks"
+
+let bankId: string
 
 describe('MongoBankRepository', () => {
   beforeAll(async () => {
@@ -11,11 +12,12 @@ describe('MongoBankRepository', () => {
     await mongoHelper.connect(uri)
     const bankCollection = await mongoHelper.getCollection('banks')
     await bankCollection.deleteMany()
-    await bankCollection.insertOne({
+    const { insertedId } = await bankCollection.insertOne({
       _id: new ObjectId(),
       name: 'any_name',
       logo: 'any_logo.png',
     })
+    bankId = insertedId.toHexString()
   })
 
   afterAll(async () => {
@@ -26,5 +28,13 @@ describe('MongoBankRepository', () => {
     const sut = new MongoBankRepository()
     const banks = await sut.loadBanks()
     expect(banks).toBeTruthy()
+  })
+
+  test('Should return a bank on loadById success', async () => {
+    const sut = new MongoBankRepository()
+    const bank = await sut.loadBankById(bankId)
+    expect(bank).toBeTruthy()
+    expect(bank?.name).toBe('any_name')
+    expect(bank?.logo).toBe('any_logo.png')
   })
 })
