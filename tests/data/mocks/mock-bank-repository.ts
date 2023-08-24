@@ -1,6 +1,6 @@
-import { LoadBanksRepository } from "@/data/protocols/db"
+import { LoadBankByIdRepository, LoadBanksRepository } from "@/data/protocols/db"
 import { BankModel } from "@/domain/models"
-import { mockBankModels } from "../../domain/mocks"
+import { mockBankModel, mockBankModels } from "../../domain/mocks"
 
 export const mockLoadBanksRepository = () => {
   class LoadBanksRepositoryStub implements LoadBanksRepository {
@@ -9,4 +9,13 @@ export const mockLoadBanksRepository = () => {
     }
   }
   return new LoadBanksRepositoryStub()
+}
+
+export const mockLoadBankByIdRepository = () => {
+  class LoadBankByIdRepositoryStub implements LoadBankByIdRepository {
+    async loadBankById(): Promise<BankModel> {
+      return mockBankModel()
+    }
+  }
+  return new LoadBankByIdRepositoryStub()
 }
