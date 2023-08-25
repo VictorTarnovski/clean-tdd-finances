@@ -1,6 +1,6 @@
 import { HttpResponse, Validation } from '@/presentation/protocols'
 import { MissingParamError, ServerError } from '@/presentation/errors'
-import { ok, badRequest } from '@/presentation/helpers/http/http-helper'
+import { ok, badRequest, notFound } from '@/presentation/helpers/http/http-helper'
 import { AddBankAccount, LoadBankById } from '@/domain/use-cases'
 import { mockBankAccountModel } from '../../domain/mocks'
 import { mockValidation, mockAddBankAccount, mockLoadBankById } from '../mocks'
@@ -59,6 +59,15 @@ describe('AddBankAccount Controller', () => {
         const request = mockRequest()
         const httpResponse: HttpResponse = await sut.handle(request)
         expect(httpResponse).toEqual(badRequest(mockedError))
+    })
+
+    test('Should return 404 if LoadBankById returns null', async () => {
+        const { sut, loadBankById } = makeSut()
+        const loadSpy = jest.spyOn(loadBankById, 'load').mockImplementationOnce(async () => null)
+        const request = mockRequest()
+        const response = await sut.handle(request)
+        expect(loadSpy).toHaveBeenCalledTimes(1)
+        expect(response).toEqual(notFound('bank'))
     })
 
     test('Should return 200 if valid data is provided', async () => {
