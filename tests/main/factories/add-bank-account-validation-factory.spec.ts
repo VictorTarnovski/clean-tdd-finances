@@ -10,7 +10,7 @@ describe('AddBankAccountValidation Factory', () => {
       makeAddBankAccountValidation()
       const validations: Validation[] = []
       const supportedCurrencies: string[] = []
-      for (const field of ['number', 'currency']) {
+      for (const field of ['number', 'currency', 'bankId']) {
          validations.push(new RequiredFieldValidation(field))
       }
       const currencyRepository = new InMemoryCurrencyRepository()

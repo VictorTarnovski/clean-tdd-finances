@@ -5,7 +5,7 @@ import { InMemoryCurrencyRepository } from "@/infra/in-memory/currency/in-memory
 export const makeAddBankAccountValidation = async (): Promise<ValidationComposite> => {
     const validations: Validation[] = []
     const supportedCurrencies: string[] = []
-     for (const field of ['number', 'currency']) {
+     for (const field of ['number', 'currency', 'bankId']) {
         validations.push(new RequiredFieldValidation(field))
      }
      const currencyRepository = new InMemoryCurrencyRepository()
