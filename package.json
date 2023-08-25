@@ -1,6 +1,6 @@
 {
   "name": "clean-tdd-finances",
-  "version": "1.5.7",
+  "version": "1.6.7",
   "description": "",
   "main": "index.js",
   "scripts": {
