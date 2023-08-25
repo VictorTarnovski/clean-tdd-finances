@@ -1,5 +1,5 @@
 import { LoadBankByIdController } from "@/presentation/controllers/bank/load-bank-by-id-controller"
-import { notFound, serverError } from "@/presentation/helpers/http/http-helper"
+import { ok, notFound, serverError } from "@/presentation/helpers/http/http-helper"
 import { mockLoadBankById } from "../mocks"
 import { mockBankModel } from "../../domain/mocks"
 
@@ -19,6 +19,12 @@ describe('LoadBankById Controller', () => {
       await sut.handle({ bankId: 'any_id' })
       expect(loadSpy).toHaveBeenCalledTimes(1)
       expect(loadSpy).toHaveBeenCalledWith('any_id')
+    })
+
+    test('Should return 200 on success', async () => {
+      const { sut } = makeSut()
+      const httpResponse = await sut.handle({ bankId: 'any_id' })
+      expect(httpResponse).toEqual(ok(mockBankModel()))
     })
     
     test('Should return 404 if LoadBankById returns null', async () => {
