@@ -55,9 +55,9 @@ export class MongoAccountRepository implements AddAccountRepository, LoadAccount
   }
 
   async loadById(accountId: string): Promise<AccountModel | null> {
-    const accountsCollection = await mongoHelper.getCollection('accounts')
     const isValid = ObjectId.isValid(accountId)
     if(!isValid) { return null }
+    const accountsCollection = await mongoHelper.getCollection('accounts')
     const mongoAccount = await accountsCollection.findOne({ _id: new ObjectId(accountId) })
     if (!mongoAccount) { return null }
     const account = mongoHelper.map(mongoAccount)

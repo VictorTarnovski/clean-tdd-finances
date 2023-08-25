@@ -26,17 +26,17 @@ describe('MongoTransactionRepository', () => {
     expect(transaction).toBeTruthy()
   })
 
-  test('Should return null if loadById fails', async () => {
-    const sut = new MongoTransactionRepository()
-    const transaction = await sut.load(new ObjectId().toHexString())
-    expect(transaction).toBeFalsy()
-  })
-
   test('Should return a transaction on loadById success', async () => {
     const sut = new MongoTransactionRepository()
     const transactionCollection = await mongoHelper.getCollection('transactions')
     const { insertedId } = await transactionCollection.insertOne(mockAddTransactionModel())
     const transaction = await sut.load(insertedId.toHexString())
     expect(transaction).toBeTruthy()
+  })
+
+  test('Should return null if an invalid id is passed to loadById', async () => {
+    const sut = new MongoTransactionRepository()
+    const transaction = await sut.load('invalid_id')
+    expect(transaction).toBeFalsy()
   })
 })

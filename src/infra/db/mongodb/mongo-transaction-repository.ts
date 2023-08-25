@@ -14,6 +14,8 @@ export class MongoTransactionRepository implements AddTransactionRepository, Loa
     return transaction
   }
   async load(transactionId: string): Promise<TransactionModel | null> {
+    const isValid = ObjectId.isValid(transactionId)
+    if(!isValid) { return null }
     const transactionsCollection = await mongoHelper.getCollection('transactions')
     const mongoTransaction = await transactionsCollection.findOne({ _id: new ObjectId(transactionId) })
     if(!mongoTransaction) return null

@@ -32,25 +32,31 @@ describe('MongoBankAccountRepository', () => {
     expect(bankAccount.id).toBeTruthy()
   })
 
-  test('Should return an account on loadByID success', async () => {
+  test('Should return an account on loadById success', async () => {
     const sut = new MongoBankAccountRepository()
     const { insertedId } = await bankAccountCollection.insertOne(mockAddBankAccountModel())
     const bankAccount = await sut.loadById(insertedId.toHexString())
     expect(bankAccount).toBeTruthy()
   })
 
-  test('Should return null if loadByID returns null', async () => {
+  test('Should return null if loadById returns null', async () => {
     const sut = new MongoBankAccountRepository()
     const bankAccount = await sut.loadById(new ObjectId().toHexString())
     expect(bankAccount).toBeFalsy()
   })
 
-  test('Should map the bankCards of the bankAccount on loadByID success', async () => {
+  test('Should return null if an invalid id is passed to loadById', async () => {
+    const sut = new MongoBankAccountRepository()
+    const bankAccount = await sut.loadById('invalid_id')
+    expect(bankAccount).toBeFalsy()
+  })
+
+  test('Should map the bankCards of the bankAccount on loadById success', async () => {
     const sut = new MongoBankAccountRepository()
     const { insertedId } = await bankAccountCollection.insertOne(mockAddBankAccountModel())
     bankAccountCollection.updateOne({ _id: insertedId }, { $push: { "cards": Object.assign( {}, { _id: new ObjectId() }, mockAddBankCardModel() ) } })
     const bankAccount = await sut.loadById(insertedId.toHexString())
-    expect(bankAccount!.cards[0].id).toBeTruthy()
+    expect(bankAccount?.cards[0].id).toBeTruthy()
   })
 
   test('Should change the Balance of the bankAccount on saveBalance success', async () => {

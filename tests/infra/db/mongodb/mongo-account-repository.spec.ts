@@ -240,7 +240,7 @@ describe('LoadById', () => {
 
     test('Should return null if an invalid id is passed', async () => {
         const sut = makeSut()
-        const account = await sut.loadById('any_id')
+        const account = await sut.loadById('invalid_id')
         expect(account).toBeNull()
     })
 }

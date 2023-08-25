@@ -6,6 +6,7 @@ import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
 
 export class MongoBankCardRepository implements AddBankCardRepository, LoadBankCardByIdRepository {
+
   async add(bankCardData: AddBankCardModel, bankAccountId: string): Promise<BankCardModel> {
     const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
     const bankCardId = new ObjectId()
@@ -17,11 +18,14 @@ export class MongoBankCardRepository implements AddBankCardRepository, LoadBankC
         _id: new ObjectId(bankAccountId),
         "cards": { "$elemMatch": { "_id": bankCardId } }
       })
-    const mongoBankCard = mongoBankAccount!.cards[0]
+    const mongoBankCard = mongoBankAccount?.cards[0]
     const bankCard = mongoHelper.map(mongoBankCard)
     return bankCard
   }
+
   async loadById(bankCardId: string, bankAccountId: string): Promise<BankCardModel | null> {
+    const isValid = ObjectId.isValid(bankCardId)
+    if (!isValid) { return null }
     const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
     const mongoBankAccount = await bankAccountsCollection.findOne(
       {

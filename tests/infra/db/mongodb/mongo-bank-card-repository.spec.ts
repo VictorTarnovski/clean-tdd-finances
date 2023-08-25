@@ -7,6 +7,7 @@ import { mockAddBankCardModel } from "../../../domain/mocks"
 
 describe('MongoBankCardRepository', () => {
   let bankAccount: BankAccountModel | null
+
   beforeAll(async () => {
     const mongo = await MongoMemoryServer.create()
     const uri = mongo.getUri()
@@ -18,9 +19,9 @@ describe('MongoBankCardRepository', () => {
   })
 
   beforeEach(async () => {
-    const bankAccountCollection = await mongoHelper.getCollection('bank-accounts')
-    await bankAccountCollection.deleteMany()
-    const { insertedId } = await bankAccountCollection.insertOne({
+    const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
+    await bankAccountsCollection.deleteMany()
+    const { insertedId } = await bankAccountsCollection.insertOne({
       _id: new ObjectId(),
       number: 285992,
       currency: 'BRL',
@@ -28,11 +29,11 @@ describe('MongoBankCardRepository', () => {
       cards: [],
       accountId: 'any_account_id'
     })
-    const mongoBankAccount = await bankAccountCollection.findOne({ _id: insertedId })
+    const mongoBankAccount = await bankAccountsCollection.findOne({ _id: insertedId })
     bankAccount = mongoHelper.map(mongoBankAccount)
   })
 
-  test('Should return an card on success', async () => {
+  test('Should return a card on add success', async () => {
     const sut = new MongoBankCardRepository()
     const bankAccountId = bankAccount!.id
     const bankCard = await sut.add(mockAddBankCardModel(), bankAccountId)
@@ -41,5 +42,20 @@ describe('MongoBankCardRepository', () => {
     expect(bankCard.flag).toBe('MASTER')
     expect(bankCard.expiresAt).toStrictEqual(new Date('2025-04-28T00:00:00'))
     expect(bankCard.id).toBeTruthy()
+  })
+
+  test('Should return a card on loadById on success', async () => {
+    const sut = new MongoBankCardRepository()
+    const bankAccountId = bankAccount!.id
+    const insertedCard = await sut.add(mockAddBankCardModel(), bankAccountId)
+    const card = await sut.loadById(insertedCard.id, bankAccountId)
+    expect(card).toBeTruthy()
+  })
+
+  test('Should return null if an invalid id is passed to loadById', async () => {
+    const sut = new MongoBankCardRepository()
+    const bankAccountId = bankAccount!.id
+    const card = await sut.loadById('invalid_id', bankAccountId)
+    expect(card).toBeFalsy()
   })
 })

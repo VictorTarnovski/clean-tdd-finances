@@ -38,9 +38,15 @@ describe('MongoBankRepository', () => {
     expect(bank?.logo).toBe('any_logo.png')
   })
 
-  test('Should return null on loadById returns fail', async () => {
+  test('Should return null on loadById fails', async () => {
     const sut = new MongoBankRepository()
     const bank = await sut.loadBankById(new ObjectId().toHexString())
+    expect(bank).toBeFalsy()
+  })
+
+  test('Should return null if an invalid id is passed to loadById', async () => {
+    const sut = new MongoBankRepository()
+    const bank = await sut.loadBankById('invalid_id')
     expect(bank).toBeFalsy()
   })
 })
