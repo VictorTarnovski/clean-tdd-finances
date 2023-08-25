@@ -16,7 +16,7 @@ describe('DbAddBankAccount Usecase', () => {
         const { sut, addBankAccountRepository } = makeSut()
         const addSpy = jest.spyOn(addBankAccountRepository, 'add')
         await sut.add(mockAddBankAccountModel())
-        expect(addSpy).toBeCalledWith({ number: mockAddBankAccountModel().number, currency: mockAddBankAccountModel().currency, balance: mockAddBankAccountModel().balance, cards: mockAddBankAccountModel().cards, accountId: mockAddBankAccountModel().accountId })
+        expect(addSpy).toBeCalledWith(mockAddBankAccountModel())
     })
 
     test('Should thorw if AddBankAccountRepository thorws', async () => {

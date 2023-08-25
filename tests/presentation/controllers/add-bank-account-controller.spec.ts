@@ -1,27 +1,29 @@
 import { HttpResponse, Validation } from '@/presentation/protocols'
 import { MissingParamError, ServerError } from '@/presentation/errors'
 import { ok, badRequest } from '@/presentation/helpers/http/http-helper'
-import { AddBankAccount } from '@/domain/use-cases/bank-account/add-bank-account'
+import { AddBankAccount, LoadBankById } from '@/domain/use-cases'
 import { mockBankAccountModel } from '../../domain/mocks'
-import { mockValidation, mockAddBankAccount } from '../mocks'
+import { mockValidation, mockAddBankAccount, mockLoadBankById } from '../mocks'
 import { AddBankAccountController } from '@/presentation/controllers/bank-account/add-bank-account-controller'
 
-const mockRequest = () => ({ number: 285992, currency: 'BRL', accountId: 'any_account_id' })
+const mockRequest = () => ({ number: 285992, currency: 'BRL', accountId: 'any_account_id', bankId: 'any_bank_id' })
 
 type SutTypes = {
     sut: AddBankAccountController
-    addBankAccountStub: AddBankAccount,
+    addBankAccountStub: AddBankAccount
     validationStub: Validation
+    loadBankById: LoadBankById
 }
 
 const makeSut = (): SutTypes => {
     const addBankAccountStub = mockAddBankAccount()
     const validationStub = mockValidation()
-    const sut = new AddBankAccountController(addBankAccountStub, validationStub)
-    return { sut, addBankAccountStub, validationStub }
+    const loadBankById = mockLoadBankById()
+    const sut = new AddBankAccountController(addBankAccountStub, validationStub, loadBankById)
+    return { sut, addBankAccountStub, validationStub, loadBankById }
 }
 
-describe('BankAccount Controller', () => {
+describe('AddBankAccount Controller', () => {
 
     test('Should call AddBankAccount with correct values', async () => {
         const { sut, addBankAccountStub } = makeSut()
@@ -29,7 +31,7 @@ describe('BankAccount Controller', () => {
         const request = mockRequest()
         await sut.handle(request)
         expect(addSpy).toHaveBeenCalledTimes(1)
-        expect(addSpy).toHaveBeenCalledWith({ number: 285992, currency: 'BRL', balance: 0, cards: [], accountId: 'any_account_id'})
+        expect(addSpy).toHaveBeenCalledWith({ number: 285992, currency: 'BRL', balance: 0, cards: [], accountId: 'any_account_id', bankId: 'any_bank_id' })
     })
 
     test('Should call Validation with correct values', async () => {
@@ -39,6 +41,15 @@ describe('BankAccount Controller', () => {
         await sut.handle(request)
         expect(validateSpy).toHaveBeenCalledTimes(1)
         expect(validateSpy).toHaveBeenCalledWith(request)
+    })
+
+    test('Should call LoadBankById with correct id', async () => {
+        const { sut, loadBankById } = makeSut()
+        const loadSpy = jest.spyOn(loadBankById, 'load')
+        const request = mockRequest()
+        await sut.handle(request)
+        expect(loadSpy).toHaveBeenCalledTimes(1)
+        expect(loadSpy).toHaveBeenCalledWith(mockRequest().bankId)
     })
 
     test('Should return 400 if Validation returns an Error', async () => {

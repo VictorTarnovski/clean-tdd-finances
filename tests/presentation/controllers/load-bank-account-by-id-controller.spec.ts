@@ -78,7 +78,8 @@ describe('LoadBankAccountById Controller', () => {
         currency: 'USD',
         balance: 0,
         cards: [],
-        accountId: 'other_account_id'
+        accountId: 'other_account_id',
+        bankId: 'any_bank_id'
       }
     })
     const httpResponse = await sut.handle(mockRequest())
