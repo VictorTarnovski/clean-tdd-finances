@@ -234,8 +234,14 @@ describe('LoadById', () => {
 
     test('Should return null if loadById fails', async () => {
         const sut = makeSut()
-        const account = await sut.loadByToken(new ObjectId().toHexString())
+        const account = await sut.loadById(new ObjectId().toHexString())
         expect(account).toBeFalsy()
+    })
+
+    test('Should return null if an invalid id is passed', async () => {
+        const sut = makeSut()
+        const account = await sut.loadById('any_id')
+        expect(account).toBeNull()
     })
 }
 )
