@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { ok, badRequest, unauthorized, serverError } from '@/presentation/helpers/http/http-helper'
+import { ok, badRequest, unauthorized, notFound, serverError } from '@/presentation/helpers/http/http-helper'
 import { AddBankAccount } from '@/domain/use-cases/bank-account/add-bank-account'
 import { LoadBankById } from '@/domain/use-cases'
 
@@ -18,6 +18,7 @@ export class AddBankAccountController implements Controller {
       const { number, currency, balance, accountId, bankId } = request
       if (!accountId) { return unauthorized() }
       const bank = await this.loadBankById.load(bankId)
+      if(!bank) { return notFound('bank') }
       const accountBalance = balance ? balance : 0
       const bankAccount = await this.addBankAccount.add({
         number,
