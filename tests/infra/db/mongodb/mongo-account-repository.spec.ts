@@ -1,4 +1,4 @@
-import { Collection } from "mongodb"
+import { Collection, ObjectId } from "mongodb"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import { MongoAccountRepository } from "@/infra/db/mongodb/mongo-account-repository"
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
@@ -194,6 +194,47 @@ describe('LoadByToken', () => {
     test('Should return null if loadByToken fails', async () => {
         const sut = makeSut()
         const account = await sut.loadByToken('any_token')
+        expect(account).toBeFalsy()
+    })
+}
+)
+
+describe('LoadById', () => {
+
+    beforeAll(async () => {
+        const mongo = await MongoMemoryServer.create()
+        const uri = mongo.getUri()
+        await mongoHelper.connect(uri)
+    })
+
+    afterAll(async () => {
+        await mongoHelper.disconnect()
+    })
+
+    beforeEach(async () => {
+        accountCollection = await mongoHelper.getCollection('accounts')
+        await accountCollection.deleteMany()
+    })
+
+    test('Should return an acount on loadById on success', async () => {
+        const sut = makeSut()
+        const { insertedId } = await accountCollection.insertOne({
+            name: 'any_name',
+            email: 'any_email@mail.com',
+            password: 'any_password',
+            accessToken: 'any_token'
+        })
+        const account = await sut.loadById(insertedId.toHexString())
+        expect(account).toBeTruthy()
+        expect(account?.id).toBeTruthy()
+        expect(account?.name).toBe('any_name')
+        expect(account?.email).toBe('any_email@mail.com')
+        expect(account?.password).toBe('any_password')
+    })
+
+    test('Should return null if loadById fails', async () => {
+        const sut = makeSut()
+        const account = await sut.loadByToken(new ObjectId().toHexString())
         expect(account).toBeFalsy()
     })
 }
