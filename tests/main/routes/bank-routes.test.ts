@@ -10,11 +10,13 @@ import { sign } from 'jsonwebtoken'
 let accountCollection: Collection
 let accountId: string
 let accessToken: string
+let bankCollection: Collection
 
 beforeAll(async () => {
   const mongo = await MongoMemoryServer.create()
   const uri = mongo.getUri()
   await mongoHelper.connect(uri)
+  bankCollection = await mongoHelper.getCollection('banks')
 
   // Creates the user account to authenticate
   accountCollection = await mongoHelper.getCollection('accounts')
@@ -38,5 +40,30 @@ describe('GET /banks', () => {
       .get('/api/banks')
       .set({ 'x-access-token': accessToken })
       .expect(200)
+  })
+})
+
+describe('GET /banks/:bankId', () => {
+
+  test('Should return 200 on success', async () => {
+    const { insertedId } = await bankCollection.insertOne({
+      name: 'any_name',
+      logo: 'any_logo.png',
+    })
+    await request(app)
+      .get(`/api/banks/${insertedId.toHexString()}`)
+      .set({ 'x-access-token': accessToken })
+      .expect(200)
+  })
+
+  test('Should return 404 if bank not exists', async () => {
+    const { insertedId } = await bankCollection.insertOne({
+      name: 'any_name',
+      logo: 'any_logo.png',
+    })
+    await request(app)
+      .get(`/api/banks/${new ObjectId().toHexString()}`)
+      .set({ 'x-access-token': accessToken })
+      .expect(404)
   })
 })
