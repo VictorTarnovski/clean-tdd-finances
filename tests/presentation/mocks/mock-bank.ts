@@ -4,7 +4,7 @@ import { mockBankModel, mockBankModels } from "../../domain/mocks"
 
 export const mockLoadBankById = () => {
   class LoadBankByIdStub implements LoadBankById {
-    async load(): Promise<BankModel> {
+    async load(): Promise<BankModel | null> {
       return mockBankModel()
     }
   }

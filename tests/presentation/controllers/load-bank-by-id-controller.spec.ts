@@ -1,6 +1,7 @@
 import { LoadBankByIdController } from "@/presentation/controllers/bank/load-bank-by-id-controller"
-import { serverError } from "@/presentation/helpers/http/http-helper"
+import { notFound, serverError } from "@/presentation/helpers/http/http-helper"
 import { mockLoadBankById } from "../mocks"
+import { mockBankModel } from "../../domain/mocks"
 
 const makeSut = () => {
   const loadBankByIdStub = mockLoadBankById()
@@ -19,7 +20,14 @@ describe('LoadBankById Controller', () => {
       expect(loadSpy).toHaveBeenCalledTimes(1)
       expect(loadSpy).toHaveBeenCalledWith('any_id')
     })
-      
+    
+    test('Should return 404 if LoadBankById returns null', async () => {
+      const { sut, loadBankByIdStub } = makeSut()
+      jest.spyOn(loadBankByIdStub, 'load').mockImplementationOnce(async () => null)
+      const httpResponse = await sut.handle({ bankId: 'any_id' })
+      expect(httpResponse).toEqual(notFound('bank'))
+    })
+
     test('Should return 500 if LoadBankById throw', async () => {
       const { sut, loadBankByIdStub } = makeSut()
       const error = new Error()
