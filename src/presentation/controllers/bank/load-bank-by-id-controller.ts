@@ -1,5 +1,5 @@
 import { Controller, HttpResponse } from "@/presentation/protocols"
-import { ok, serverError } from "@/presentation/helpers/http/http-helper"
+import { ok, notFound, serverError } from "@/presentation/helpers/http/http-helper"
 import { LoadBankById } from "@/domain/use-cases"
 
 export class LoadBankByIdController implements Controller {
@@ -7,7 +7,10 @@ export class LoadBankByIdController implements Controller {
   async handle(request: LoadBankByIdController.Request): Promise<HttpResponse> {
     try {
       const { bankId } = request
-      await this.loadBankById.load(bankId)
+      const bank = await this.loadBankById.load(bankId)
+      if(!bank) {
+        return notFound('bank')
+      }
       return ok('')
     } catch (error: any) {
       return serverError(error)
