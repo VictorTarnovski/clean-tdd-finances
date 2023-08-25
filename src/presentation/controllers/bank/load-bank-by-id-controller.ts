@@ -11,7 +11,7 @@ export class LoadBankByIdController implements Controller {
       if(!bank) {
         return notFound('bank')
       }
-      return ok('')
+      return ok(bank)
     } catch (error: any) {
       return serverError(error)
     }
