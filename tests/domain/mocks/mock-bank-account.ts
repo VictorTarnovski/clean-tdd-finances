@@ -7,7 +7,8 @@ export const mockAddBankAccountModel = (): AddBankAccountModel => ({
   currency: 'BRL',
   balance: 123.25,
   cards: [],
-  accountId: 'any_account_id'
+  accountId: 'any_account_id',
+  bankId: 'any_bank_id'
 })
 
 export const mockBankAccountModel = (): BankAccountModel => ({
@@ -23,5 +24,6 @@ export const mockBankAccountModel = (): BankAccountModel => ({
       expiresAt: new Date('2025-04-28T00:00:00')
     }
   ],
-  accountId: 'any_account_id'
+  accountId: 'any_account_id',
+  bankId: 'any_bank_id'
 })

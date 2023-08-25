@@ -6,5 +6,6 @@ export type BankAccountModel = {
     currency: string
     balance: number
     accountId: string
-    cards: BankCardModel[]
+    cards: BankCardModel[],
+    bankId: string
 }

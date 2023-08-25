@@ -6,6 +6,7 @@ export type AddBankAccountModel = {
     balance: number
     cards: []
     accountId: string
+    bankId: string
 }
 
 export interface AddBankAccount {
