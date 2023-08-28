@@ -1,6 +1,6 @@
 import { AddBankCardController } from "@/presentation/controllers/bank-cards/add-bank-card-controller"
 import { ok, badRequest, notFound, serverError } from '@/presentation/helpers/http/http-helper'
-import { ServerError } from '@/presentation/errors'
+import { InvalidParamError, ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/bank-card/add-bank-card'
 import { Validation } from "@/presentation/protocols"
 import { mockValidation, mockAddBankCard, mockLoadBankAccountById, mockLoadBankById } from "../mocks"
@@ -10,7 +10,7 @@ import { LoadBankById } from "@/domain/use-cases"
 
 const mockRequest = () => ({
   number: 5585411679142753,
-  flag: 'MASTER',
+  flag: 'any_flag',
   expiresAt: '2025-04-28T00:00:00',
   bankAccountId: 'any_bank_account_id',
 })
@@ -120,5 +120,12 @@ describe('AddBankCard Controller', () => {
     const loadSpy = jest.spyOn(loadBankById, 'load')
     await sut.handle(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith('any_bank_id')
+  })
+
+  test('Should return 400 if passed flag is not supported', async () => {
+    const { sut, loadBankById } = makeSut()
+    jest.spyOn(loadBankById, 'load').mockImplementationOnce(async () => null)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(badRequest(new InvalidParamError('flag')))
   })
 })

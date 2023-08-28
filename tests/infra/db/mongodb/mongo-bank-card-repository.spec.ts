@@ -39,7 +39,7 @@ describe('MongoBankCardRepository', () => {
     const bankCard = await sut.add(mockAddBankCardModel(), bankAccountId)
     expect(bankCard).toBeTruthy()
     expect(bankCard.number).toBe(5585411679142753)
-    expect(bankCard.flag).toBe('MASTER')
+    expect(bankCard.flag).toBe('any_flag')
     expect(bankCard.expiresAt).toStrictEqual(new Date('2025-04-28T00:00:00'))
     expect(bankCard.id).toBeTruthy()
   })
