@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=production && node dist/main/server.js",
-    "build": "npm install && rimraf dist && npx tsc -p tsconfig-build.json",
+    "build": "npm install && rimraf dist && npx tsc -p tsconfig-build.json && copyfiles -u 1 public/**/* dist/static",
     "postbuild": "copyfiles -u 1 public/**/* dist/static",
     "debug": "set NODE_ENV=dev && nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "up": "set NODE_ENV=dev && npm run build && docker-compose up -d",
@@ -17,8 +17,8 @@
     "test:staged": "set NODE_ENV=dev && jest --passWithNoTests --onlyChanged --forceExit",
     "test:ci": "set NODE_ENV=dev && npm test -- --coverage"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "NodeJS", "Typescript", "TDD", "Clean Architecture", "SOLID", "Design Patterns" ],
+  "author": "Victor Tarnovski",
   "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
