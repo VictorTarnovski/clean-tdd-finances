@@ -128,4 +128,12 @@ describe('AddBankCard Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(badRequest(new InvalidParamError('flag')))
   })
+
+  test('Should return 500 if LoadBankById throws', async () => {
+    const { sut, loadBankById } = makeSut()
+    const mockedError = new Error()
+    jest.spyOn(loadBankById, 'load').mockImplementationOnce(async () => { throw mockedError })
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(mockedError))
+  })
 })
