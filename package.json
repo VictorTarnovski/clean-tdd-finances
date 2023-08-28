@@ -6,7 +6,7 @@
   "scripts": {
     "start": "set NODE_ENV=production && node dist/main/server.js",
     "build": "npm install && rimraf dist && npx tsc -p tsconfig-build.json",
-    "postbuild": "copyfiles -u 1 public/**/* dist/static && npm run start",
+    "postbuild": "copyfiles -u 1 public/**/* dist/static",
     "debug": "set NODE_ENV=dev && nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "up": "set NODE_ENV=dev && npm run build && docker-compose up -d",
     "down": "docker-compose down",
