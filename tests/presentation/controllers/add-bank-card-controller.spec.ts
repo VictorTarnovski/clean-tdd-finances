@@ -13,6 +13,7 @@ const mockRequest = () => ({
   flag: 'any_flag',
   expiresAt: '2025-04-28T00:00:00',
   bankAccountId: 'any_bank_account_id',
+  accountId: 'any_account_id',
 })
 
 type SutTypes = {
@@ -133,7 +134,24 @@ describe('AddBankCard Controller', () => {
     const { sut, loadBankById } = makeSut()
     const mockedError = new Error()
     jest.spyOn(loadBankById, 'load').mockImplementationOnce(async () => { throw mockedError })
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(mockedError))
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(mockedError))
+  })
+
+  test('Should return 404 if the provided accountId is not equal to bankAccount accountId', async () => {
+    const { sut, loadBankAccountById } = makeSut()
+    jest.spyOn(loadBankAccountById, 'load').mockImplementationOnce(async () => {
+      return {
+        id: 'valid_id',
+        number: 123456789,
+        currency: 'USD',
+        balance: 0,
+        cards: [],
+        accountId: 'other_account_id',
+        bankId: 'any_bank_id'
+      }
+    })
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(notFound('bankAccount'))
   })
 })
