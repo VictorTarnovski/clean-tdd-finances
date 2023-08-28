@@ -11,5 +11,5 @@
 1. ✔️ Retorna erro **404** se a API não existir
 2. ✔️ Retorna erro **404** se não encontrar a conta bancária
 3. ✔️ Retorna erro **401** se não for um usuário ou admin
-3. ✔️ Retorna erro **403** se o id do usuário presente na conta bancária pesquisada não for o mesmo id pego através do access-token, exceto para admins
-4. ✔️ Retorna erro **500** se der erro ao tentar carregar a conta bancária
+4. ❌ Retorna erro **404** se o id do usuário presente na conta bancária pesquisada não for o mesmo id pego através do access-token, exceto para admins
+5. ✔️ Retorna erro **500** se der erro ao tentar carregar a conta bancária

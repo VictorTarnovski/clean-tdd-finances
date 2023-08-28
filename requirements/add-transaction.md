@@ -14,8 +14,8 @@
 1. ✔️ Retorna erro **404** se a API não existir
 2. ✔️ Retorna erro **400** se description, value, operation, bankAccountId não forem fornecidos pelo client
 3. ✔️ Retorna erro **400** se operation não for uma opção válida
-2. ✔️ Retorna erro **404** se não existir uma conta bancária com o id fornecido
-2. ✔️ Retorna erro **404** se não existir um cartão com o id fornecido
-4. ✔️ Retorna erro **401** se não for um usuário ou admin
-5. ❌ Retorna erro **403** se o id do usuário presente na conta bancária pesquisada não for o mesmo id pego através do access-token, exceto para admins
-6. ✔️ Retorna erro **500** se der erro ao tentar criar o cartão
+4. ✔️ Retorna erro **404** se não existir uma conta bancária com o id fornecido
+5. ✔️ Retorna erro **404** se não existir um cartão com o id fornecido
+6. ✔️ Retorna erro **401** se não for um usuário ou admin
+7. ❌ Retorna erro **404** se o id do usuário presente na conta bancária pesquisada não for o mesmo id pego através do access-token, exceto para admins
+8. ✔️ Retorna erro **500** se der erro ao tentar criar o cartão

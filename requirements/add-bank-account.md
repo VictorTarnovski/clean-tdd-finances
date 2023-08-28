@@ -4,7 +4,7 @@
 
 1. ✔️ Recebe uma requisição do tipo **POST** na rota **/api/bank-accounts**
 2. ✔️ Valida dados obrigatórios **number**, **currency**
-3. ✔️ Valida que **currency** é umas das opções válidas: **_USD_** , **_EUR_**, **_GBP_**, **_JPY_**, **_BRL_**
+3. ✔️ Valida que **currency** é umas das opções válidas fornecidas no endpoint GET /currencies
 4. ✔️ Verifica dado opcional **balance**
 5. ✔️ **Cria** uma conta bancária para o usuário com os dados informados, **adicionando** o id do usuário na conta bancária
 6. ✔️ Retorna **200** com a conta bancária
