@@ -1,14 +1,14 @@
 import { Controller, HttpResponse } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
-import { AddBankCard } from "@/domain/use-cases/bank-card/add-bank-card"
 import { Validation } from "@/presentation/protocols/validation"
-import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
+import { AddBankCard, LoadBankById, LoadBankAccountById } from "@/domain/use-cases"
 
 export class AddBankCardController implements Controller {
   constructor(
     private readonly addBankCard: AddBankCard,
     private readonly validation: Validation,
-    private readonly loadBankAccountById: LoadBankAccountById
+    private readonly loadBankAccountById: LoadBankAccountById,
+    private readonly loadBankById: LoadBankById
   ) { }
   async handle(request: AddBankCardController.Request): Promise<HttpResponse> {
     try {
@@ -17,8 +17,9 @@ export class AddBankCardController implements Controller {
         return badRequest(error)
       }
       const { number, flag, expiresAt, bankAccountId } = request
-      const exists = await this.loadBankAccountById.load(bankAccountId)
-      if (!exists) { return notFound('bankAccount') }
+      const bankAccount = await this.loadBankAccountById.load(bankAccountId)
+      if (!bankAccount) { return notFound('bankAccount') }
+      const bank = await this.loadBankById.load(bankAccount.bankId)
       const bankCard = await this.addBankCard.add({ number, flag, expiresAt: new Date(expiresAt) }, bankAccountId)
       return ok(bankCard)
     } catch (error: any) {
