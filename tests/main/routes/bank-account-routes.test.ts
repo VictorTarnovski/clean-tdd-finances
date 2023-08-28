@@ -31,7 +31,8 @@ beforeAll(async () => {
   bankCollection = await mongoHelper.getCollection('banks')
   const mongoBank = await bankCollection.insertOne({
     name: 'any_bank',
-    logo: ''
+    logo: '',
+    flags: ['any_flag']
   })
   bankId = mongoBank.insertedId.toHexString()
 
@@ -101,7 +102,7 @@ describe('POST /bank-accounts/:bankAccountId/bank-cards', () => {
       .set({ 'x-access-token': accessToken })
       .send({
         number: 5585411679142753,
-        flag: 'MASTER',
+        flag: 'any_flag',
         expiresAt: '2025-04-28T00:00:00',
       })
       .expect(200)
