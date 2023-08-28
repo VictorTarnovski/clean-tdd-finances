@@ -9,7 +9,9 @@ import { sign } from 'jsonwebtoken'
 
 let bankAccountCollection: Collection
 let accountCollection: Collection
+let bankCollection: Collection
 let accountId: string
+let bankId: string
 let accessToken: string
 
 beforeAll(async () => {
@@ -20,10 +22,18 @@ beforeAll(async () => {
   // Creates the user account to authenticate
   accountCollection = await mongoHelper.getCollection('accounts')
   const hashed_password = await hash('any_password', 12)
-  const { insertedId } = await accountCollection.insertOne({ name: 'Victor', email: 'victor@mail.com', password: hashed_password })
-  accountId = insertedId.toHexString()
+  const mongoAccount = await accountCollection.insertOne({ name: 'Victor', email: 'victor@mail.com', password: hashed_password })
+  accountId = mongoAccount.insertedId.toHexString()
   accessToken = sign({ id: accountId }, env.jwtSecret)
-  await accountCollection.updateOne({ _id: insertedId }, { $set: { accessToken } })
+  await accountCollection.updateOne({ _id: mongoAccount.insertedId }, { $set: { accessToken } })
+
+  // Creates the bank to use in the requests
+  bankCollection = await mongoHelper.getCollection('banks')
+  const mongoBank = await bankCollection.insertOne({
+    name: 'any_bank',
+    logo: ''
+  })
+  bankId = mongoBank.insertedId.toHexString()
 
 })
 
@@ -43,7 +53,8 @@ describe('POST /bank-accounts', () => {
       .send({
         number: 285992,
         currency: 'BRL',
-        balance: 123.25
+        balance: 123.25,
+        bankId
       })
       .expect(200)
   })
@@ -57,7 +68,8 @@ describe('GET /bank-accounts/:bankAccountId', () => {
       currency: 'BRL',
       balance: 123.25,
       cards: [],
-      accountId
+      accountId,
+      bankId
     })
     await request(app)
       .get(`/api/bank-accounts/${insertedId.toHexString()}`)
@@ -67,7 +79,7 @@ describe('GET /bank-accounts/:bankAccountId', () => {
 
   test('Should return 404 if bankAccount not exists', async () => {
     await request(app)
-      .get(`/api/bank-accounts/${accountId}`)
+      .get(`/api/bank-accounts/${new ObjectId().toHexString()}`)
       .set({ 'x-access-token': accessToken })
       .expect(404)
   })
@@ -81,7 +93,8 @@ describe('POST /bank-accounts/:bankAccountId/bank-cards', () => {
       currency: 'BRL',
       balance: 123.25,
       cards: [],
-      accountId
+      accountId,
+      bankId
     })
     await request(app)
       .post(`/api/bank-accounts/${insertedId.toHexString()}/bank-cards`)
