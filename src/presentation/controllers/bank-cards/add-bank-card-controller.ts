@@ -2,6 +2,7 @@ import { Controller, HttpResponse } from "@/presentation/protocols"
 import { badRequest, notFound, ok, serverError } from "@/presentation/helpers/http/http-helper"
 import { Validation } from "@/presentation/protocols/validation"
 import { AddBankCard, LoadBankById, LoadBankAccountById } from "@/domain/use-cases"
+import { InvalidParamError } from "@/presentation/errors"
 
 export class AddBankCardController implements Controller {
   constructor(
@@ -20,6 +21,9 @@ export class AddBankCardController implements Controller {
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
       if (!bankAccount) { return notFound('bankAccount') }
       const bank = await this.loadBankById.load(bankAccount.bankId)
+      if( !bank || !(bank.flags.includes(flag)) ) { 
+        return badRequest(new InvalidParamError('flag'))
+      }
       const bankCard = await this.addBankCard.add({ number, flag, expiresAt: new Date(expiresAt) }, bankAccountId)
       return ok(bankCard)
     } catch (error: any) {
