@@ -17,9 +17,9 @@ export class AddBankCardController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { number, flag, expiresAt, bankAccountId } = request
+      const { number, flag, expiresAt, bankAccountId, accountId } = request
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
-      if (!bankAccount) { return notFound('bankAccount') }
+      if (!bankAccount || bankAccount.accountId !== accountId) { return notFound('bankAccount') }
       const bank = await this.loadBankById.load(bankAccount.bankId)
       if( !bank || !(bank.flags.includes(flag)) ) { 
         return badRequest(new InvalidParamError('flag'))
@@ -38,5 +38,6 @@ export namespace AddBankCardController {
     flag: string
     expiresAt: string
     bankAccountId: string
+    accountId: string
   }
 }
