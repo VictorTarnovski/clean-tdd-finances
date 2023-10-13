@@ -1,5 +1,5 @@
 import { AddTransactionController } from '@/presentation/controllers/transaction/add-transaction-controller'
-import { mockAddTransactionModel, mockBankAccountModel } from '../../domain/mocks'
+import { mockAddIncomeTransactionModel, mockBankAccountModel } from '../../domain/mocks'
 import { AddTransaction } from '@/domain/use-cases/transaction/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/bank-account/load-bank-account-by-id'
 import { Validation } from '@/presentation/protocols'
@@ -11,17 +11,17 @@ import { SaveBankAccountBalance } from '@/domain/use-cases/bank-account/save-ban
 import mockdate from 'mockdate'
 
 const calculateBalance = (): number | undefined => {
-  switch (mockAddTransactionModel().operation) {
-    case 'addition':
-      return mockBankAccountModel().balance + mockAddTransactionModel().value
-    case 'subtraction':
-      return mockBankAccountModel().balance - mockAddTransactionModel().value
+  switch (mockAddIncomeTransactionModel().type) {
+    case 'income':
+      return mockBankAccountModel().balance + mockAddIncomeTransactionModel().value
+    case 'expense':
+      return mockBankAccountModel().balance - mockAddIncomeTransactionModel().value
     default:
       break
   }
 }
 
-const mockRequest = () => mockAddTransactionModel()
+const mockRequest = () => mockAddIncomeTransactionModel()
 
 type SutTypes = {
   sut: AddTransactionController,
@@ -59,7 +59,7 @@ describe('AddTransaction Controller', () => {
     const addSpy = jest.spyOn(addTransactionStub, 'add')
     await sut.handle(mockRequest())
     expect(addSpy).toHaveBeenCalledTimes(1)
-    expect(addSpy).toHaveBeenCalledWith(mockAddTransactionModel())
+    expect(addSpy).toHaveBeenCalledWith(mockAddIncomeTransactionModel())
   })
 
   test('Should return 500 if AddTransaction throws', async () => {
@@ -76,7 +76,7 @@ describe('AddTransaction Controller', () => {
     const httpRequest = mockRequest()
     sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledTimes(1)
-    expect(validateSpy).toHaveBeenCalledWith(mockAddTransactionModel())
+    expect(validateSpy).toHaveBeenCalledWith(mockAddIncomeTransactionModel())
   })
 
   test('Should return an Error if Validation returns an Error', async () => {

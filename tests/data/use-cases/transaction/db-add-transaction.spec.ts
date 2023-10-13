@@ -1,4 +1,4 @@
-import { mockAddTransactionModel, mockTransactionModel } from "../../../domain/mocks"
+import { mockAddIncomeTransactionModel, mockIncomeTransactionModel } from "../../../domain/mocks"
 import { DbAddTransaction } from "@/data/use-cases"
 import { mockAddTransactionRepository } from "../../mocks"
 import mockdate from 'mockdate'
@@ -20,20 +20,20 @@ describe('DbAddTransaction Usecase', () => {
   test('Should call AddTransactionRepository with correct values', async () => {
     const { sut, addTransactionRepository } = makeSut()
     const addSpy = jest.spyOn(addTransactionRepository, 'add')
-    await sut.add(mockAddTransactionModel())
-    expect(addSpy).toBeCalledWith(mockAddTransactionModel())
+    await sut.add(mockAddIncomeTransactionModel())
+    expect(addSpy).toBeCalledWith(mockAddIncomeTransactionModel())
   })
 
   test('Should return a Transaction on success', async () => {
     const { sut } = makeSut()
-    const transaction = await sut.add(mockAddTransactionModel())
-    expect(transaction).toEqual(mockTransactionModel())
+    const transaction = await sut.add(mockAddIncomeTransactionModel())
+    expect(transaction).toEqual(mockIncomeTransactionModel())
   })
 
   test('Should throw if AddTransactionRepository throws', async () => {
     const { sut, addTransactionRepository } = makeSut()
     jest.spyOn(addTransactionRepository, 'add').mockImplementationOnce(async () => { throw new Error()})
-    const promise = sut.add(mockAddTransactionModel())
+    const promise = sut.add(mockAddIncomeTransactionModel())
     expect(promise).rejects.toThrow()
   })
 })

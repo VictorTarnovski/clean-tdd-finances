@@ -1,9 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
-import { mockAddTransactionModel } from "../../../domain/mocks"
+import { mockAddIncomeTransactionModel } from "../../../domain/mocks"
 import { MongoTransactionRepository } from "@/infra/db/mongodb/mongo-transaction-repository"
-import { ObjectId } from "mongodb"
-
 describe('MongoTransactionRepository', () => {
   beforeAll(async () => {
     const mongo = await MongoMemoryServer.create()
@@ -22,14 +20,14 @@ describe('MongoTransactionRepository', () => {
 
   test('Should return a transaction on add success', async () => {
     const sut = new MongoTransactionRepository()
-    const transaction = await sut.add(mockAddTransactionModel())
+    const transaction = await sut.add(mockAddIncomeTransactionModel())
     expect(transaction).toBeTruthy()
   })
 
   test('Should return a transaction on loadById success', async () => {
     const sut = new MongoTransactionRepository()
     const transactionCollection = await mongoHelper.getCollection('transactions')
-    const { insertedId } = await transactionCollection.insertOne(mockAddTransactionModel())
+    const { insertedId } = await transactionCollection.insertOne(mockAddIncomeTransactionModel())
     const transaction = await sut.load(insertedId.toHexString())
     expect(transaction).toBeTruthy()
   })

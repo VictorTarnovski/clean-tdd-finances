@@ -22,7 +22,7 @@ export class AddTransactionController {
       const {
         description,
         value,
-        operation,
+        type,
         bankAccountId,
         bankCardId
       } = request
@@ -36,8 +36,8 @@ export class AddTransactionController {
           return notFound('bankCard')
         }
       }
-      const transaction = await this.addTransaction.add({ description, value, operation, createdAt: new Date(), bankAccountId, bankCardId })
-      const newBalance = operation === 'addition' ? bankAccount.balance + transaction.value : bankAccount.balance - transaction.value
+      const transaction = await this.addTransaction.add({ description, value, type, createdAt: new Date(), bankAccountId, bankCardId })
+      const newBalance = type === 'income' ? bankAccount.balance + transaction.value : bankAccount.balance - transaction.value
       const updatedBankAccount = await this.saveBankAccountBalance.save(newBalance, bankAccountId)
       return ok(updatedBankAccount)
     } catch (error: any) {
@@ -50,7 +50,7 @@ export namespace AddTransactionController {
   export type Request = {
     description: string
     value: number
-    operation: 'addition' | 'subtraction'
+    type: 'income' | 'expense'
     bankAccountId: string
     bankCardId?: string
   }

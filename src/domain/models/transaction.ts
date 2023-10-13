@@ -1,9 +1,12 @@
+import { BankAccountModel } from "./bank-account"
+import { BankCardModel } from "./bank-card"
+
 export type TransactionModel = {
   id: string
   description: string
   value: number
-  operation: 'addition' | 'subtraction',
+  type: 'income' | 'expense',
   createdAt: Date,
-  bankAccountId: string
-  bankCardId?: string
+  bankAccount: BankAccountModel
+  bankCard?: BankCardModel
 }

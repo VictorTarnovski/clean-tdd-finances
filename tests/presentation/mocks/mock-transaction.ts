@@ -1,11 +1,11 @@
 import { TransactionModel } from "@/domain/models/transaction"
 import { AddTransaction, AddTransactionModel } from "@/domain/use-cases"
-import { mockTransactionModel } from "../../domain/mocks"
+import { mockIncomeTransactionModel } from "../../domain/mocks"
 
 export const mockAddTransaction = (): AddTransaction => {
   class addTransaction implements AddTransaction {
     async add(account: AddTransactionModel): Promise<TransactionModel> {
-      return mockTransactionModel()
+      return mockIncomeTransactionModel()
     }
   }
   return new addTransaction()
