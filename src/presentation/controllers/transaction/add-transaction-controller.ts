@@ -15,33 +15,34 @@ export class AddTransactionController {
   ) { }
   async handle(request: AddTransactionController.Request): Promise<HttpResponse> {
     try {
+
       const error = this.validation.validate(request)
-      if (error) {
-        return badRequest(error)
-      }
-      const {
-        description,
-        value,
-        type,
-        bankAccountId,
-        bankCardId
-      } = request
+      if (error) { return badRequest(error) }
+
+      const { description, value, type, bankAccountId, bankCardId } = request
+
       const bankAccount = await this.loadBankAccountById.load(bankAccountId)
-      if (!bankAccount) {
-        return notFound('bankAccount')
-      }
+      if (!bankAccount) { return notFound('bankAccount') }
+
       if (bankCardId) {
+
         const bankCard = await this.loadBankCardById.load(bankCardId, bankAccountId)
         if (!bankCard) {
           return notFound('bankCard')
         }
+
       }
+
+      const newBalance = type === 'income' ? bankAccount.balance + value : bankAccount.balance - value
+      this.saveBankAccountBalance.save(newBalance, bankAccountId)
+
       const transaction = await this.addTransaction.add({ description, value, type, createdAt: new Date(), bankAccountId, bankCardId })
-      const newBalance = type === 'income' ? bankAccount.balance + transaction.value : bankAccount.balance - transaction.value
-      const updatedBankAccount = await this.saveBankAccountBalance.save(newBalance, bankAccountId)
-      return ok(updatedBankAccount)
+      return ok(transaction)
+
     } catch (error: any) {
+
       return serverError(error)
+
     }
   }
 }

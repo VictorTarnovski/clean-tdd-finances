@@ -8,8 +8,7 @@ export const mockAddIncomeTransactionModel = (): AddTransactionModel => ({
   value: 100,
   type: 'income',
   createdAt: new Date(),
-  bankAccountId: 'any_bank_account_id',
-  bankCardId: 'any_bank_card_id',
+  bankAccountId: 'any_bank_account_id'
 })
 
 export const mockIncomeTransactionModel = (): TransactionModel => {
@@ -17,8 +16,7 @@ export const mockIncomeTransactionModel = (): TransactionModel => {
   return {
     id: 'any_transaction_id',
     ...props,
-    bankAccount: mockBankAccountModel(),
-    bankCard: mockBankCardModel()
+    bankAccount: mockBankAccountModel()
   }
 }
 

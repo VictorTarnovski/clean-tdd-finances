@@ -1,5 +1,5 @@
 import { AddTransactionController } from '@/presentation/controllers/transaction/add-transaction-controller'
-import { mockAddIncomeTransactionModel, mockBankAccountModel } from '../../domain/mocks'
+import { mockAddExpenseTransactionModel, mockBankAccountModel, mockIncomeTransactionModel } from '../../domain/mocks'
 import { AddTransaction } from '@/domain/use-cases/transaction/add-transaction'
 import { LoadBankAccountById } from '@/domain/use-cases/bank-account/load-bank-account-by-id'
 import { Validation } from '@/presentation/protocols'
@@ -11,17 +11,17 @@ import { SaveBankAccountBalance } from '@/domain/use-cases/bank-account/save-ban
 import mockdate from 'mockdate'
 
 const calculateBalance = (): number | undefined => {
-  switch (mockAddIncomeTransactionModel().type) {
+  switch (mockAddExpenseTransactionModel().type) {
     case 'income':
-      return mockBankAccountModel().balance + mockAddIncomeTransactionModel().value
+      return mockBankAccountModel().balance + mockAddExpenseTransactionModel().value
     case 'expense':
-      return mockBankAccountModel().balance - mockAddIncomeTransactionModel().value
+      return mockBankAccountModel().balance - mockAddExpenseTransactionModel().value
     default:
       break
   }
 }
 
-const mockRequest = () => mockAddIncomeTransactionModel()
+const mockRequest = () => mockAddExpenseTransactionModel()
 
 type SutTypes = {
   sut: AddTransactionController,
@@ -59,7 +59,7 @@ describe('AddTransaction Controller', () => {
     const addSpy = jest.spyOn(addTransactionStub, 'add')
     await sut.handle(mockRequest())
     expect(addSpy).toHaveBeenCalledTimes(1)
-    expect(addSpy).toHaveBeenCalledWith(mockAddIncomeTransactionModel())
+    expect(addSpy).toHaveBeenCalledWith(mockAddExpenseTransactionModel())
   })
 
   test('Should return 500 if AddTransaction throws', async () => {
@@ -76,7 +76,7 @@ describe('AddTransaction Controller', () => {
     const httpRequest = mockRequest()
     sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledTimes(1)
-    expect(validateSpy).toHaveBeenCalledWith(mockAddIncomeTransactionModel())
+    expect(validateSpy).toHaveBeenCalledWith(mockAddExpenseTransactionModel())
   })
 
   test('Should return an Error if Validation returns an Error', async () => {
@@ -153,6 +153,6 @@ describe('AddTransaction Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(mockBankAccountModel()))
+    expect(httpResponse).toEqual(ok(mockIncomeTransactionModel()))
   })
 })

@@ -53,7 +53,7 @@ describe('POST /transactions', () => {
       .send({
         description: 'any_description',
         value: 10,
-        operation: 'addition',
+        type: 'income',
         bankAccountId
       })
       .expect(200)
@@ -66,7 +66,7 @@ describe('POST /transactions', () => {
       .send({
         description: 'any_description',
         value: 10,
-        operation: 'addition',
+        type: 'income',
         bankAccountId: new ObjectId().toHexString()
       })
       .expect(404)
@@ -79,7 +79,7 @@ describe('POST /transactions', () => {
       .send({
         description: 'any_description',
         value: 10,
-        operation: 'addition',
+        type: 'income',
         bankAccountId,
         bankCardId: new ObjectId().toHexString()
       })
