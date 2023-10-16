@@ -2,7 +2,7 @@ import { forbidden, notFound, ok, serverError } from "@/presentation/helpers/htt
 import { AccessDeniedError } from "@/presentation/errors"
 import { LoadBankAccountById} from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 import { LoadAccountById } from "@/domain/use-cases/account/load-account-by-id"
-import { mockBankAccountModel } from "../../domain/mocks"
+import { mockBankAccountModel, mockBankModel } from "../../domain/mocks"
 import { mockLoadBankAccountById, mockLoadAccountById } from "../mocks"
 import { LoadBankAccountByIdController } from "@/presentation/controllers/bank-account/load-bank-account-by-id-controller"
 
@@ -79,7 +79,7 @@ describe('LoadBankAccountById Controller', () => {
         balance: 0,
         cards: [],
         accountId: 'other_account_id',
-        bankId: 'any_bank_id'
+        bank: mockBankModel() 
       }
     })
     const httpResponse = await sut.handle(mockRequest())

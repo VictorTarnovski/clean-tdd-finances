@@ -16,7 +16,7 @@ export class MongoBankRepository implements LoadBanksRepository, LoadBankByIdRep
     if(!isValid) { return null }
     const bankCollection = await mongoHelper.getCollection('banks')
     const mongoBank = await bankCollection.findOne(new ObjectId(bankId))
-    if (!mongoBank) { return null}
+    if (!mongoBank) { return null }
     const bank = mongoHelper.map(mongoBank)
     return bank
   }

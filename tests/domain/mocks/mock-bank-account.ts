@@ -1,5 +1,6 @@
 import { BankAccountModel } from "@/domain/models/bank-account"
 import { AddBankAccountModel } from "@/domain/use-cases/bank-account/add-bank-account"
+import { mockBankModel } from "./mock-bank"
 
 
 export const mockAddBankAccountModel = (): AddBankAccountModel => ({
@@ -25,5 +26,5 @@ export const mockBankAccountModel = (): BankAccountModel => ({
     }
   ],
   accountId: 'any_account_id',
-  bankId: 'any_bank_id'
+  bank: mockBankModel()
 })

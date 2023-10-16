@@ -1,3 +1,4 @@
+import { BankModel } from "./bank"
 import { BankCardModel } from "./bank-card"
 
 export type BankAccountModel = {
@@ -7,5 +8,5 @@ export type BankAccountModel = {
     balance: number
     accountId: string
     cards: BankCardModel[],
-    bankId: string
+    bank: BankModel
 }

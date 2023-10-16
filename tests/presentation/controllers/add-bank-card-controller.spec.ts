@@ -4,7 +4,7 @@ import { InvalidParamError, ServerError } from '@/presentation/errors'
 import { AddBankCard } from '@/domain/use-cases/bank-card/add-bank-card'
 import { Validation } from "@/presentation/protocols"
 import { mockValidation, mockAddBankCard, mockLoadBankAccountById, mockLoadBankById } from "../mocks"
-import { mockAddBankCardModel, mockBankCardModel } from "../../domain/mocks"
+import { mockAddBankCardModel, mockBankCardModel, mockBankModel } from "../../domain/mocks"
 import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-account-by-id"
 import { LoadBankById } from "@/domain/use-cases"
 
@@ -148,7 +148,7 @@ describe('AddBankCard Controller', () => {
         balance: 0,
         cards: [],
         accountId: 'other_account_id',
-        bankId: 'any_bank_id'
+        bank: mockBankModel()
       }
     })
     const response = await sut.handle(mockRequest())
