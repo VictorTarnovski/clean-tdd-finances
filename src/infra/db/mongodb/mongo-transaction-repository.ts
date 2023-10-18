@@ -1,12 +1,12 @@
+import { LoadTransactionsByBankAccountRepository } from "@/data/protocols/db"
 import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-transaction-repository"
 import { BankAccountModel, BankCardModel } from "@/domain/models"
 import { TransactionModel } from "@/domain/models/transaction"
 import { AddTransactionModel } from "@/domain/use-cases/transaction/add-transaction"
-import { LoadTransactionById } from "@/domain/use-cases/transaction/load-transaction-by-id"
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
 
-export class MongoTransactionRepository implements AddTransactionRepository, LoadTransactionById {
+export class MongoTransactionRepository implements AddTransactionRepository, LoadTransactionsByBankAccountRepository {
   async add(transactionData: AddTransactionModel): Promise<TransactionModel> {
     const transactionsCollection = await mongoHelper.getCollection('transactions')
     const { insertedId } = await transactionsCollection.insertOne(transactionData)
@@ -35,5 +35,11 @@ export class MongoTransactionRepository implements AddTransactionRepository, Loa
     const transaction = Object.assign({}, mongoHelper.map(trans), { bankAccount }, { bankCard: transactionCard })
 
     return transaction
+  }
+
+  async loadByBankAccountId(bankAccountId: string): Promise<TransactionModel[]> {
+    const isValid = ObjectId.isValid(bankAccountId)
+    if (isValid === false) { return [] }
+    return []
   }
 }
