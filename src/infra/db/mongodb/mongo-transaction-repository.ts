@@ -24,7 +24,7 @@ export class MongoTransactionRepository implements AddTransactionRepository, Loa
     if (!trans) return null
         
     const mongoBankAccount: any = await bankAccountsCollection.findOne({
-        _id: new ObjectId(bankAccountId)
+      _id: new ObjectId(bankAccountId)
     })
 
     const bankAccount = mongoHelper.map(mongoBankAccount)
@@ -40,6 +40,25 @@ export class MongoTransactionRepository implements AddTransactionRepository, Loa
   async loadByBankAccountId(bankAccountId: string): Promise<TransactionModel[]> {
     const isValid = ObjectId.isValid(bankAccountId)
     if (isValid === false) { return [] }
-    return []
+
+    const bankAccountsCollection = await mongoHelper.getCollection('bank-accounts')
+    const transactionsCollection = await mongoHelper.getCollection('transactions')
+
+    const mongoTransactions = await transactionsCollection.find().toArray()
+    const mongoBankAccount: any = await bankAccountsCollection.findOne({
+      _id: new ObjectId(bankAccountId)
+    })
+    const bankAccount = mongoHelper.map(mongoBankAccount)
+    bankAccount.cards = await mongoHelper.mapCollection(bankAccount.cards)
+
+    const transactions: TransactionModel[] = []
+
+    mongoTransactions.map((mongoTransaction) => {
+      mongoHelper.map(mongoTransaction)
+      const transactionCard = bankAccount.cards.find((card: BankCardModel) => card.id === mongoTransaction.bankCardId)
+      const transaction = Object.assign({}, mongoHelper.map(mongoTransaction), { bankAccount }, { bankCard: transactionCard })
+      transactions.push(transaction)
+    })
+    return transactions
   }
 }

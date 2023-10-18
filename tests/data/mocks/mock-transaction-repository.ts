@@ -17,7 +17,7 @@ export const mockAddTransactionRepository = (): AddTransactionRepository => {
 export const mockLoadTransactionsByBankAccountRepository = (): LoadTransactionsByBankAccountRepository => {
   class LoadTransactionsByBankAccountRepositoryStub implements LoadTransactionsByBankAccountRepository {
     async loadByBankAccountId(bankAccountId: string): Promise<TransactionModel[] | []> {
-      return []
+      return [mockIncomeTransactionModel()]
     }
   }
 
