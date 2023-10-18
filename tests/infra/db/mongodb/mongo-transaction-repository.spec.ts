@@ -59,4 +59,15 @@ describe('MongoTransactionRepository', () => {
     const transaction = await sut.loadByBankAccountId('invalid_id')
     expect(transaction).toEqual([])
   })
+
+  test('Should return a transaction list on loadByBankAccountId success', async () => {
+    const sut = new MongoTransactionRepository()
+    const transactionToAdd = Object.assign(mockAddIncomeTransactionModel(), { 
+      bankAccountId
+    })
+    await sut.add(transactionToAdd)
+    const transactions = await sut.loadByBankAccountId(bankAccountId)
+    expect(transactions).toBeTruthy()
+  })
+
 })
