@@ -53,4 +53,10 @@ describe('MongoTransactionRepository', () => {
     const transaction = await sut.loadById('invalid_id')
     expect(transaction).toBeFalsy()
   })
+
+  test('Should return null if an invalid id is passed to loadByBankAccountId', async () => {
+    const sut = new MongoTransactionRepository()
+    const transaction = await sut.loadByBankAccountId('invalid_id')
+    expect(transaction).toEqual([])
+  })
 })
