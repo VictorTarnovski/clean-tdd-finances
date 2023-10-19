@@ -4,7 +4,7 @@ import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-tr
 import { LoadTransactionsByBankAccount} from "@/domain/use-cases/transaction/load-transactions-by-bank-account-id"
 import { LoadTransactionsByBankAccountIdRepository } from "@/data/protocols/db"
 
-export class DbLoadTransactionsByBankAccountId implements LoadTransactionsByBankAccount {
+export class DbLoadTransactionsByBankAccount implements LoadTransactionsByBankAccount {
   constructor(private readonly loadTransactionsByBankAccountIdRepository: LoadTransactionsByBankAccountIdRepository) {}
   async load(bankAccountId: string): Promise<TransactionModel[]> {
     const transactions = await this.loadTransactionsByBankAccountIdRepository.loadByBankAccountId(bankAccountId)

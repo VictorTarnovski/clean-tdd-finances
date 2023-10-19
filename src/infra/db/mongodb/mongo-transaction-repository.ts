@@ -7,12 +7,14 @@ import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
 
 export class MongoTransactionRepository implements AddTransactionRepository, LoadTransactionsByBankAccountIdRepository {
+  
   async add(transactionData: AddTransactionModel): Promise<TransactionModel> {
     const transactionsCollection = await mongoHelper.getCollection('transactions')
     const { insertedId } = await transactionsCollection.insertOne(transactionData)
     const transaction = await this.loadById(insertedId.toHexString())
     return transaction!
   }
+
   async loadById(transactionId: string): Promise<TransactionModel | null> {
     const isValid = ObjectId.isValid(transactionId)
     if (isValid === false) { return null }
@@ -54,9 +56,9 @@ export class MongoTransactionRepository implements AddTransactionRepository, Loa
     const transactions: TransactionModel[] = []
 
     mongoTransactions.map((mongoTransaction) => {
-      mongoHelper.map(mongoTransaction)
-      const transactionCard = bankAccount.cards.find((card: BankCardModel) => card.id === mongoTransaction.bankCardId)
-      const transaction = Object.assign({}, mongoHelper.map(mongoTransaction), { bankAccount }, { bankCard: transactionCard })
+      const { bankAccountId, bankCardId, ...trans } = mongoTransaction
+      const transactionCard = bankAccount.cards.find((card: BankCardModel) => card.id === bankCardId)
+      const transaction = Object.assign({}, mongoHelper.map(trans), { bankAccount }, { bankCard: transactionCard })
       transactions.push(transaction)
     })
     return transactions
