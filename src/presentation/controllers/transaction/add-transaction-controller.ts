@@ -5,7 +5,7 @@ import { LoadBankAccountById } from "@/domain/use-cases/bank-account/load-bank-a
 import { LoadBankCardById } from "@/domain/use-cases/bank-card/load-bank-card-by-id"
 import { SaveBankAccountBalance } from "@/domain/use-cases/bank-account/save-bank-account-balance"
 
-export class AddTransactionController {
+export class AddTransactionController implements Controller {
   constructor(
     private readonly addTransaction: AddTransaction,
     private readonly validation: Validation,

@@ -1,12 +1,12 @@
 import { TransactionModel } from "@/domain/models/transaction"
 import { AddTransaction, AddTransactionModel } from "@/domain/use-cases/transaction/add-transaction"
 import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-transaction-repository"
-import { LoadTransactionsByBankAccountId } from "@/domain/use-cases/transaction/load-transactions-by-bank-account-id"
+import { LoadTransactionsByBankAccount} from "@/domain/use-cases/transaction/load-transactions-by-bank-account-id"
 import { LoadTransactionsByBankAccountIdRepository } from "@/data/protocols/db"
 
-export class DbLoadTransactionsByBankAccountId implements LoadTransactionsByBankAccountId {
+export class DbLoadTransactionsByBankAccountId implements LoadTransactionsByBankAccount {
   constructor(private readonly loadTransactionsByBankAccountIdRepository: LoadTransactionsByBankAccountIdRepository) {}
-  async loadById(bankAccountId: string): Promise<TransactionModel[]> {
+  async load(bankAccountId: string): Promise<TransactionModel[]> {
     const transactions = await this.loadTransactionsByBankAccountIdRepository.loadByBankAccountId(bankAccountId)
     return transactions
   }

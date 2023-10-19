@@ -1,6 +1,6 @@
 import { TransactionModel } from "@/domain/models/transaction"
-import { AddTransaction, AddTransactionModel } from "@/domain/use-cases"
-import { mockIncomeTransactionModel } from "../../domain/mocks"
+import { AddTransaction, AddTransactionModel, LoadTransactionsByBankAccount } from "@/domain/use-cases"
+import { mockIncomeTransactionModel, mockTransactionModels } from "../../domain/mocks"
 
 export const mockAddTransaction = (): AddTransaction => {
   class addTransaction implements AddTransaction {
@@ -9,4 +9,13 @@ export const mockAddTransaction = (): AddTransaction => {
     }
   }
   return new addTransaction()
+}
+
+export const mockLoadTransactionsByBankAccount = (): LoadTransactionsByBankAccount => {
+  class loadTransactionsByBankAccount implements LoadTransactionsByBankAccount {
+    async load(bankAccountId: string): Promise<TransactionModel[]> {
+      return mockTransactionModels()
+    }
+  }
+  return new loadTransactionsByBankAccount()
 }
