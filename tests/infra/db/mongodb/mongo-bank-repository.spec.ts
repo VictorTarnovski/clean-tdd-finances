@@ -14,8 +14,7 @@ describe('MongoBankRepository', () => {
     await bankCollection.deleteMany()
     const { insertedId } = await bankCollection.insertOne({
       _id: new ObjectId(),
-      name: 'any_name',
-      logo: 'any_logo.png',
+      name: 'any_name'
     })
     bankId = insertedId.toHexString()
   })
@@ -35,7 +34,6 @@ describe('MongoBankRepository', () => {
     const bank = await sut.loadBankById(bankId)
     expect(bank).toBeTruthy()
     expect(bank?.name).toBe('any_name')
-    expect(bank?.logo).toBe('any_logo.png')
   })
 
   test('Should return null on loadById fails', async () => {

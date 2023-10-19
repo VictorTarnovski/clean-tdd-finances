@@ -48,7 +48,6 @@ describe('GET /banks/:bankId', () => {
   test('Should return 200 on success', async () => {
     const { insertedId } = await bankCollection.insertOne({
       name: 'any_name',
-      logo: 'any_logo.png',
     })
     await request(app)
       .get(`/api/banks/${insertedId.toHexString()}`)
@@ -59,7 +58,6 @@ describe('GET /banks/:bankId', () => {
   test('Should return 404 if bank not exists', async () => {
     const { insertedId } = await bankCollection.insertOne({
       name: 'any_name',
-      logo: 'any_logo.png',
     })
     await request(app)
       .get(`/api/banks/${new ObjectId().toHexString()}`)

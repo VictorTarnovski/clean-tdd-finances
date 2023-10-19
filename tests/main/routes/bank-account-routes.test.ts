@@ -31,7 +31,6 @@ beforeAll(async () => {
   bankCollection = await mongoHelper.getCollection('banks')
   const mongoBank = await bankCollection.insertOne({
     name: 'any_bank',
-    logo: '',
     flags: ['any_flag']
   })
   bankId = mongoBank.insertedId.toHexString()
