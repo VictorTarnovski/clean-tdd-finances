@@ -1,5 +1,5 @@
 import { TransactionModel } from "@/domain/models/transaction"
 
-export interface LoadTransactionsByBankAccountRepository {
+export interface LoadTransactionsByBankAccountIdRepository {
   loadByBankAccountId(bankAccountId: string): Promise<TransactionModel[]>
 }

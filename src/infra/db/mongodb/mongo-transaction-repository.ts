@@ -1,4 +1,4 @@
-import { LoadTransactionsByBankAccountRepository } from "@/data/protocols/db"
+import { LoadTransactionsByBankAccountIdRepository } from "@/data/protocols/db"
 import { AddTransactionRepository } from "@/data/protocols/db/transaction/add-transaction-repository"
 import { BankAccountModel, BankCardModel } from "@/domain/models"
 import { TransactionModel } from "@/domain/models/transaction"
@@ -6,7 +6,7 @@ import { AddTransactionModel } from "@/domain/use-cases/transaction/add-transact
 import mongoHelper from "@/infra/db/mongodb/mongo-helper"
 import { ObjectId } from "mongodb"
 
-export class MongoTransactionRepository implements AddTransactionRepository, LoadTransactionsByBankAccountRepository {
+export class MongoTransactionRepository implements AddTransactionRepository, LoadTransactionsByBankAccountIdRepository {
   async add(transactionData: AddTransactionModel): Promise<TransactionModel> {
     const transactionsCollection = await mongoHelper.getCollection('transactions')
     const { insertedId } = await transactionsCollection.insertOne(transactionData)
