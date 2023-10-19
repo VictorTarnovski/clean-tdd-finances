@@ -1,19 +1,18 @@
-import { mockAddIncomeTransactionModel } from "../../../domain/mocks"
-import { DbLoadTransactionsByBankAccountId } from "@/data/use-cases"
+import { DbLoadTransactionsByBankAccount } from "@/data/use-cases"
 import { mockLoadTransactionsByBankAccountIdRepository } from "../../mocks"
 
 
 
 const makeSut = () => {
   const loadTransactionsByBankAccountIdRepository = mockLoadTransactionsByBankAccountIdRepository()
-  const sut = new DbLoadTransactionsByBankAccountId(loadTransactionsByBankAccountIdRepository)
+  const sut = new DbLoadTransactionsByBankAccount(loadTransactionsByBankAccountIdRepository)
   return {
     sut,
     loadTransactionsByBankAccountIdRepository
   }
 }
 
-describe('DbLoadTransactionsByBankAccountId Usecase', () => {
+describe('DbLoadTransactionsByBankAccount Usecase', () => {
   
   test('Should call LoadTransactionsByBankAccountIdRepository with correct bankAccountId', async () => {
     const { sut, loadTransactionsByBankAccountIdRepository } = makeSut()

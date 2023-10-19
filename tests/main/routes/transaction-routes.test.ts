@@ -86,3 +86,21 @@ describe('POST /transactions', () => {
       .expect(404)
   })
 })
+
+describe('GET /bank-accounts/:bankAccountId/transactions', () => {
+
+  test('Should return 200 on success', async () => {
+    await request(app)
+      .get(`/api/bank-accounts/${bankAccountId}/transactions`)
+      .set({ 'x-access-token': accessToken })
+      .expect(200)
+  })
+
+  test('Should return 404 if bankAccount not exists', async () => {
+    await request(app)
+      .get(`/api/bank-accounts/${new ObjectId().toHexString()}/transactions`)
+      .set({ 'x-access-token': accessToken })
+      .expect(404)
+  })
+  
+})
