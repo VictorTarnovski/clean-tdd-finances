@@ -3,14 +3,14 @@
 Essa API foi baseada nos ensinamos do treinamento do professor Rodrigo Manguinho (Mango) na Udemy.
 
 O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem definida e desacoplada, utilizando TDD (programação orientada a testes) como metodologia de trabalho, Clean Architecture para fazer a distribuição de responsabilidades em camadas, sempre seguindo os princípios do SOLID e, sempre que possível, aplicando Design Patterns para resolver alguns problemas comuns.
-<br /><br />
-> ## APIs construídas no treinamento
+
+> ## APIs construídas
 
 1. [Cadastro](./requirements/signup.md)
 2. [Login](./requirements/login.md)
 3. [Criar conta bancária](./requirements/add-bank-account.md)
 4. [Criar cartão de crédito/débito](./requirements/add-bank-card.md)
-5. [Consulta conta bancária por id](./requirements/load-bank-account-byid.md)
+5. [Consulta conta bancária por id](./requirements/load-bank-account-by-id.md)
 6. [Criar transação](./requirements/add-transaction.md)
 7. [Listar transações pelo id da conta bancária](./requirements/load-transactions-by-bank-account.md)
 

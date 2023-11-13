@@ -9,7 +9,7 @@ export class LoadTransactionsByBankAccountController implements Controller {
     private readonly loadBankAccountById: LoadBankAccountById,
     private readonly loadTransactionsByBankAccount: LoadTransactionsByBankAccount
   ) { }
-  async handle(request: AddTransactionController.Request): Promise<HttpResponse> {
+  async handle(request: LoadTransactionsByBankAccountController.Request): Promise<HttpResponse> {
     try {
 
       const error = this.validation.validate(request)
@@ -31,7 +31,7 @@ export class LoadTransactionsByBankAccountController implements Controller {
   }
 }
 
-export namespace AddTransactionController {
+export namespace LoadTransactionsByBankAccountController {
   export type Request = {
     bankAccountId: string
   }
