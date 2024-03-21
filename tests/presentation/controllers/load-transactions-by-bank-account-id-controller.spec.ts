@@ -4,6 +4,7 @@ import { Validation } from '@/presentation/protocols'
 import { LoadBankAccountById, LoadTransactionsByBankAccount } from '@/domain/use-cases'
 import { badRequest, notFound, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { mockTransactionModels } from '../../domain/mocks'
+import mockdate from "mockdate"
 
 const mockRequest = () => ({ bankAccountId: 'any_bank_account_id' })
 
@@ -28,6 +29,9 @@ const makeSut = (): SutTypes => {
 }
 
 describe('LoadTransactionsByBankAccount Controller', () => {
+
+  beforeAll(() => mockdate.set(new Date()))
+  afterAll(() => mockdate.reset())
 
   test('Should call Validation with correct values', async () => {
     const { sut, validation } = makeSut()
